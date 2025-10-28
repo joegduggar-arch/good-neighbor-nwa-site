@@ -26,13 +26,7 @@ export function Navbar() {
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link
-      className={clsx(
-        "rounded px-3 py-1 transition",
-        "hover:bg-white/10 hover:text-brand-gold"
-      )}
-      href={href}
-    >
+    <Link className={clsx("rounded px-3 py-1 transition","hover:bg-white/10 hover:text-brand-gold")} href={href}>
       {children}
     </Link>
   );

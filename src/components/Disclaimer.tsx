@@ -1,5 +1,4 @@
 import { MLS_NAME, DISCLAIMER_TEXT } from "../lib/compliance";
-
 export function Disclaimer() {
   return (
     <p className="mt-2 text-xs text-gray-500">

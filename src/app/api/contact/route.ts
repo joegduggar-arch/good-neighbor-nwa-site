@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Minimal email sender using Resend's REST API.
-// Set RESEND_API_KEY in your env. The "from" domain must be verified in Resend.
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -17,21 +15,20 @@ export async function POST(req: NextRequest) {
     const html = `
       <div style="font-family:system-ui,Arial,sans-serif">
         <h2>New Website Inquiry</h2>
-        <p><strong>Name:</strong> ${name || "(not provided)"}</p>
+        <p><strong>Name:</strong> ${name || "(not provided)"} </p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || "(not provided)"}</p>
+        <p><strong>Phone:</strong> ${phone || "(not provided)"} </p>
         <p><strong>Message:</strong><br/>${message.replace(/\n/g, "<br/>")}</p>
       </div>
     `;
 
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     if (!RESEND_API_KEY) {
-      // If not configured, simulate success so the UI works in dev.
       return NextResponse.json({ ok: true, simulated: true });
     }
 
     const toEmail = process.env.CONTACT_TO || "JoegDuggar@gmail.com";
-    const fromEmail = process.env.CONTACT_FROM || "site@your-verified-domain.com";
+    const fromEmail = process.env.CONTACT_FROM || "site@goodneighbornwa.com";
 
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",

@@ -8,7 +8,7 @@ type Listing = {
   sqft?: number;
   photoUrl?: string;
   listingBrokerage?: string;
-  dom?: number; // extra (VOW)
+  dom?: number;
 };
 
 export function ListingCard({ listing }: { listing: Listing }) {
@@ -24,12 +24,8 @@ export function ListingCard({ listing }: { listing: Listing }) {
         <div className="text-sm text-gray-500">{listing.address}, {listing.city}</div>
         <div className="text-lg font-semibold">${listing.price.toLocaleString()}</div>
         <div className="text-sm text-gray-700">{listing.beds} bd • {listing.baths} ba{listing.sqft ? ` • ${listing.sqft.toLocaleString()} sqft` : ""}</div>
-        {typeof listing.dom === "number" && (
-          <div className="text-xs text-gray-500">Days on Market: {listing.dom}</div>
-        )}
-        {listing.listingBrokerage && (
-          <div className="pt-2 text-xs text-gray-500">Courtesy of {listing.listingBrokerage}</div>
-        )}
+        {typeof listing.dom === "number" && <div className="text-xs text-gray-500">Days on Market: {listing.dom}</div>}
+        {listing.listingBrokerage && <div className="pt-2 text-xs text-gray-500">Courtesy of {listing.listingBrokerage}</div>}
       </div>
     </div>
   );
