@@ -1,3 +1,4 @@
+'use client';
 import Image from "next/image";
 import { useState } from "react";
 import type { Agent } from "../lib/agents";
@@ -24,7 +25,6 @@ export function AgentCard({ agent }: { agent: Agent }) {
             priority={false}
           />
         ) : (
-          // Graceful placeholder if file not present yet
           <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-400">
             <div className="mb-2 text-sm">Photo coming soon</div>
             <div className="h-16 w-16 rounded-full border border-zinc-700" />
