@@ -8,11 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function AgentsPage() {
-  // Ensure Principal Broker (Joe) first
-  const sorted = [...agents].sort((a, b) =>
-    a.title === "Principal Broker" ? -1 :
-    b.title === "Principal Broker" ?  1 : 0
-  );
+  // Principal Broker first, then residential agents, then commercial last
+  const sorted = [...agents].sort((a, b) => {
+    const order = (t: string) =>
+      t === "Principal Broker" ? 0 :
+      t === "Real Estate Agent" ? 1 :
+      2; // Commercial Specialist
+    return order(a.title) - order(b.title);
+  });
 
   return (
     <div>
