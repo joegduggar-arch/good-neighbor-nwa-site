@@ -1,35 +1,35 @@
 import Image from "next/image";
+import { useState } from "react";
 import type { Agent } from "../lib/agents";
 
 function photoPath(id: string) {
-  // If you haven’t added the real file yet, this will still render with a neutral placeholder.
-  // Add real images to /public/agents/<id>.jpg and they will appear automatically.
   return `/agents/${id}.jpg`;
 }
 
 export function AgentCard({ agent }: { agent: Agent }) {
+  const [imgOk, setImgOk] = useState(true);
   const imgSrc = photoPath(agent.id);
+
   return (
     <div className="group overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/40 shadow-sm">
       <div className="relative h-64 w-full bg-zinc-800">
-        <Image
-          src={imgSrc}
-          alt={`${agent.name} — ${agent.title}`}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-          onError={(e) => {
-            // graceful placeholder if photo not present yet
-            (e.target as any).style.display = "none";
-          }}
-        />
-        {/* Simple placeholder layer (hidden when image loads) */}
-        <div className="absolute inset-0 flex items-center justify-center text-zinc-400">
-          <div className="text-center">
+        {imgOk ? (
+          <Image
+            src={imgSrc}
+            alt={`${agent.name} — ${agent.title}`}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+            onError={() => setImgOk(false)}
+            priority={false}
+          />
+        ) : (
+          // Graceful placeholder if file not present yet
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-400">
             <div className="mb-2 text-sm">Photo coming soon</div>
-            <div className="mx-auto h-16 w-16 rounded-full border border-zinc-700" />
+            <div className="h-16 w-16 rounded-full border border-zinc-700" />
           </div>
-        </div>
+        )}
       </div>
 
       <div className="p-4">
