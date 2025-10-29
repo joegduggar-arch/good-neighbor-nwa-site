@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import { agents } from "../../lib/agents";
+import { AgentCard } from "../../components/AgentCard";
+
+export const metadata: Metadata = {
+  title: "Our Agents | Good Neighbor Realty",
+  description: "Meet the Good Neighbor Realty team serving Northwest Arkansas.",
+};
+
+export default function AgentsPage() {
+  // Ensure Principal Broker (Joe) first
+  const sorted = [...agents].sort((a, b) =>
+    a.title === "Principal Broker" ? -1 :
+    b.title === "Principal Broker" ?  1 : 0
+  );
+
+  return (
+    <div>
+      <h1 className="mb-2 text-3xl font-semibold text-white">Our Agents</h1>
+      <p className="mb-8 max-w-2xl text-zinc-300">
+        Local experts across Bella Vista, Bentonville, Siloam Springs, and beyond.
+      </p>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {sorted.map((a) => (
+          <AgentCard key={a.id} agent={a} />
+        ))}
+      </div>
+    </div>
+  );
+}
