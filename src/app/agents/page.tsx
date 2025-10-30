@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { agents } from "../../lib/agents";
-import { AgentCard } from "../../components/AgentCard";
+import { agents } from "@/lib/agents";
+import { AgentCard } from "@/components/AgentCard";
 
 export const metadata: Metadata = {
   title: "Our Agents | Good Neighbor Realty",
@@ -8,13 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function AgentsPage() {
-  // Principal Broker first, then residential agents, then commercial last
+  // Broker first, then residential, then commercial
   const sorted = [...agents].sort((a, b) => {
-    const order = (t: string) =>
-      t === "Principal Broker" ? 0 :
-      t === "Real Estate Agent" ? 1 :
-      2; // Commercial Specialist
-    return order(a.title) - order(b.title);
+    const rank = (t: string) =>
+      t.toLowerCase().includes("principal") ? 0 :
+      t.toLowerCase().includes("real estate agent") ? 1 : 2;
+    return rank(a.title) - rank(b.title);
   });
 
   return (

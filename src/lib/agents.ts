@@ -1,41 +1,51 @@
-export type Agent = {
-  id: string;   // used for /public/agents/<id>.jpg
+export interface Agent {
+  id: string;
   name: string;
-  title: "Principal Broker" | "Real Estate Agent" | "Commercial Specialist";
+  title: string;
+  description: string;
   phone?: string;
   email?: string;
-  bio?: string;
-};
+  image: string;
+}
 
 export const agents: Agent[] = [
   {
     id: "joe-duggar",
     name: "Joe Duggar",
     title: "Principal Broker",
+    description:
+      "Joe is the Principal Broker for Good Neighbor Realty and specializes in helping buyers and sellers across all of Northwest Arkansas.",
     phone: "(479) 713-9565",
-    email: "JoegDuggar@gmail.com",
-    bio: "Principal Broker of Good Neighbor Realty, providing exceptional service and local market expertise across Northwest Arkansas.",
+    email: "joegduggar@gmail.com",
+    image: "/agents/joe-duggar.jpg",
   },
   {
     id: "christy-rainier",
     name: "Christy Rainier",
     title: "Real Estate Agent",
+    description:
+      "Christy serves clients throughout Northwest Arkansas with a focus on delivering personalized, detail-oriented service for every transaction.",
     phone: "(321) 961-8263",
     email: "christyrainier@gmail.com",
-    bio: "Christy serves clients throughout Northwest Arkansas, helping buyers and sellers navigate the market with care and professionalism.",
+    image: "/agents/christy-rainier.jpg",
   },
   {
     id: "marcus-day",
     name: "Marcus Day",
     title: "Real Estate Agent",
+    description:
+      "Marcus serves all of Northwest Arkansas, providing thoughtful and knowledgeable guidance to both buyers and sellers.",
     phone: "(479) 877-5327",
     email: "marcusdfe@gmail.com",
-    bio: "Marcus serves clients across all of Northwest Arkansas with a focus on residential listings and helping families find their perfect home.",
+    image: "/agents/marcus-day.jpg",
   },
   {
     id: "jim-bob-duggar",
     name: "Jim Bob Duggar",
-    title: "Commercial Specialist",
-    bio: "Jim Bob Duggar specializes in commercial real estate and investment properties throughout Northwest Arkansas. For commercial inquiries, please contact our office at (479) 713-9565.",
+    title: "Commercial Real Estate Specialist",
+    description:
+      "With extensive experience in property development and investment, Jim Bob focuses on commercial real estate opportunities throughout the region.",
+    phone: "(479) 713-9565", // office number only
+    image: "/agents/jim-bob-duggar.jpg",
   },
 ];
