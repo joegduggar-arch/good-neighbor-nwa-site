@@ -1,17 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { agents } from "@/lib/agents";
+// ⬇️ use relative path instead of "@/lib/agents"
+import { agents } from "../../lib/agents";
 
 export const metadata = {
   title: "Our Agents | Good Neighbor Realty",
-  description: "Meet the Good Neighbor Realty team — local experts serving communities throughout Northwest Arkansas.",
+  description:
+    "Meet the Good Neighbor Realty team — local experts serving communities throughout Northwest Arkansas.",
 };
 
 export default function AgentsPage() {
   return (
     <main className="min-h-screen bg-brand-black text-white py-12 px-4">
       <div className="max-w-6xl mx-auto text-center">
-        {/* --- Header Section --- */}
         <h1 className="mb-2 text-4xl font-semibold text-white drop-shadow-lg">
           Our Agents
         </h1>
@@ -19,7 +20,6 @@ export default function AgentsPage() {
           Local experts serving communities throughout Northwest Arkansas.
         </p>
 
-        {/* --- Agent Cards --- */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
           {agents.map((agent) => (
             <div
