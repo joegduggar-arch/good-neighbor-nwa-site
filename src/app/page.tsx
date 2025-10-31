@@ -1,38 +1,57 @@
-import Link from "next/link";
-import { Disclaimer } from "../components/Disclaimer";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import Image from "next/image";
+
+export default function HomePage() {
   return (
-    <div className="space-y-12">
-      <section className="relative overflow-hidden rounded-2xl border border-brand-gold/30 bg-brand-black text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-gold/10 via-transparent to-transparent" />
-        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-8 py-16 md:grid-cols-2">
-          <div>
-            <h1 className="text-4xl font-semibold leading-tight">
-              Good Neighbor Realty
-              <span className="block text-brand-gold">Northwest Arkansas</span>
-            </h1>
-            <p className="mt-4 text-gray-200">
-              Boutique brokerage focused on Bentonville, Bella Vista, and Siloam Springs.
-              Explore listings, save favorites, and work with a local team that knows NWA.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link className="rounded bg-brand-gold px-5 py-2 font-medium text-brand-black hover:bg-brand-goldDark" href="/search">Browse Listings</Link>
-              <Link className="rounded border border-white/30 px-5 py-2 hover:border-white hover:text-brand-gold" href="/portal">Client Portal</Link>
-            </div>
-          </div>
-          <div className="rounded-xl border border-white/10 bg-[url('https://images.unsplash.com/photo-1600585154340-1e4ce9a56a0c?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center shadow-xl min-h-[220px]" />
+    <main className="relative min-h-screen bg-brand-black text-white flex flex-col items-center justify-center overflow-hidden">
+      {/* Background Image or Pattern */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/hero-bg.jpg" // Optional hero image — replace or remove if not needed
+          alt="Northwest Arkansas landscape"
+          fill
+          className="object-cover opacity-25"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90" />
+      </div>
+
+      {/* Hero Content */}
+      <section className="relative z-10 max-w-4xl px-6 text-center">
+        <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+          Your trusted real estate professionals serving all of{" "}
+          <span className="text-brand-gold">Northwest Arkansas</span> — from new
+          construction to forever homes.
+        </h1>
+
+        <p className="mt-4 text-lg md:text-xl text-zinc-300">
+          Locally owned and dedicated to helping you buy, build, or sell with
+          confidence.
+        </p>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <Link
+            href="/search"
+            className="rounded-lg bg-brand-gold px-6 py-3 text-black font-semibold transition hover:bg-white hover:text-brand-gold"
+          >
+            Browse Listings
+          </Link>
+
+          <Link
+            href="/contact"
+            className="rounded-lg border border-brand-gold px-6 py-3 font-semibold text-brand-gold transition hover:bg-brand-gold hover:text-black"
+          >
+            Contact Our Team
+          </Link>
         </div>
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-2xl font-semibold">Start your NWA search</h2>
-        <p className="text-gray-700">
-          Use our public IDX search to explore active homes. Clients can log in to the private portal for
-          additional details and saved searches.
-        </p>
-        <Disclaimer />
-      </section>
-    </div>
+      {/* Optional Footer Tagline */}
+      <footer className="absolute bottom-6 text-sm text-zinc-400">
+        © {new Date().getFullYear()} Good Neighbor Realty — Northwest Arkansas Real Estate
+      </footer>
+    </main>
   );
 }
