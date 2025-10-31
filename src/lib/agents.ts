@@ -6,6 +6,7 @@ export interface Agent {
   phone?: string;
   email?: string;
   image: string;
+  story?: string; // NEW: long-form story for each agent
 }
 
 export const agents: Agent[] = [
@@ -18,6 +19,8 @@ export const agents: Agent[] = [
     phone: "(479) 713-9565",
     email: "joegduggar@gmail.com",
     image: "/agents/joe-duggar.jpg",
+    story:
+      "Joe carries forward a family tradition in Northwest Arkansas real estate. He believes every transaction is a chance to serve people well—combining clear communication, local insight, and steady guidance from contract to close.",
   },
   {
     id: "christy-rainier",
@@ -28,6 +31,8 @@ export const agents: Agent[] = [
     phone: "(321) 961-8263",
     email: "christyrainier@gmail.com",
     image: "/agents/christy-rainier.jpg",
+    story:
+      "Christy is known for calm, thorough representation. She loves helping clients explore neighborhoods, evaluate homes with confidence, and move forward knowing the details are handled.",
   },
   {
     id: "marcus-day",
@@ -38,5 +43,7 @@ export const agents: Agent[] = [
     phone: "(479) 877-5327",
     email: "marcusdfe@gmail.com",
     image: "/agents/marcus-day.jpg",
+    story:
+      "Marcus brings a practical, solutions-first mindset. From first showings to final walkthroughs, he focuses on clear expectations and smooth outcomes.",
   },
 ];
