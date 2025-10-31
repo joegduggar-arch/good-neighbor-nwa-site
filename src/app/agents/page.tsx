@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { agents } from ".../.../lib/agents";
-import { AgentCard } from ".../.../components/AgentCard";
+import { agents } from "../../lib/agents";
+import { AgentCard } from "../../components/AgentCard";
 
 export const metadata: Metadata = {
   title: "Our Agents | Good Neighbor Realty",
