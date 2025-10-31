@@ -1,49 +1,53 @@
-export interface Agent {
+export type Agent = {
   id: string;
   name: string;
   title: string;
-  description: string;
+  image: string;
   phone?: string;
   email?: string;
-  image: string;
-  story?: string; // NEW: long-form story for each agent
-}
+  story?: string;
+};
 
 export const agents: Agent[] = [
   {
     id: "joe-duggar",
     name: "Joe Duggar",
-    title: "Principal Broker",
-    description:
-      "Joe is the Principal Broker for Good Neighbor Realty and specializes in helping buyers and sellers across all of Northwest Arkansas.",
+    title: "Principal Broker, Good Neighbor Realty",
+    image: "/agents/joe.jpg",
     phone: "(479) 713-9565",
     email: "joegduggar@gmail.com",
-    image: "/agents/joe-duggar.jpg",
-    story:
-      "Joe carries forward a family tradition in Northwest Arkansas real estate. He believes every transaction is a chance to serve people well—combining clear communication, local insight, and steady guidance from contract to close.",
+    story: `Real estate has been part of my life for as long as I can remember. I grew up surrounded by it—watching my family serve neighbors across Northwest Arkansas and learning early on what it means to guide people through one of the biggest decisions of their lives.
+    
+I always had the ambition to follow in my family’s footsteps, and I had the privilege of learning the trade firsthand while working closely with my dad. Over the years, that passion only grew stronger.
+
+Today, I’m honored to continue the legacy my family began generations ago—especially the example set by my grandma, Mary Duggar, who led Good Neighbor Realty with honesty, compassion, and excellence. I love working with both buyers and sellers, helping them find not just a house, but a place to call home.
+
+Every client I work with becomes part of that same story—one built on faith, family, and a genuine care for people.`,
   },
   {
     id: "christy-rainier",
     name: "Christy Rainier",
-    title: "Real Estate Agent",
-    description:
-      "Christy serves clients throughout Northwest Arkansas with a focus on delivering personalized, detail-oriented service for every transaction.",
+    title: "Sales Associate, Good Neighbor Realty",
+    image: "/agents/christy.jpg",
     phone: "(321) 961-8263",
     email: "christyrainier@gmail.com",
-    image: "/agents/christy-rainier.jpg",
-    story:
-      "Christy is known for calm, thorough representation. She loves helping clients explore neighborhoods, evaluate homes with confidence, and move forward knowing the details are handled.",
+    story: `Christy Rainier is a devoted wife and mother whose heart for people shines through everything she does. Her care for others and attention to detail have naturally carried over into her real estate career, where she’s passionate about helping families through each step of the buying or selling process.
+
+Coming from a family with a strong background in the building industry, Christy understands the craftsmanship and planning that go into creating a home. That experience gives her a unique perspective when guiding clients—helping them see both the potential and the details that truly matter.
+
+Whether working with first-time buyers or seasoned sellers, Christy brings warmth, professionalism, and genuine dedication to every client she serves.`,
   },
   {
     id: "marcus-day",
     name: "Marcus Day",
-    title: "Real Estate Agent",
-    description:
-      "Marcus serves all of Northwest Arkansas, providing thoughtful and knowledgeable guidance to both buyers and sellers.",
+    title: "Sales Associate, Good Neighbor Realty",
+    image: "/agents/marcus.jpg",
     phone: "(479) 877-5327",
     email: "marcusdfe@gmail.com",
-    image: "/agents/marcus-day.jpg",
-    story:
-      "Marcus brings a practical, solutions-first mindset. From first showings to final walkthroughs, he focuses on clear expectations and smooth outcomes.",
+    story: `Marcus Day brings a genuine heart for people and a hands-on understanding of what makes a home truly special. Having personally been involved in the construction and design of several homes, he has developed a keen eye for detail, craftsmanship, and quality.
+
+Marcus believes that real estate is about more than closing deals—it’s about helping individuals and families find the space that fits their lifestyle and dreams. His thoughtful approach, combined with his practical knowledge of how homes are built, allows him to guide clients confidently through every step of the process.
+
+Dedicated, approachable, and grounded in integrity, Marcus takes pride in helping his clients feel cared for, informed, and supported as they find their place to call home.`,
   },
 ];

@@ -57,7 +57,7 @@ export default function HomePage() {
             For our family, real estate isn’t just a business — it’s a legacy.
             Generations of Duggars have helped people across Northwest Arkansas
             find their place to call home. From the early days of Duggar Realty,
-            founded by our relatives decades ago, to my grandmother Mary Duggar,
+            founded by our relatives decades ago, to my grandma Mary Duggar,
             who owned and led Good Neighbor Realty with integrity and heart,
             this work has always been about more than property — it’s about
             people.
