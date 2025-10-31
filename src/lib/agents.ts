@@ -39,13 +39,4 @@ export const agents: Agent[] = [
     email: "marcusdfe@gmail.com",
     image: "/agents/marcus-day.jpg",
   },
-  {
-    id: "jim-bob-duggar",
-    name: "Jim Bob Duggar",
-    title: "Commercial Real Estate Specialist",
-    description:
-      "With extensive experience in property development and investment, Jim Bob focuses on commercial real estate opportunities throughout the region.",
-    phone: "(479) 713-9565", // office number only
-    image: "/agents/jim-bob-duggar.jpg",
-  },
 ];
