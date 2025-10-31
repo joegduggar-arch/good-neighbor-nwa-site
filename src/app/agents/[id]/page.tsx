@@ -1,72 +1,71 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { agents } from "../../../lib/agents";
 
-type Params = { params: { id: string } };
-
-export function generateMetadata({ params }: Params): Metadata {
-  const agent = agents.find((a) => a.id === params.id);
-  if (!agent) {
-    return { title: "Agent Not Found | Good Neighbor Realty" };
-  }
-  return {
-    title: `${agent.name} | Good Neighbor Realty`,
-    description: `${agent.name} — ${agent.title} in Northwest Arkansas.`,
-    openGraph: { images: [agent.image] },
-  };
+export async function generateStaticParams() {
+  return agents.map((agent) => ({
+    id: agent.id,
+  }));
 }
 
-export default function AgentProfile({ params }: Params) {
+export default function AgentPage({ params }: { params: { id: string } }) {
   const agent = agents.find((a) => a.id === params.id);
-  if (!agent) return notFound();
+
+  if (!agent) {
+    notFound();
+  }
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10 text-white">
-      <Link href="/agents" className="text-sm text-zinc-400 hover:text-brand-gold">
-        ← Back to Agents
-      </Link>
+    <main className="min-h-screen bg-white text-black py-12 px-4">
+      <div className="max-w-5xl mx-auto">
+        <Link
+          href="/agents"
+          className="text-sm text-zinc-600 hover:text-brand-gold transition"
+        >
+          ← Back to Agents
+        </Link>
 
-      <div className="mt-6 grid gap-8 md:grid-cols-[320px,1fr]">
-        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-zinc-800">
-          <Image
-            src={agent.image}
-            alt={`${agent.name} — ${agent.title}`}
-            fill
-            className="object-contain"
-            sizes="(max-width:768px) 100vw, 320px"
-            priority
-          />
-        </div>
-
-        <div>
-          <h1 className="text-3xl font-semibold">{agent.name}</h1>
-          <p className="mt-1 text-brand-gold">{agent.title}</p>
-
-          <div className="mt-4 flex flex-wrap gap-3">
-            {agent.phone && (
-              <a
-                href={`tel:${agent.phone}`}
-                className="rounded-md border border-brand-gold px-3 py-1 text-brand-gold hover:bg-brand-gold hover:text-black transition"
-              >
-                Call
-              </a>
-            )}
-            {agent.email && (
-              <a
-                href={`mailto:${agent.email}`}
-                className="rounded-md border border-brand-gold px-3 py-1 text-brand-gold hover:bg-brand-gold hover:text-black transition"
-              >
-                Email
-              </a>
-            )}
+        <div className="mt-8 flex flex-col md:flex-row items-start gap-10">
+          {/* Agent Photo */}
+          <div className="flex-shrink-0 w-full md:w-1/3">
+            <Image
+              src={agent.image}
+              alt={agent.name}
+              width={500}
+              height={500}
+              className="rounded-lg object-cover w-full h-auto shadow-md"
+            />
           </div>
 
-          <div className="prose prose-invert mt-6 max-w-none">
-            <p className="text-zinc-200">
-              {agent.story ??
-                "This agent’s story will be updated soon. In the meantime, please reach out for more information."}
+          {/* Agent Info */}
+          <div className="flex-1">
+            <h1 className="text-3xl font-semibold text-brand-black mb-1">
+              {agent.name}
+            </h1>
+            <p className="text-brand-gold font-medium mb-4">{agent.title}</p>
+
+            <div className="flex gap-3 mb-6">
+              {agent.phone && (
+                <a
+                  href={`tel:${agent.phone}`}
+                  className="border border-brand-gold text-brand-gold rounded-md px-4 py-1 text-sm font-medium hover:bg-brand-gold hover:text-white transition"
+                >
+                  Call
+                </a>
+              )}
+              {agent.email && (
+                <a
+                  href={`mailto:${agent.email}`}
+                  className="border border-brand-gold text-brand-gold rounded-md px-4 py-1 text-sm font-medium hover:bg-brand-gold hover:text-white transition"
+                >
+                  Email
+                </a>
+              )}
+            </div>
+
+            <p className="leading-relaxed text-zinc-800 whitespace-pre-line">
+              {agent.story}
             </p>
           </div>
         </div>
