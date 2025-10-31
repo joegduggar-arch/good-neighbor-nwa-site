@@ -1,17 +1,22 @@
 import "./globals.css";
-import { Navbar } from "../components/Navbar";
+import type { Metadata } from "next";
+import Navbar from "../components/Navbar"; // <-- default import (match file case)
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Good Neighbor NWA",
-  description: "Brokerage site with IDX & VOW scaffolding",
+  description: "Good Neighbor Realty • Northwest Arkansas",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="min-h-screen text-gray-900">
+      <body className="min-h-screen bg-zinc-50 text-zinc-900">
         <Navbar />
-        <main className="mx-auto max-w-6xl p-6">{children}</main>
+        <main className="min-h-[calc(100vh-64px)]">{children}</main>
       </body>
     </html>
   );
