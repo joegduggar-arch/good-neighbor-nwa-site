@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import type { Agent } from "@/lib/agents";
+import type { Agent } from "../lib/agents";
 
 type Props = { agent: Agent };
 
