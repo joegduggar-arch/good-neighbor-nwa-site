@@ -41,7 +41,7 @@ export function AgentCard({ agent }: Props) {
       <div className="p-5 text-center">
         <h2 className="text-lg font-semibold text-white">{agent.name}</h2>
         <p className="text-sm text-brand-gold font-medium">{agent.title}</p>
-        <p className="mt-2 text-sm text-zinc-300">{agent.description}</p>
+        <p className="mt-2 text-sm text-zinc-300 line-clamp-3">{agent.story}</p>
 
         <div className="mt-4 flex justify-center gap-3">
           {agent.phone && (
