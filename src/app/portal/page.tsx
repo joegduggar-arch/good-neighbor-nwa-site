@@ -1,34 +1,28 @@
-import { cookies } from "next/headers";
-import { RegisterForm } from "../../components/RegisterForm";
-// (keep your other imports)
+export const metadata = {
+  title: "Client Portal — Good Neighbor Realty",
+  description: "Sign in to view saved searches, favorites, and messages.",
+};
 
-export default function PortalPage() {
-  const cookieStore = cookies();
-  const loggedIn = cookieStore.get("gnr_logged_in")?.value === "1";
-  const accepted  = cookieStore.get("gnr_terms")?.value === "1";
+export default function Page() {
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="text-3xl font-semibold">Client Portal</h1>
+      <p className="mt-3 text-zinc-700">
+        Access your saved searches, favorites, and messages with our team.
+      </p>
 
-  if (!loggedIn) {
-    return (
-      <div className="grid gap-10 md:grid-cols-2">
-        <div><RegisterForm /></div>
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Already have an account?</h2>
-          <form action="/api/login" method="post" className="space-y-3 max-w-sm">
-            <input name="email" type="email" placeholder="Email" required className="w-full rounded border px-3 py-2" />
-            <button className="rounded bg-[#D4AF37] px-4 py-2 font-medium text-black hover:opacity-90" type="submit">Log in</button>
-          </form>
-          <p className="text-gray-600 text-sm mt-3">
-            Enhanced listing fields are visible after registration and acceptance of terms (NABOR VOW rules).
-          </p>
-        </div>
+      <div className="mt-6 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+        {/* Replace the href below with your actual portal URL when ready */}
+        <a
+          href="#"
+          className="inline-flex items-center rounded-lg bg-black px-4 py-2 text-white hover:bg-black/85"
+        >
+          Open Portal
+        </a>
+        <p className="mt-3 text-sm text-zinc-600">
+          Don’t have an account yet? Contact us and we’ll get you set up.
+        </p>
       </div>
-    );
-  }
-
-  if (!accepted) {
-    // keep your TermsModal flow here if you already have it
-    // return <TermsModal />;
-  }
-
-  // ...existing logged-in portal content...
+    </section>
+  );
 }

@@ -1,140 +1,93 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const NavLink = ({
+    href,
+    children,
+  }: {
+    href: string;
+    children: React.ReactNode;
+  }) => (
+    <Link
+      href={href}
+      className={`transition text-sm font-medium ${
+        pathname === href
+          ? "text-brand-gold"
+          : "text-white hover:text-brand-gold"
+      }`}
+      onClick={() => setMenuOpen(false)}
+    >
+      {children}
+    </Link>
+  );
 
   return (
-    <header className="bg-brand-black text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo + Brand */}
-        <div className="flex items-center space-x-3">
-          <Link href="/" className="flex items-center space-x-2">
-            <img
-              src="/logo.png"
-              alt="Good Neighbor Realty Logo"
-              className="h-10 w-auto"
-            />
-            <span className="font-semibold text-lg tracking-wide">
-              Good Neighbor Realty • NWA
+    <nav className="bg-black text-white shadow-md sticky top-0 z-50">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:py-4">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <img
+            src="/logo.png"
+            alt="Good Neighbor Realty Logo"
+            className="h-10 w-auto"
+          />
+          <div className="hidden sm:block">
+            <span className="font-semibold text-lg">
+              Good Neighbor Realty
             </span>
-          </Link>
-        </div>
+            <span className="text-brand-gold text-sm block">• NWA</span>
+          </div>
+        </Link>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/idx"
-            className="hover:text-brand-gold transition text-sm font-medium"
-          >
-            IDX Search
-          </Link>
-          <Link
-            href="/client-portal"
-            className="hover:text-brand-gold transition text-sm font-medium"
-          >
-            Client Portal
-          </Link>
-          <Link
-            href="/agents"
-            className="hover:text-brand-gold transition text-sm font-medium"
-          >
-            Agents
-          </Link>
-          <Link
-            href="/contact"
-            className="hover:text-brand-gold transition text-sm font-medium"
-          >
-            Contact
-          </Link>
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center space-x-8">
+          <NavLink href="/idx">IDX Search</NavLink>
+          <NavLink href="/client-portal">Client Portal</NavLink>
+          <NavLink href="/agents">Agents</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
 
-          {/* Office Phone (Prominent on Desktop) */}
-          <Link
+          {/* Office Number */}
+          <a
             href="tel:4797139565"
-            className="text-brand-gold font-semibold text-lg hover:text-white transition"
+            className="ml-4 rounded-md bg-brand-gold px-3 py-1 text-black font-semibold hover:bg-yellow-400 transition"
           >
-            📞 (479) 713-9565
-          </Link>
-        </nav>
+            (479) 713-9565
+          </a>
+        </div>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden focus:outline-none"
-          aria-label="Toggle menu"
         >
-          {menuOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-7 h-7"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-7 h-7"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          )}
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-brand-black border-t border-zinc-700 text-center pb-4">
-          <Link
-            href="/idx"
-            className="block py-3 text-sm hover:text-brand-gold transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            IDX Search
-          </Link>
-          <Link
-            href="/client-portal"
-            className="block py-3 text-sm hover:text-brand-gold transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            Client Portal
-          </Link>
-          <Link
-            href="/agents"
-            className="block py-3 text-sm hover:text-brand-gold transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            Agents
-          </Link>
-          <Link
-            href="/contact"
-            className="block py-3 text-sm hover:text-brand-gold transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            Contact
-          </Link>
+        <div className="md:hidden bg-black border-t border-zinc-800 py-3 px-4 space-y-3">
+          <NavLink href="/idx">IDX Search</NavLink>
+          <NavLink href="/client-portal">Client Portal</NavLink>
+          <NavLink href="/agents">Agents</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
 
-          {/* Mobile Phone Number */}
-          <div className="mt-3 border-t border-zinc-700 pt-3">
-            <Link
-              href="tel:4797139565"
-              className="block text-brand-gold font-medium text-lg hover:text-white transition"
-              onClick={() => setMenuOpen(false)}
-            >
-              📞 (479) 713-9565
-            </Link>
-          </div>
+          <a
+            href="tel:4797139565"
+            className="block text-center rounded-md bg-brand-gold px-3 py-2 text-black font-semibold hover:bg-yellow-400 transition"
+          >
+            Call (479) 713-9565
+          </a>
         </div>
       )}
-    </header>
+    </nav>
   );
 }
