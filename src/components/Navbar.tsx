@@ -2,60 +2,71 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import clsx from "clsx";
+import { Phone } from "lucide-react"; // For phone icon — if you don’t want lucide, I can swap it for emoji
 
 export default function Navbar() {
   return (
-    <header className="border-b border-brand-gold/30 bg-brand-black text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between p-3 md:p-4">
-        {/* Brand / Logo */}
+    <header className="bg-black text-white border-b border-brand-gold/40 sticky top-0 z-50">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3"
-          aria-label="Good Neighbor Realty - Home"
+          className="flex items-center space-x-3"
+          aria-label="Good Neighbor Realty Home"
         >
           <Image
             src="/logo.png"
             alt="Good Neighbor Realty logo"
-            width={120}
-            height={120}
+            width={70}
+            height={70}
+            className="h-14 w-auto md:h-16 md:w-auto"
             priority
           />
-          <span className="hidden md:inline text-lg font-semibold tracking-wide">
-            <span className="pr-1">Good Neighbor Realty</span>
-            <span className="text-brand-gold">• NWA</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-semibold text-lg leading-tight">
+              Good Neighbor Realty
+            </span>
+            <span className="text-brand-gold text-sm">• NWA</span>
+          </div>
         </Link>
 
-        {/* Nav items */}
-        <nav className="flex gap-2 text-sm">
-          {/* IMPORTANT: these use your actual routes */}
-          <NavLink href="/search">IDX Search</NavLink>
-          <NavLink href="/portal">Client Portal</NavLink>
-          <NavLink href="/agents">Agents</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
+        {/* Nav Links */}
+        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+          <Link
+            href="/search"
+            className="hover:text-brand-gold transition-colors"
+          >
+            IDX Search
+          </Link>
+          <Link
+            href="/portal"
+            className="hover:text-brand-gold transition-colors"
+          >
+            Client Portal
+          </Link>
+          <Link
+            href="/agents"
+            className="hover:text-brand-gold transition-colors"
+          >
+            Agents
+          </Link>
+          <Link
+            href="/contact"
+            className="hover:text-brand-gold transition-colors"
+          >
+            Contact
+          </Link>
+
+          {/* Phone icon */}
+          <a
+            href="tel:4797139565"
+            className="flex items-center justify-center rounded-md bg-brand-gold p-2 text-black hover:bg-yellow-400 transition"
+            aria-label="Call Good Neighbor Realty"
+          >
+            <Phone size={18} />
+          </a>
         </nav>
       </div>
     </header>
-  );
-}
-
-function NavLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={clsx(
-        "rounded px-3 py-1 transition",
-        "hover:bg-white/10 hover:text-brand-gold"
-      )}
-    >
-      {children}
-    </Link>
   );
 }
