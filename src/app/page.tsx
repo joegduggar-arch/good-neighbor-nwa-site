@@ -86,9 +86,7 @@ export default function HomePage() {
         <div className="grid gap-8 sm:grid-cols-2 max-w-5xl mx-auto text-center">
           <Reveal delay={100}>
             <div>
-              <h3 className="text-xl font-medium text-white">
-                Milagro Designs
-              </h3>
+              <h3 className="text-xl font-medium text-white">Milagro Designs</h3>
               <p className="text-neutral-300 mt-2">
                 Led by Josiah Duggar — thoughtful craftsmanship and custom
                 homes that reflect Northwest Arkansas living.
