@@ -1,88 +1,92 @@
+// src/components/NWAOverview.tsx
 "use client";
 
 import Image from "next/image";
-import Reveal from "@/components/Reveal";
+import Link from "next/link";
 
-type Card = { title: string; desc: string; img: string; alt: string };
-
-const items: Card[] = [
+const AREAS = [
   {
     title: "Trails & Nature",
-    desc: "Miles of greenways, rolling hills, and four-season scenery.",
-    img: "/images/placeholders/nwa-outdoors.jpg",
-    alt: "Northwest Arkansas fall hills and river",
+    description: "Miles of greenways, rolling hills, and four-season scenery.",
+    image: "/images/placeholders/nwa-outdoors.jpg",
+    href: "/trails",
   },
   {
     title: "Homes & Neighborhoods",
-    desc: "Thoughtful new construction and established neighborhoods.",
-    img: "/images/placeholders/nwa-homes.jpg",
-    alt: "Home exterior",
+    description: "Thoughtful new construction and established neighborhoods.",
+    image: "/images/placeholders/interior-bath.jpg",
+    href: "/homes",
   },
   {
     title: "Lifestyle",
-    desc: "Dining, events, and small-town charm across NWA.",
-    img: "/images/placeholders/nwa-lifestyle.jpg",
-    alt: "Lifestyle deck view",
+    description: "Dining, events, and small-town charm across NWA.",
+    image: "/images/placeholders/nwa-homes.jpg",
+    href: "/lifestyle",
   },
   {
     title: "Interiors & Craftsmanship",
-    desc: "Warm finishes, bright kitchens, and inviting living spaces.",
-    img: "/images/placeholders/nwa-interior.jpg",
-    alt: "Interior kitchen and living area",
+    description: "Warm finishes, bright kitchens, and inviting living spaces.",
+    image: "/images/placeholders/interior-living-2.jpg",
+    href: "/interiors",
   },
 ];
 
-export default function NWAOverview({ className = "" }: { className?: string }) {
+const TAGS = [
+  "Bike-friendly",
+  "Family-oriented",
+  "Active arts",
+  "Year-round events",
+  "Lakes & parks",
+  "Growing jobs",
+];
+
+export default function NWAOverview() {
   return (
-    <div className={className}>
-      <Reveal>
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+    <section className="bg-neutral-50 py-16">
+      <div className="mx-auto max-w-7xl px-6">
+        <h2 className="mb-10 text-3xl font-bold text-neutral-900">
           Northwest Arkansas at a glance
         </h2>
-      </Reveal>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((item, i) => (
-          <Reveal key={item.title} delay={80 + i * 70}>
-            <article className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition-transform duration-300 will-change-transform hover:-translate-y-1">
-              <div className="relative h-44 md:h-48">
+        {/* Grid of clickable cards */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {AREAS.map((area) => (
+            <Link
+              key={area.title}
+              href={area.href}
+              className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div className="relative h-52 w-full">
                 <Image
-                  src={item.img}
-                  alt={item.alt}
+                  src={area.image}
+                  alt={area.title}
                   fill
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  priority={i < 2}
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover transition duration-300 group-hover:scale-105"
                 />
               </div>
-              <div className="p-4">
-                <h3 className="text-base font-medium">{item.title}</h3>
-                <p className="mt-1 text-sm text-neutral-600">{item.desc}</p>
+              <div className="p-5">
+                <h3 className="mb-1 text-lg font-semibold text-neutral-900 group-hover:text-yellow-600">
+                  {area.title}
+                </h3>
+                <p className="text-sm text-neutral-600">{area.description}</p>
               </div>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
 
-      <Reveal delay={60}>
-        <div className="mt-8 flex flex-wrap gap-2">
-          {[
-            "Bike-friendly",
-            "Family-oriented",
-            "Active arts",
-            "Year-round events",
-            "Lakes & parks",
-            "Growing jobs",
-          ].map((tag) => (
+        {/* Tags underneath */}
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          {TAGS.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-700"
+              className="rounded-full border border-neutral-300 bg-white px-4 py-1 text-sm text-neutral-600"
             >
               {tag}
             </span>
           ))}
         </div>
-      </Reveal>
-    </div>
+      </div>
+    </section>
   );
 }
