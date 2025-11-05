@@ -2,6 +2,8 @@ import HeroVideo from "@/components/HeroVideo";
 import Section from "@/components/Section";
 import NWAOverview from "@/components/NWAOverview";
 import Reveal from "@/components/Reveal";
+import ListingCard from "@/components/ListingCard";
+import { homes } from "@/lib/data";
 
 export default function HomePage() {
   return (
@@ -12,84 +14,68 @@ export default function HomePage() {
         poster="/images/placeholders/hero-placeholder.jpg"
       />
 
-      {/* ---------------- INTRO SECTION ---------------- */}
+      {/* ---------------- INTRO ---------------- */}
       <Section id="intro">
         <Reveal>
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
               Welcome to Good Neighbor Realty
             </h1>
             <p className="mt-4 text-lg text-neutral-600">
-              Serving Northwest Arkansas — from the quiet hills of Bella Vista
-              to the vibrant heart of Bentonville and beyond.
+              Serving Northwest Arkansas — with a special focus on{" "}
+              <span className="font-medium">Bella Vista</span> new construction.
             </p>
           </div>
         </Reveal>
       </Section>
 
-      {/* ---------------- NORTHWEST ARKANSAS OVERVIEW ---------------- */}
+      {/* ---------------- NWA OVERVIEW ---------------- */}
       <Section id="nwa" bg="subtle">
         <NWAOverview />
       </Section>
 
-      {/* ---------------- FEATURED LISTINGS ---------------- */}
+      {/* ---------------- FEATURED BELLA VISTA HOMES (CLICKABLE) ---------------- */}
       <Section id="listings">
         <Reveal>
-          <h2 className="text-2xl font-semibold tracking-tight mb-6 text-center">
-            Featured Homes
+          <h2 className="mb-6 text-center text-2xl font-semibold tracking-tight">
+            Featured Bella Vista Homes
           </h2>
         </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Reveal delay={100}>
-            <div className="rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 bg-white">
-              <img
-                src="/images/placeholders/nwa-homes.jpg"
-                alt="Sample Home"
-                className="h-48 w-full object-cover"
+          {homes.slice(0, 3).map((h, i) => (
+            <Reveal key={h.slug} delay={i * 90}>
+              <ListingCard
+                listing={{
+                  slug: h.slug,
+                  title: h.title,
+                  location: h.location,
+                  plan: h.plan.split(" ")[0], // show short plan name
+                  beds: h.beds,
+                  status: h.status,
+                  image: h.hero,
+                }}
               />
-              <div className="p-4">
-                <h3 className="font-medium text-lg">Bella Vista New Build</h3>
-                <p className="text-sm text-neutral-600">
-                  3 Bed · 2 Bath · 1,850 sqft
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={200}>
-            <div className="rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 bg-white">
-              <img
-                src="/images/placeholders/nwa-interior.jpg"
-                alt="Sample Home"
-                className="h-48 w-full object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-medium text-lg">Bentonville Craftsman</h3>
-                <p className="text-sm text-neutral-600">
-                  4 Bed · 3 Bath · 2,400 sqft
-                </p>
-              </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          ))}
         </div>
       </Section>
 
-      {/* ---------------- BUILDERS SECTION ---------------- */}
+      {/* ---------------- PARTNER BUILDERS (BELLA VISTA FOCUS) ---------------- */}
       <Section id="builders" bg="dark">
         <Reveal>
-          <h2 className="text-2xl font-semibold mb-6 text-center">
+          <h2 className="mb-6 text-center text-2xl font-semibold">
             Our Partner Builders
           </h2>
         </Reveal>
 
-        <div className="grid gap-8 sm:grid-cols-2 max-w-5xl mx-auto text-center">
+        <div className="mx-auto grid max-w-5xl gap-8 text-center sm:grid-cols-2">
           <Reveal delay={100}>
             <div>
               <h3 className="text-xl font-medium text-white">Milagro Designs</h3>
-              <p className="text-neutral-300 mt-2">
-                Led by Josiah Duggar — thoughtful craftsmanship and custom
-                homes that reflect Northwest Arkansas living.
+              <p className="mt-2 text-neutral-300">
+                Led by Josiah Duggar—custom and spec homes tailored for{" "}
+                Bella Vista living.
               </p>
             </div>
           </Reveal>
@@ -98,9 +84,9 @@ export default function HomePage() {
               <h3 className="text-xl font-medium text-white">
                 Dream Built Custom Homes
               </h3>
-              <p className="text-neutral-300 mt-2">
-                Founded by Dwain Swanson — blending innovation and timeless
-                design in every build.
+              <p className="mt-2 text-neutral-300">
+                Dwain Swanson’s team delivers durable, well-planned builds across
+                Bella Vista and greater NWA.
               </p>
             </div>
           </Reveal>
