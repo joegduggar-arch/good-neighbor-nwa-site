@@ -1,19 +1,19 @@
-import { ReactNode } from "react";
-import { useInView } from "@/hooks/useInView";
+"use client";
+import { motion } from "framer-motion";
+import { PropsWithChildren } from "react";
 
-export default function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
-  const { ref, inView } = useInView<HTMLDivElement>();
+type Props = PropsWithChildren<{ delay?: number; className?: string }>;
+
+export default function Reveal({ children, delay = 0, className }: Props) {
   return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`
-        opacity-0 translate-y-4
-        motion-safe:transition-all motion-safe:duration-700
-        ${inView ? "opacity-100 translate-y-0" : ""}
-      `}
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: delay / 1000 }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
