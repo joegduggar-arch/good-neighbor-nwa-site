@@ -1,15 +1,35 @@
 // src/components/Navbar.tsx
-import NavbarClient from "@/components/NavbarClient";
+import NavbarClient from "./NavbarClient";
 
-export type NavLink = { href: string; label: string };
-
-const NAV_LINKS: NavLink[] = [
-  { href: "/idx", label: "IDX Search" },
-  { href: "/client-portal", label: "Client Portal" },
-  { href: "/agents", label: "Agents" },
-  { href: "/contact", label: "Contact" },
+// You can move this list to lib/data.ts later if you prefer.
+// `logo` can be left undefined — the client will render initials.
+const BUILDERS = [
+  {
+    name: "Dream Built Custom Homes",
+    slug: "dream-built",
+    logo: "/images/builders/dream-built.png",
+    href: "/builders/dream-built",
+  },
+  {
+    name: "Milagro Designs",
+    slug: "milagro-designs",
+    logo: "/images/builders/milagro-designs.png",
+    href: "/builders/milagro-designs",
+  },
 ];
 
 export default function Navbar() {
-  return <NavbarClient links={NAV_LINKS} />;
+  return (
+    <NavbarClient
+      phone="(479) 713-9565"
+      builders={BUILDERS}
+      brand={{ name: "Good Neighbor Realty • NWA", logo: "/logo.png", href: "/" }}
+      links={{
+        propertiesLanding: "/new-construction",
+        search: "/search",
+        agents: "/agents",
+        contact: "/contact",
+      }}
+    />
+  );
 }
