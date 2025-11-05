@@ -1,66 +1,113 @@
 import HeroVideo from "@/components/HeroVideo";
 import Section from "@/components/Section";
+import NWAOverview from "@/components/NWAOverview";
 import Reveal from "@/components/Reveal";
-import AreasGrid from "@/components/AreasGrid";
-import FeaturedListings from "@/components/FeaturedListings";
-import StoryBlock from "@/components/StoryBlock";
 
 export default function HomePage() {
   return (
-    <>
-      <HeroVideo />
+    <main className="flex flex-col items-stretch">
+      {/* ---------------- HERO VIDEO ---------------- */}
+      <HeroVideo
+        src="/videos/hero-loop.mp4"
+        poster="/images/placeholders/hero-placeholder.jpg"
+      />
 
-      <Section id="value" bg="subtle" className="text-center">
+      {/* ---------------- INTRO SECTION ---------------- */}
+      <Section id="intro">
         <Reveal>
-          <h2 className="text-2xl md:text-3xl font-semibold">Real estate, refined.</h2>
-        </Reveal>
-        <Reveal delay={120}>
-          <p className="mx-auto mt-3 max-w-2xl text-neutral-600">
-            Clear guidance, careful presentation, and responsive service across Northwest Arkansas.
-          </p>
-        </Reveal>
-        <div className="mx-auto mt-8 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
-          {[
-            ["Curated Listings", "Photo-forward, accurate details."],
-            ["Local Expertise", "Bella Vista • Bentonville • Siloam."],
-            ["Easy Search", "Fast, mobile-first experience."]
-          ].map(([t, d], i) => (
-            <Reveal key={i} delay={140 + i * 80}>
-              <div className="rounded-lg border border-black/5 p-5">
-                <div className="text-lg font-medium">{t}</div>
-                <div className="mt-1 text-sm text-neutral-600">{d}</div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="featured">
-        <Reveal><h2 className="text-2xl md:text-3xl font-semibold">Featured Listings</h2></Reveal>
-        <FeaturedListings className="mt-8" />
-      </Section>
-
-      <Section id="areas" bg="subtle">
-        <Reveal><h2 className="text-2xl md:text-3xl font-semibold">Explore the Areas</h2></Reveal>
-        <AreasGrid className="mt-8" />
-      </Section>
-
-      <Section id="story">
-        <StoryBlock />
-      </Section>
-
-      {/* Optional: quick search CTA anchor */}
-      <Section id="search" bg="subtle">
-        <Reveal>
-          <div className="rounded-xl bg-black text-white p-8 md:p-10 flex flex-col items-center text-center">
-            <h3 className="text-2xl font-semibold">Start your home search</h3>
-            <p className="mt-2 text-white/80">Map view, filters, and saved favorites—coming up next.</p>
-            <a href="/search" className="mt-6 rounded bg-amber-500 px-5 py-3 font-medium text-black hover:bg-amber-400 transition">
-              Open Search
-            </a>
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Welcome to Good Neighbor Realty
+            </h1>
+            <p className="mt-4 text-lg text-neutral-600">
+              Serving Northwest Arkansas — from the quiet hills of Bella Vista
+              to the vibrant heart of Bentonville and beyond.
+            </p>
           </div>
         </Reveal>
       </Section>
-    </>
+
+      {/* ---------------- NORTHWEST ARKANSAS OVERVIEW ---------------- */}
+      <Section id="nwa" bg="subtle">
+        <NWAOverview />
+      </Section>
+
+      {/* ---------------- FEATURED LISTINGS ---------------- */}
+      <Section id="listings">
+        <Reveal>
+          <h2 className="text-2xl font-semibold tracking-tight mb-6 text-center">
+            Featured Homes
+          </h2>
+        </Reveal>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal delay={100}>
+            <div className="rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 bg-white">
+              <img
+                src="/images/placeholders/nwa-homes.jpg"
+                alt="Sample Home"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4">
+                <h3 className="font-medium text-lg">Bella Vista New Build</h3>
+                <p className="text-sm text-neutral-600">
+                  3 Bed · 2 Bath · 1,850 sqft
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 bg-white">
+              <img
+                src="/images/placeholders/nwa-interior.jpg"
+                alt="Sample Home"
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4">
+                <h3 className="font-medium text-lg">Bentonville Craftsman</h3>
+                <p className="text-sm text-neutral-600">
+                  4 Bed · 3 Bath · 2,400 sqft
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* ---------------- BUILDERS SECTION ---------------- */}
+      <Section id="builders" bg="dark">
+        <Reveal>
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            Our Partner Builders
+          </h2>
+        </Reveal>
+
+        <div className="grid gap-8 sm:grid-cols-2 max-w-5xl mx-auto text-center">
+          <Reveal delay={100}>
+            <div>
+              <h3 className="text-xl font-medium text-white">
+                Milagro Designs
+              </h3>
+              <p className="text-neutral-300 mt-2">
+                Led by Josiah Duggar — thoughtful craftsmanship and custom
+                homes that reflect Northwest Arkansas living.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={200}>
+            <div>
+              <h3 className="text-xl font-medium text-white">
+                Dream Built Custom Homes
+              </h3>
+              <p className="text-neutral-300 mt-2">
+                Founded by Dwain Swanson — blending innovation and timeless
+                design in every build.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+    </main>
   );
 }
