@@ -1,24 +1,42 @@
-"use client";
-import { ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import type { Metadata } from "next";
+import "./globals.css";
+import Navbar from "@/components/Navbar"; // or "@/components/NavbarClient" if that's what you use
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+export const metadata: Metadata = {
+  title: "Good Neighbor Realty",
+  description:
+    "A high-end, photo-rich real estate experience serving Northwest Arkansas.",
+  metadataBase: new URL("https://goodneighborrealty.com"), // update if needed
+  openGraph: {
+    title: "Good Neighbor Realty",
+    description:
+      "Homes, land, and new construction across Northwest Arkansas.",
+    type: "website",
+    url: "https://goodneighborrealty.com",
+    images: ["/images/placeholders/foyer.jpg"],
+  },
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body className="bg-white text-neutral-900">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+    <html lang="en" className="h-full scroll-smooth">
+      <body className="min-h-screen bg-white text-neutral-900 antialiased">
+        {/* Site-wide nav */}
+        <Navbar />
+
+        {/* Main content */}
+        <main>{children}</main>
+
+        {/* (Optional) Footer goes here later */}
       </body>
     </html>
   );
