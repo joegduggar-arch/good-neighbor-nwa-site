@@ -1,5 +1,7 @@
+// src/app/floorplans/[builder]/[plan]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import PlanGallery from "@/components/PlanGallery";
 import { BUILDERS, PLANS, type BuilderKey, type PlanKey } from "@/lib/floorplans";
 import { notFound } from "next/navigation";
 
@@ -31,6 +33,7 @@ export default function PlanDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-14">
+        {/* Header */}
         <div className="flex items-center gap-4">
           <Image src={builder.logo} alt={builder.name} width={56} height={56} className="h-12 w-12 object-contain" />
           <div>
@@ -39,6 +42,7 @@ export default function PlanDetailPage({ params }: Props) {
           </div>
         </div>
 
+        {/* Hero */}
         <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-800">
           <div className="relative h-[44vh] w-full">
             <Image
@@ -51,29 +55,22 @@ export default function PlanDetailPage({ params }: Props) {
           </div>
         </div>
 
+        {/* Content grid */}
         <div className="mt-10 grid gap-10 lg:grid-cols-5">
+          {/* Main */}
           <div className="lg:col-span-3">
             <h2 className="text-xl font-medium">Overview</h2>
             <p className="mt-2 text-neutral-300">{plan.summary}</p>
 
+            {/* Gallery (supports up to 50+) */}
             {plan.gallery?.length ? (
               <>
                 <h3 className="mt-8 text-lg font-medium">Gallery</h3>
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  {plan.gallery.map((src, i) => (
-                    <div key={i} className="relative h-40 overflow-hidden rounded-xl border border-neutral-800">
-                      <Image
-                        src={src || "/images/placeholders/interior-living-2.jpg"}
-                        alt={`${plan.name} image ${i + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <PlanGallery images={plan.gallery} initialVisible={12} />
               </>
             ) : null}
 
+            {/* Disclaimer */}
             <div className="mt-10 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-sm text-neutral-300">
               <strong>Disclaimer:</strong> Home renderings, floor plans, dimensions, and features are for illustrative
               purposes and may be modified at the builder’s discretion. Each home may vary in design details, finishes,
@@ -81,6 +78,7 @@ export default function PlanDetailPage({ params }: Props) {
             </div>
           </div>
 
+          {/* Specs */}
           <aside className="lg:col-span-2">
             <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
               <h3 className="text-lg font-medium">Specs</h3>

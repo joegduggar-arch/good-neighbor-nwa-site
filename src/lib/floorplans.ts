@@ -13,19 +13,19 @@ export interface Plan {
   slug: PlanKey;
   name: string;
   sqft: string;
-  status: PlanStatus;     // ← added
+  status: PlanStatus;
   beds?: number;
   baths?: number;
   garage?: string;
-  hero: string;           // public image path
-  gallery: string[];      // more images
+  hero: string;        // /public path
+  gallery: string[];   // 0..50 images
   summary: string;
 }
 
 export interface BuilderInfo {
   key: BuilderKey;
   name: string;
-  logo: string;           // public image path
+  logo: string;        // /public path
   blurb: string;
   plans: PlanKey[];
   metadata: Metadata;
@@ -63,13 +63,17 @@ export const BUILDERS: Record<BuilderKey, BuilderInfo> = {
   },
 };
 
-// convenience path helpers
+// path helpers
 const hero = (b: BuilderKey, s: string) => `/images/floorplans/${b}/${s}/hero.jpg`;
 const img  = (b: BuilderKey, s: string, n: number) => `/images/floorplans/${b}/${s}/${n}.jpg`;
 
-// All plans (placeholder statuses; update as needed)
+// Generate 1..count numbered images
+const gen = (b: BuilderKey, s: string, count: number) =>
+  Array.from({ length: count }, (_, i) => img(b, s, i + 1));
+
+// ---------- Plans (set counts to however many photos you actually have) ----------
 export const PLANS: Record<PlanKey, Plan> = {
-  // --- Swanson / DreamBuilt ---
+  // Swanson / DreamBuilt
   donington: {
     builder: "swanson",
     slug: "donington",
@@ -78,7 +82,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "under-construction",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "donington"),
-    gallery: [img("swanson","donington",1), img("swanson","donington",2), img("swanson","donington",3)],
+    gallery: gen("swanson", "donington", 25),
     summary:
       "A well-balanced two-story with a generous great room, covered outdoor living, and a convenient main-level suite.",
   },
@@ -90,7 +94,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "coming-soon",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "brittany"),
-    gallery: [img("swanson","brittany",1), img("swanson","brittany",2)],
+    gallery: gen("swanson", "brittany", 20),
     summary:
       "Bright gathering spaces, practical storage, and a cook-forward kitchen centered around an island workspace.",
   },
@@ -102,7 +106,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "under-construction",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "hambleton"),
-    gallery: [img("swanson","hambleton",1), img("swanson","hambleton",2)],
+    gallery: gen("swanson", "hambleton", 18),
     summary:
       "Open main living with a defined dining nook, split bedrooms, and a flexible front room for office or guest.",
   },
@@ -114,7 +118,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "castlebay"),
-    gallery: [img("swanson","castlebay",1), img("swanson","castlebay",2)],
+    gallery: gen("swanson", "castlebay", 15),
     summary:
       "Comfortable single-level living—easy flow from kitchen to great room to covered patio for everyday life.",
   },
@@ -126,7 +130,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "sold",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "ironside"),
-    gallery: [img("swanson","ironside",1), img("swanson","ironside",2)],
+    gallery: gen("swanson", "ironside", 22),
     summary:
       "A proven favorite with an airy great room, fireplace focal point, and a private primary suite retreat.",
   },
@@ -138,7 +142,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "sold",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "windsor"),
-    gallery: [img("swanson","windsor",1), img("swanson","windsor",2)],
+    gallery: gen("swanson", "windsor", 16),
     summary:
       "Classic curb appeal, comfortable upstairs secondary bedrooms, and a main-level layout that just works.",
   },
@@ -150,7 +154,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "york"),
-    gallery: [img("swanson","york",1), img("swanson","york",2)],
+    gallery: gen("swanson", "york", 14),
     summary:
       "Efficient footprint with big-feeling living spaces—ideal for a first home or right-sized living.",
   },
@@ -162,12 +166,12 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "under-construction",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "ravenglass"),
-    gallery: [img("swanson","ravenglass",1), img("swanson","ravenglass",2)],
+    gallery: gen("swanson", "ravenglass", 19),
     summary:
       "Flexible plan range with optional bonus and a covered back deck that frames Bella Vista’s wooded views.",
   },
 
-  // --- Timeless / Milagro ---
+  // Timeless / Milagro
   brecknock: {
     builder: "timeless",
     slug: "brecknock",
@@ -176,7 +180,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("timeless", "brecknock"),
-    gallery: [img("timeless","brecknock",1), img("timeless","brecknock",2)],
+    gallery: gen("timeless", "brecknock", 12),
     summary:
       "Clear, functional layout with a central kitchen, bright dining, and an inviting great room.",
   },
@@ -188,7 +192,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("timeless", "havensworth"),
-    gallery: [img("timeless","havensworth",1), img("timeless","havensworth",2)],
+    gallery: gen("timeless", "havensworth", 10),
     summary:
       "Comfortable single-level living and a calm, cohesive finish palette designed for everyday ease.",
   },
@@ -200,11 +204,11 @@ export const getPlan = (slug: PlanKey) => PLANS[slug];
 export const getPlansByBuilder = (key: BuilderKey) =>
   Object.values(PLANS).filter(p => p.builder === key);
 
-// status filter (the one your page imports)
+// filters
 export const byStatus = (status: PlanStatus) =>
   Object.values(PLANS).filter(p => p.status === status);
 
-// Back-compat helper (if any files still import this)
+// back-compat
 export function groupedByBuilder() {
   return {
     swanson: getPlansByBuilder("swanson"),
