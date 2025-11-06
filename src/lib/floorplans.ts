@@ -17,15 +17,15 @@ export interface Plan {
   beds?: number;
   baths?: number;
   garage?: string;
-  hero: string;        // /public path
-  gallery: string[];   // 0..50 images
+  hero: string;
+  gallery: string[];
   summary: string;
 }
 
 export interface BuilderInfo {
   key: BuilderKey;
   name: string;
-  logo: string;        // /public path
+  logo: string;
   blurb: string;
   plans: PlanKey[];
   metadata: Metadata;
@@ -66,12 +66,10 @@ export const BUILDERS: Record<BuilderKey, BuilderInfo> = {
 // path helpers
 const hero = (b: BuilderKey, s: string) => `/images/floorplans/${b}/${s}/hero.jpg`;
 const img  = (b: BuilderKey, s: string, n: number) => `/images/floorplans/${b}/${s}/${n}.jpg`;
-
-// Generate 1..count numbered images
 const gen = (b: BuilderKey, s: string, count: number) =>
   Array.from({ length: count }, (_, i) => img(b, s, i + 1));
 
-// ---------- Plans (set counts to however many photos you actually have) ----------
+// ---------- Plans ----------
 export const PLANS: Record<PlanKey, Plan> = {
   // Swanson / DreamBuilt
   donington: {
@@ -188,7 +186,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     builder: "timeless",
     slug: "havensworth",
     name: "Havensworth",
-    sqft: "TBD",
+    sqft: "≈2,000 sq ft",
     status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("timeless", "havensworth"),
@@ -203,12 +201,8 @@ export const getBuilder = (key: BuilderKey) => BUILDERS[key];
 export const getPlan = (slug: PlanKey) => PLANS[slug];
 export const getPlansByBuilder = (key: BuilderKey) =>
   Object.values(PLANS).filter(p => p.builder === key);
-
-// filters
 export const byStatus = (status: PlanStatus) =>
   Object.values(PLANS).filter(p => p.status === status);
-
-// back-compat
 export function groupedByBuilder() {
   return {
     swanson: getPlansByBuilder("swanson"),
