@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 import NavbarClient from "./NavbarClient";
 
 const BUILDERS = [
@@ -5,13 +6,13 @@ const BUILDERS = [
     name: "Swanson Properties (DreamBuilt Custom Homes)",
     slug: "swanson",
     href: "/floorplans/swanson",
-    logo: "/images/logos/swanson.png",   // <-- make sure this file exists
+    logo: "/images/logos/swanson.png",
   },
   {
     name: "Timeless Home (Milagro Designs)",
     slug: "timeless",
     href: "/floorplans/timeless",
-    logo: "/images/logos/timeless.png",  // <-- and this one
+    logo: "/images/logos/timeless.png",
   },
 ];
 
