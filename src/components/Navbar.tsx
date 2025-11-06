@@ -1,20 +1,17 @@
-// src/components/Navbar.tsx
 import NavbarClient from "./NavbarClient";
 
-// You can move this list to lib/data.ts later if you prefer.
-// `logo` can be left undefined — the client will render initials.
 const BUILDERS = [
   {
-    name: "Dream Built Custom Homes",
-    slug: "dream-built",
-    logo: "/images/builders/dream-built.png",
-    href: "/builders/dream-built",
+    name: "Swanson Properties (DreamBuilt Custom Homes)",
+    slug: "swanson",
+    href: "/floorplans/swanson",
+    logo: "/images/logos/swanson.png",   // <-- make sure this file exists
   },
   {
-    name: "Milagro Designs",
-    slug: "milagro-designs",
-    logo: "/images/builders/milagro-designs.png",
-    href: "/builders/milagro-designs",
+    name: "Timeless Home (Milagro Designs)",
+    slug: "timeless",
+    href: "/floorplans/timeless",
+    logo: "/images/logos/timeless.png",  // <-- and this one
   },
 ];
 

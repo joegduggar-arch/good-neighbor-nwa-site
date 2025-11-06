@@ -1,10 +1,14 @@
-// src/app/floorplans/[builder]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { BUILDERS, getPlansByBuilder, type BuilderKey } from "@/lib/floorplans";
 import { notFound } from "next/navigation";
 
 type Props = { params: { builder: BuilderKey } };
+
+// Prebuild /floorplans/swanson and /floorplans/timeless
+export function generateStaticParams() {
+  return Object.keys(BUILDERS).map((key) => ({ builder: key as BuilderKey }));
+}
 
 export function generateMetadata({ params }: Props) {
   const b = BUILDERS[params.builder];

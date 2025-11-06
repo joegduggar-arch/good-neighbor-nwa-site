@@ -1,10 +1,17 @@
-// src/app/floorplans/[builder]/[plan]/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { BUILDERS, PLANS, type BuilderKey, type PlanKey } from "@/lib/floorplans";
 import { notFound } from "next/navigation";
 
 type Props = { params: { builder: BuilderKey; plan: PlanKey } };
+
+// Prebuild every /floorplans/{builder}/{plan} page
+export function generateStaticParams() {
+  return Object.values(PLANS).map((p) => ({
+    builder: p.builder,
+    plan: p.slug,
+  }));
+}
 
 export async function generateMetadata({ params }: Props) {
   const plan = PLANS[params.plan];
@@ -24,7 +31,6 @@ export default function PlanDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-14">
-        {/* Header */}
         <div className="flex items-center gap-4">
           <Image src={builder.logo} alt={builder.name} width={56} height={56} className="h-12 w-12 object-contain" />
           <div>
@@ -33,7 +39,6 @@ export default function PlanDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Hero */}
         <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-800">
           <div className="relative h-[44vh] w-full">
             <Image
@@ -46,14 +51,11 @@ export default function PlanDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Content grid */}
         <div className="mt-10 grid gap-10 lg:grid-cols-5">
-          {/* Main */}
           <div className="lg:col-span-3">
             <h2 className="text-xl font-medium">Overview</h2>
             <p className="mt-2 text-neutral-300">{plan.summary}</p>
 
-            {/* Gallery */}
             {plan.gallery?.length ? (
               <>
                 <h3 className="mt-8 text-lg font-medium">Gallery</h3>
@@ -72,7 +74,6 @@ export default function PlanDetailPage({ params }: Props) {
               </>
             ) : null}
 
-            {/* Disclaimer */}
             <div className="mt-10 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-sm text-neutral-300">
               <strong>Disclaimer:</strong> Home renderings, floor plans, dimensions, and features are for illustrative
               purposes and may be modified at the builder’s discretion. Each home may vary in design details, finishes,
@@ -80,7 +81,6 @@ export default function PlanDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Specs */}
           <aside className="lg:col-span-2">
             <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
               <h3 className="text-lg font-medium">Specs</h3>
@@ -93,16 +93,10 @@ export default function PlanDetailPage({ params }: Props) {
               </dl>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                <Link
-                  href={`/floorplans/${builder.key}`}
-                  className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20"
-                >
+                <Link href={`/floorplans/${builder.key}`} className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
                   ← Back to {builder.name}
                 </Link>
-                <Link
-                  href="/floorplans"
-                  className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20"
-                >
+                <Link href="/floorplans" className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
                   All Floorplans
                 </Link>
               </div>
