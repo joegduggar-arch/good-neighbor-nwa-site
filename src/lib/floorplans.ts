@@ -15,15 +15,15 @@ export interface Plan {
   beds?: number;
   baths?: number;
   garage?: string;
-  hero: string;          // public image path
-  gallery: string[];     // more images
+  hero: string;        // public image path
+  gallery: string[];   // more images
   summary: string;
 }
 
 export interface BuilderInfo {
   key: BuilderKey;
   name: string;
-  logo: string;          // public image path
+  logo: string;        // public image path
   blurb: string;
   plans: PlanKey[];
   metadata: Metadata;
@@ -61,15 +61,14 @@ export const BUILDERS: Record<BuilderKey, BuilderInfo> = {
   },
 };
 
-const P = (p: Partial<Plan>) => p as Plan;
-
-// Helper for quick placeholder bundles
+// convenience path helpers (swap to your real photos when ready)
 const hero = (b: BuilderKey, s: string) => `/images/floorplans/${b}/${s}/hero.jpg`;
 const img  = (b: BuilderKey, s: string, n: number) => `/images/floorplans/${b}/${s}/${n}.jpg`;
 
+// All plans
 export const PLANS: Record<PlanKey, Plan> = {
-  // --- Swanson ---
-  donington: P({
+  // --- Swanson / DreamBuilt ---
+  donington: {
     builder: "swanson",
     slug: "donington",
     name: "Donington",
@@ -79,8 +78,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","donington",1), img("swanson","donington",2), img("swanson","donington",3)],
     summary:
       "A well-balanced two-story with a generous great room, covered outdoor living, and a convenient main-level suite.",
-  }),
-  brittany: P({
+  },
+  brittany: {
     builder: "swanson",
     slug: "brittany",
     name: "Brittany",
@@ -89,9 +88,9 @@ export const PLANS: Record<PlanKey, Plan> = {
     hero: hero("swanson", "brittany"),
     gallery: [img("swanson","brittany",1), img("swanson","brittany",2)],
     summary:
-      "Bright gathering spaces, practical storage, and a cooks-forward kitchen centered around an island workspace.",
-  }),
-  hambleton: P({
+      "Bright gathering spaces, practical storage, and a cook-forward kitchen centered around an island workspace.",
+  },
+  hambleton: {
     builder: "swanson",
     slug: "hambleton",
     name: "Hambleton",
@@ -101,8 +100,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","hambleton",1), img("swanson","hambleton",2)],
     summary:
       "Open main living with a defined dining nook, split bedrooms, and a flexible front room for office or guest.",
-  }),
-  castlebay: P({
+  },
+  castlebay: {
     builder: "swanson",
     slug: "castlebay",
     name: "Castlebay",
@@ -112,8 +111,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","castlebay",1), img("swanson","castlebay",2)],
     summary:
       "Comfortable single-level living—easy flow from kitchen to great room to covered patio for everyday life.",
-  }),
-  ironside: P({
+  },
+  ironside: {
     builder: "swanson",
     slug: "ironside",
     name: "Ironside",
@@ -123,8 +122,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","ironside",1), img("swanson","ironside",2)],
     summary:
       "A proven favorite with an airy great room, fireplace focal point, and a private primary suite retreat.",
-  }),
-  windsor: P({
+  },
+  windsor: {
     builder: "swanson",
     slug: "windsor",
     name: "Windsor",
@@ -134,8 +133,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","windsor",1), img("swanson","windsor",2)],
     summary:
       "Classic curb appeal, comfortable upstairs secondary bedrooms, and a main-level layout that just works.",
-  }),
-  york: P({
+  },
+  york: {
     builder: "swanson",
     slug: "york",
     name: "York",
@@ -145,8 +144,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","york",1), img("swanson","york",2)],
     summary:
       "Efficient footprint with big-feeling living spaces—ideal for a first home or right-sized living.",
-  }),
-  ravenglass: P({
+  },
+  ravenglass: {
     builder: "swanson",
     slug: "ravenglass",
     name: "Ravenglass",
@@ -156,10 +155,10 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("swanson","ravenglass",1), img("swanson","ravenglass",2)],
     summary:
       "Flexible plan range with optional bonus and a covered back deck that frames Bella Vista’s wooded views.",
-  }),
+  },
 
   // --- Timeless / Milagro ---
-  brecknock: P({
+  brecknock: {
     builder: "timeless",
     slug: "brecknock",
     name: "Brecknock",
@@ -169,8 +168,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("timeless","brecknock",1), img("timeless","brecknock",2)],
     summary:
       "Clear, functional layout with a central kitchen, bright dining, and an inviting great room.",
-  }),
-  havensworth: P({
+  },
+  havensworth: {
     builder: "timeless",
     slug: "havensworth",
     name: "Havensworth",
@@ -180,11 +179,19 @@ export const PLANS: Record<PlanKey, Plan> = {
     gallery: [img("timeless","havensworth",1), img("timeless","havensworth",2)],
     summary:
       "Comfortable single-level living and a calm, cohesive finish palette designed for everyday ease.",
-  }),
+  },
 };
 
-// Convenience getters
+// getters
 export const getBuilder = (key: BuilderKey) => BUILDERS[key];
 export const getPlan = (slug: PlanKey) => PLANS[slug];
 export const getPlansByBuilder = (key: BuilderKey) =>
   Object.values(PLANS).filter(p => p.builder === key);
+
+// --- Back-compat helper (fixes your import error) ---
+export function groupedByBuilder() {
+  return {
+    swanson: getPlansByBuilder("swanson"),
+    timeless: getPlansByBuilder("timeless"),
+  };
+}
