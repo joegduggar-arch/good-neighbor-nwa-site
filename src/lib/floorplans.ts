@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 
 export type BuilderKey = "swanson" | "timeless";
+export type PlanStatus = "under-construction" | "coming-soon" | "sold";
 export type PlanKey =
   | "donington" | "brittany" | "hambleton" | "castlebay" | "ironside"
   | "windsor" | "york" | "ravenglass"
@@ -12,18 +13,19 @@ export interface Plan {
   slug: PlanKey;
   name: string;
   sqft: string;
+  status: PlanStatus;     // ← added
   beds?: number;
   baths?: number;
   garage?: string;
-  hero: string;        // public image path
-  gallery: string[];   // more images
+  hero: string;           // public image path
+  gallery: string[];      // more images
   summary: string;
 }
 
 export interface BuilderInfo {
   key: BuilderKey;
   name: string;
-  logo: string;        // public image path
+  logo: string;           // public image path
   blurb: string;
   plans: PlanKey[];
   metadata: Metadata;
@@ -61,11 +63,11 @@ export const BUILDERS: Record<BuilderKey, BuilderInfo> = {
   },
 };
 
-// convenience path helpers (swap to your real photos when ready)
+// convenience path helpers
 const hero = (b: BuilderKey, s: string) => `/images/floorplans/${b}/${s}/hero.jpg`;
 const img  = (b: BuilderKey, s: string, n: number) => `/images/floorplans/${b}/${s}/${n}.jpg`;
 
-// All plans
+// All plans (placeholder statuses; update as needed)
 export const PLANS: Record<PlanKey, Plan> = {
   // --- Swanson / DreamBuilt ---
   donington: {
@@ -73,6 +75,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "donington",
     name: "Donington",
     sqft: "2,460 sq ft",
+    status: "under-construction",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "donington"),
     gallery: [img("swanson","donington",1), img("swanson","donington",2), img("swanson","donington",3)],
@@ -84,6 +87,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "brittany",
     name: "Brittany",
     sqft: "2,300 sq ft",
+    status: "coming-soon",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "brittany"),
     gallery: [img("swanson","brittany",1), img("swanson","brittany",2)],
@@ -95,6 +99,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "hambleton",
     name: "Hambleton",
     sqft: "2,316 sq ft",
+    status: "under-construction",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "hambleton"),
     gallery: [img("swanson","hambleton",1), img("swanson","hambleton",2)],
@@ -106,6 +111,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "castlebay",
     name: "Castlebay",
     sqft: "2,060 sq ft",
+    status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "castlebay"),
     gallery: [img("swanson","castlebay",1), img("swanson","castlebay",2)],
@@ -117,6 +123,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "ironside",
     name: "Ironside",
     sqft: "2,150 sq ft",
+    status: "sold",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "ironside"),
     gallery: [img("swanson","ironside",1), img("swanson","ironside",2)],
@@ -128,6 +135,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "windsor",
     name: "Windsor",
     sqft: "2,340 sq ft",
+    status: "sold",
     beds: 4, baths: 3, garage: "2-car",
     hero: hero("swanson", "windsor"),
     gallery: [img("swanson","windsor",1), img("swanson","windsor",2)],
@@ -139,6 +147,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "york",
     name: "York",
     sqft: "2,000 sq ft",
+    status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "york"),
     gallery: [img("swanson","york",1), img("swanson","york",2)],
@@ -150,6 +159,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "ravenglass",
     name: "Ravenglass",
     sqft: "2,100–2,300 sq ft",
+    status: "under-construction",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("swanson", "ravenglass"),
     gallery: [img("swanson","ravenglass",1), img("swanson","ravenglass",2)],
@@ -163,6 +173,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "brecknock",
     name: "Brecknock",
     sqft: "≈2,000 sq ft",
+    status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("timeless", "brecknock"),
     gallery: [img("timeless","brecknock",1), img("timeless","brecknock",2)],
@@ -174,6 +185,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     slug: "havensworth",
     name: "Havensworth",
     sqft: "TBD",
+    status: "coming-soon",
     beds: 3, baths: 2, garage: "2-car",
     hero: hero("timeless", "havensworth"),
     gallery: [img("timeless","havensworth",1), img("timeless","havensworth",2)],
@@ -188,7 +200,11 @@ export const getPlan = (slug: PlanKey) => PLANS[slug];
 export const getPlansByBuilder = (key: BuilderKey) =>
   Object.values(PLANS).filter(p => p.builder === key);
 
-// --- Back-compat helper (fixes your import error) ---
+// status filter (the one your page imports)
+export const byStatus = (status: PlanStatus) =>
+  Object.values(PLANS).filter(p => p.status === status);
+
+// Back-compat helper (if any files still import this)
 export function groupedByBuilder() {
   return {
     swanson: getPlansByBuilder("swanson"),
