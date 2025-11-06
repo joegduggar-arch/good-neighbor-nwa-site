@@ -1,72 +1,85 @@
 // src/app/new-construction/page.tsx
-import PlanCard from "@/components/PlanCard";
-import { byStatus } from "@/lib/floorplans";
+import Image from "next/image";
+import Link from "next/link";
+import { BUILDERS } from "@/lib/floorplans";
 
 export const metadata = {
   title: "New Construction | Good Neighbor Realty",
   description:
-    "Explore new construction across Bella Vista & NWA. View homes under construction, coming soon, and recently sold plans.",
+    "Explore new-construction homes built exclusively in Bella Vista, Arkansas — crafted by Swanson Properties and Timeless Home (Milagro Designs).",
 };
 
 export default function NewConstructionPage() {
-  const UNDER = byStatus("under-construction");
-  const SOON = byStatus("coming-soon");
-  const SOLD = byStatus("sold");
-
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral-100">New Construction</h1>
-        <p className="mt-2 max-w-2xl text-neutral-300">
-          See what’s building now, what’s coming soon, and a sampling of recently sold plans.
-        </p>
-      </header>
+    <main className="min-h-screen bg-black text-white">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden border-b border-neutral-800">
+        <div className="relative h-[50vh] w-full">
+          <Image
+            src="/images/placeholders/home-exterior-2.jpg"
+            alt="New construction home exterior"
+            fill
+            priority
+            className="object-cover opacity-40"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-3">
+              New Construction Homes
+            </h1>
+            <p className="max-w-2xl text-neutral-300 text-lg">
+              Experience thoughtfully designed homes built <strong>exclusively in Bella Vista</strong>, Arkansas.
+              Each property is crafted with care by our trusted builders — Swanson Properties (DreamBuilt Custom Homes)
+              and Timeless Home (Milagro Designs).
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <Section title="Under Construction" subtitle="Actively being built in Bella Vista & around NWA.">
-        {UNDER.length ? <Grid plans={UNDER} /> : <Empty label="No active builds at the moment." />}
-      </Section>
+      {/* Overview */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="space-y-6">
+          <p className="text-neutral-300 leading-relaxed text-lg">
+            Our new-construction homes are located <strong>exclusively within Bella Vista</strong> — a community
+            known for its scenic landscapes, golf courses, and peaceful wooded surroundings.
+          </p>
 
-      <Section title="Coming Soon" subtitle="Planned starts with timelines being set.">
-        {SOON.length ? <Grid plans={SOON} /> : <Empty label="No upcoming starts listed yet." />}
-      </Section>
+          <p className="text-neutral-300 leading-relaxed text-lg">
+            Each floor plan is carefully curated for comfort and functionality, while maintaining a timeless
+            aesthetic. Whether you’re looking for a single-level retreat or a spacious family home, our builders
+            offer a variety of layouts that complement the beauty of Northwest Arkansas living.
+          </p>
 
-      <Section title="Recently Sold" subtitle="Popular plans that inform what’s next.">
-        {SOLD.length ? <Grid plans={SOLD} /> : <Empty label="No recent sales posted yet." />}
-      </Section>
+          <div className="mt-10 border-t border-neutral-800 pt-10">
+            <h2 className="text-2xl font-semibold mb-6">Meet Our Builders</h2>
+            <div className="grid sm:grid-cols-2 gap-8">
+              {Object.values(BUILDERS).map((b) => (
+                <Link
+                  key={b.key}
+                  href={`/floorplans/${b.key}`}
+                  className="group flex flex-col items-center rounded-xl border border-neutral-800 bg-neutral-900/40 p-6 text-center transition hover:border-neutral-600 hover:bg-neutral-800"
+                >
+                  <div className="relative h-20 w-20 mb-4">
+                    <Image
+                      src={b.logo}
+                      alt={b.name}
+                      fill
+                      sizes="80px"
+                      className="object-contain"
+                    />
+                  </div>
+                  <h3 className="text-xl font-medium text-neutral-100 group-hover:text-white">
+                    {b.name}
+                  </h3>
+                  <p className="mt-2 text-neutral-400 text-sm max-w-xs">{b.blurb}</p>
+                  <p className="mt-4 text-amber-300 text-sm font-semibold">
+                    View Floorplans →
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
-}
-
-function Section({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="py-8 first:pt-0">
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold text-neutral-100">{title}</h2>
-        {subtitle && <p className="mt-1 text-sm text-neutral-400">{subtitle}</p>}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-function Grid({ plans }: { plans: any[] }) {
-  return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {plans.map((p) => (
-        <PlanCard key={p.slug} plan={p} />
-      ))}
-    </div>
-  );
-}
-
-function Empty({ label }: { label: string }) {
-  return <p className="rounded-lg border border-neutral-800 bg-neutral-900 p-6 text-neutral-400">{label}</p>;
 }
