@@ -31,11 +31,13 @@ Every client I work with becomes part of that same story—one built on faith, f
     image: "/agents/christy.jpg",
     phone: "(321) 961-8263",
     email: "christyrainier@gmail.com",
-    story: `Christy Rainier is a devoted wife and mother whose heart for people shines through everything she does. Her care for others and attention to detail have naturally carried over into her real estate career, where she’s passionate about helping families through each step of the buying or selling process.
+    story: `Christy is a devoted wife and mother of seven children and one daughter-in-love, whose heart for people shines through everything she does. Her care for others and attention to detail have naturally carried over into her real estate career, where she’s passionate about guiding families through every step of the buying or selling process.
 
-Coming from a family with a strong background in the building industry, Christy understands the craftsmanship and planning that go into creating a home. That experience gives her a unique perspective when guiding clients—helping them see both the potential and the details that truly matter.
+Coming from a family with a strong background in the building industry, Christy understands the craftsmanship and planning that go into creating a home. That experience gives her a unique perspective when guiding clients — helping them see both the potential and the details that truly matter.
 
-Whether working with first-time buyers or seasoned sellers, Christy brings warmth, professionalism, and genuine dedication to every client she serves.`,
+Christy serves faithfully at her local church and loves being an active part of the Bella Vista community — where she lives, works, and plays. Her love and commitment to the area give her clients an insider’s perspective on the neighborhoods and lifestyle that make Northwest Arkansas so special.
+
+With particular expertise in selling new construction, Christy combines her building knowledge with her genuine warmth, professionalism, and dedication to deliver an exceptional experience for every client she serves — whether first-time buyers or seasoned sellers.`,
   },
   {
     id: "marcus-day",
