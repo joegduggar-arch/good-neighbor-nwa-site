@@ -1,211 +1,131 @@
 // src/lib/floorplans.ts
-import type { Metadata } from "next";
 
-export type BuilderKey = "swanson" | "timeless";
-export type PlanStatus = "under-construction" | "coming-soon" | "sold";
-export type PlanKey =
-  | "donington" | "brittany" | "hambleton" | "castlebay" | "ironside"
-  | "windsor" | "york" | "ravenglass"
-  | "brecknock" | "havensworth";
+import type { StaticImageData } from "next/image";
 
-export interface Plan {
-  builder: BuilderKey;
-  slug: PlanKey;
+/** ---------------------------------------------------------
+ *  Types
+ *  --------------------------------------------------------*/
+export type BuilderSlug = "timeless"; // floorplans are only for Timeless now
+
+export type Status = "available" | "under-construction" | "sold";
+
+export interface Builder {
   name: string;
-  sqft: string;
-  status: PlanStatus;
-  beds?: number;
-  baths?: number;
+  slug: BuilderSlug;
+  logo?: string;
+}
+
+export interface MenuBuilder {
+  /** shown in the Navbar “Properties ▸ Builders” menu */
+  name: string;
+  slug: string; // can include non-floorplan builders (e.g., "swanson")
+  logo?: string;
+}
+
+export interface Floorplan {
+  id: string;
+  builder: BuilderSlug;
+  name: string;
+  sqftLabel?: string; // e.g. "±2000 sq ft"
+  bedrooms?: number;
+  bathrooms?: number;
   garage?: string;
-  hero: string;
-  gallery: string[];
-  summary: string;
+  description?: string;
+  status: Status;
+  cover?: string | StaticImageData;
+  images: (string | StaticImageData)[];
 }
 
-export interface BuilderInfo {
-  key: BuilderKey;
-  name: string;
-  logo: string;
-  blurb: string;
-  plans: PlanKey[];
-  metadata: Metadata;
-}
-
-export const BUILDERS: Record<BuilderKey, BuilderInfo> = {
-  swanson: {
-    key: "swanson",
-    name: "Swanson Properties (DreamBuilt Custom Homes)",
-    logo: "/images/logos/swanson.png",
-    blurb:
-      "Thoughtful new-construction homes across Bella Vista and NWA with smart livability and enduring materials.",
-    plans: [
-      "donington", "brittany", "hambleton", "castlebay",
-      "ironside", "windsor", "york", "ravenglass",
-    ],
-    metadata: {
-      title: "Swanson Properties Floorplans | Good Neighbor Realty",
-      description:
-        "Explore Swanson Properties (DreamBuilt) floorplans—quality new construction homes across Bella Vista.",
-    },
+/** ---------------------------------------------------------
+ *  Builders (for FLOORPLANS) — Timeless only
+ *  --------------------------------------------------------*/
+export const BUILDERS: Builder[] = [
+  {
+    name: "Timeless Homes",
+    slug: "timeless",
+    logo: "/images/logos/timeless.png", // put your file here if you have one
   },
-  timeless: {
-    key: "timeless",
-    name: "Timeless Home (Milagro Designs)",
+];
+
+/** ---------------------------------------------------------
+ *  Builders menu (Navbar) — includes Swanson for “contact us”
+ *  --------------------------------------------------------*/
+export const BUILDERS_MENU: MenuBuilder[] = [
+  {
+    name: "Timeless Homes",
+    slug: "timeless",
     logo: "/images/logos/timeless.png",
-    blurb:
-      "Practical layouts and clean detailing—Timeless Home by Milagro Designs builds move-in-ready new homes in NWA.",
-    plans: ["brecknock", "havensworth"],
-    metadata: {
-      title: "Timeless Home (Milagro Designs) Floorplans | Good Neighbor Realty",
-      description:
-        "Browse Timeless Home (Milagro Designs) floorplans for new construction across Northwest Arkansas.",
-    },
   },
-};
+  {
+    // we still show Swanson in the menu, but there are no plans listed
+    name: "Swanson Properties",
+    slug: "swanson",
+    logo: "/images/logos/swanson.png",
+  },
+];
 
-// path helpers
-const hero = (b: BuilderKey, s: string) => `/images/floorplans/${b}/${s}/hero.jpg`;
-const img  = (b: BuilderKey, s: string, n: number) => `/images/floorplans/${b}/${s}/${n}.jpg`;
-const gen = (b: BuilderKey, s: string, count: number) =>
-  Array.from({ length: count }, (_, i) => img(b, s, i + 1));
-
-// ---------- Plans ----------
-export const PLANS: Record<PlanKey, Plan> = {
-  // Swanson / DreamBuilt
-  donington: {
-    builder: "swanson",
-    slug: "donington",
-    name: "Donington",
-    sqft: "2,460 sq ft",
-    status: "under-construction",
-    beds: 4, baths: 3, garage: "2-car",
-    hero: hero("swanson", "donington"),
-    gallery: gen("swanson", "donington", 25),
-    summary:
-      "A well-balanced two-story with a generous great room, covered outdoor living, and a convenient main-level suite.",
-  },
-  brittany: {
-    builder: "swanson",
-    slug: "brittany",
-    name: "Brittany",
-    sqft: "2,300 sq ft",
-    status: "coming-soon",
-    beds: 4, baths: 3, garage: "2-car",
-    hero: hero("swanson", "brittany"),
-    gallery: gen("swanson", "brittany", 20),
-    summary:
-      "Bright gathering spaces, practical storage, and a cook-forward kitchen centered around an island workspace.",
-  },
-  hambleton: {
-    builder: "swanson",
-    slug: "hambleton",
-    name: "Hambleton",
-    sqft: "2,316 sq ft",
-    status: "under-construction",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("swanson", "hambleton"),
-    gallery: gen("swanson", "hambleton", 18),
-    summary:
-      "Open main living with a defined dining nook, split bedrooms, and a flexible front room for office or guest.",
-  },
-  castlebay: {
-    builder: "swanson",
-    slug: "castlebay",
-    name: "Castlebay",
-    sqft: "2,060 sq ft",
-    status: "coming-soon",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("swanson", "castlebay"),
-    gallery: gen("swanson", "castlebay", 15),
-    summary:
-      "Comfortable single-level living—easy flow from kitchen to great room to covered patio for everyday life.",
-  },
-  ironside: {
-    builder: "swanson",
-    slug: "ironside",
-    name: "Ironside",
-    sqft: "2,150 sq ft",
-    status: "sold",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("swanson", "ironside"),
-    gallery: gen("swanson", "ironside", 22),
-    summary:
-      "A proven favorite with an airy great room, fireplace focal point, and a private primary suite retreat.",
-  },
-  windsor: {
-    builder: "swanson",
-    slug: "windsor",
-    name: "Windsor",
-    sqft: "2,340 sq ft",
-    status: "sold",
-    beds: 4, baths: 3, garage: "2-car",
-    hero: hero("swanson", "windsor"),
-    gallery: gen("swanson", "windsor", 16),
-    summary:
-      "Classic curb appeal, comfortable upstairs secondary bedrooms, and a main-level layout that just works.",
-  },
-  york: {
-    builder: "swanson",
-    slug: "york",
-    name: "York",
-    sqft: "2,000 sq ft",
-    status: "coming-soon",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("swanson", "york"),
-    gallery: gen("swanson", "york", 14),
-    summary:
-      "Efficient footprint with big-feeling living spaces—ideal for a first home or right-sized living.",
-  },
-  ravenglass: {
-    builder: "swanson",
-    slug: "ravenglass",
-    name: "Ravenglass",
-    sqft: "2,100–2,300 sq ft",
-    status: "under-construction",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("swanson", "ravenglass"),
-    gallery: gen("swanson", "ravenglass", 19),
-    summary:
-      "Flexible plan range with optional bonus and a covered back deck that frames Bella Vista’s wooded views.",
-  },
-
-  // Timeless / Milagro
-  brecknock: {
+/** ---------------------------------------------------------
+ *  Floorplans — ONLY Timeless Homes here
+ *  (add as many images as you'd like; the gallery supports many)
+ *  --------------------------------------------------------*/
+export const FLOORPLANS: Floorplan[] = [
+  {
+    id: "brecknock",
     builder: "timeless",
-    slug: "brecknock",
     name: "Brecknock",
-    sqft: "≈2,000 sq ft",
-    status: "coming-soon",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("timeless", "brecknock"),
-    gallery: gen("timeless", "brecknock", 12),
-    summary:
-      "Clear, functional layout with a central kitchen, bright dining, and an inviting great room.",
+    sqftLabel: "±2000 sq ft",
+    status: "available",
+    description:
+      "A thoughtful single-level layout with open living, generous kitchen island, and a bright owner’s suite.",
+    cover: "/images/floorplans/timeless/brecknock/cover.jpg",
+    images: [
+      "/images/floorplans/timeless/brecknock/1.jpg",
+      "/images/floorplans/timeless/brecknock/2.jpg",
+      "/images/floorplans/timeless/brecknock/3.jpg",
+      // add up to 50+ files here — gallery will handle it
+    ],
   },
-  havensworth: {
+  {
+    id: "havensworth",
     builder: "timeless",
-    slug: "havensworth",
     name: "Havensworth",
-    sqft: "≈2,000 sq ft",
-    status: "coming-soon",
-    beds: 3, baths: 2, garage: "2-car",
-    hero: hero("timeless", "havensworth"),
-    gallery: gen("timeless", "havensworth", 10),
-    summary:
-      "Comfortable single-level living and a calm, cohesive finish palette designed for everyday ease.",
+    sqftLabel: "±2000 sq ft",
+    status: "under-construction",
+    description:
+      "Easy entertaining with an open great room, dining, and kitchen — plus a covered back porch.",
+    cover: "/images/floorplans/timeless/havensworth/cover.jpg",
+    images: [
+      "/images/floorplans/timeless/havensworth/1.jpg",
+      "/images/floorplans/timeless/havensworth/2.jpg",
+      "/images/floorplans/timeless/havensworth/3.jpg",
+    ],
   },
-};
+];
 
-// getters
-export const getBuilder = (key: BuilderKey) => BUILDERS[key];
-export const getPlan = (slug: PlanKey) => PLANS[slug];
-export const getPlansByBuilder = (key: BuilderKey) =>
-  Object.values(PLANS).filter(p => p.builder === key);
-export const byStatus = (status: PlanStatus) =>
-  Object.values(PLANS).filter(p => p.status === status);
-export function groupedByBuilder() {
+/** ---------------------------------------------------------
+ *  Helpers
+ *  --------------------------------------------------------*/
+export function getBuilderBySlug(slug: BuilderSlug) {
+  return BUILDERS.find((b) => b.slug === slug) || null;
+}
+
+export function getPlansByBuilder(slug: BuilderSlug): Floorplan[] {
+  return FLOORPLANS.filter((p) => p.builder === slug);
+}
+
+export function getPlanById(id: string): Floorplan | null {
+  return FLOORPLANS.find((p) => p.id === id) || null;
+}
+
+export function getAllPlans(): Floorplan[] {
+  return FLOORPLANS;
+}
+
+export function byStatus(slug: BuilderSlug) {
+  const plans = getPlansByBuilder(slug);
   return {
-    swanson: getPlansByBuilder("swanson"),
-    timeless: getPlansByBuilder("timeless"),
+    available: plans.filter((p) => p.status === "available"),
+    underConstruction: plans.filter((p) => p.status === "under-construction"),
+    sold: plans.filter((p) => p.status === "sold"),
   };
 }

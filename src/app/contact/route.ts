@@ -1,5 +1,3 @@
-// src/app/api/contact/route.ts
-import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
@@ -15,20 +13,20 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-      from: `"Good Neighbor Realty Website" <${process.env.EMAIL_USER}>`,
-      to: "joegduggar@gmail.com", // your receiving address
-      subject: `Website Contact from ${name}`,
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_TO,
+      subject: `New message from ${name}`,
       text: `
-        Name: ${name}
-        Email: ${email}
-        Message:
-        ${message}
+Name: ${name}
+Email: ${email}
+Message:
+${message}
       `,
     });
 
-    return NextResponse.json({ success: true });
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {
     console.error("Error sending email:", error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    return new Response(JSON.stringify({ success: false, error }), { status: 500 });
   }
 }
