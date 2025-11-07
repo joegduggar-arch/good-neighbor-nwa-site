@@ -1,45 +1,128 @@
-'use client';
+// src/app/contact/page.tsx
+"use client";
+
 import { useState } from "react";
 
-export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<null | "ok" | "fail">(null);
-  const [err, setErr] = useState<string>("");
+export const metadata = {
+  title: "Contact | Good Neighbor Realty",
+  description: "Get in touch with Good Neighbor Realty.",
+};
 
-  async function submit(e: React.FormEvent) {
+export default function ContactPage() {
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">(
+    "idle"
+  );
+  const [error, setError] = useState<string>("");
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus(null); setErr("");
+    setStatus("sending");
+    setError("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
+      message: String(formData.get("message") || ""),
+    };
+
     try {
-      const r = await fetch("/api/contact", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message })
+        body: JSON.stringify(payload),
       });
-      const data = await r.json();
-      if (data.ok) { setStatus("ok"); setName(""); setEmail(""); setPhone(""); setMessage(""); }
-      else { setStatus("fail"); setErr(data.error || "Something went wrong."); }
-    } catch (e: any) {
-      setStatus("fail"); setErr(e?.message || "Network error.");
+
+      const data = await res.json();
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Failed to send.");
+      }
+
+      setStatus("ok");
+      form.reset();
+    } catch (err: any) {
+      setStatus("error");
+      setError(err?.message || "Something went wrong.");
     }
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-3xl font-semibold">Contact Good Neighbor Realty</h1>
-      <p className="text-gray-600">Have a question or want to schedule a showing? Send us a note and we’ll get back quickly.</p>
-      <form className="space-y-3" onSubmit={submit}>
-        <input className="w-full rounded border px-3 py-2" placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
-        <input className="w-full rounded border px-3 py-2" placeholder="Email" type="email" required value={email} onChange={e => setEmail(e.target.value)} />
-        <input className="w-full rounded border px-3 py-2" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-        <textarea className="w-full rounded border px-3 py-2" placeholder="How can we help?" rows={5} required value={message} onChange={e => setMessage(e.target.value)} />
-        <button className="rounded bg-brand-gold px-5 py-2 font-medium text-brand-black hover:bg-brand-goldDark" type="submit">Send</button>
-      </form>
-      {status === "ok" && <p className="text-sm text-green-700">Thanks! Your message has been sent.</p>}
-      {status === "fail" && <p className="text-sm text-red-700">We couldn’t send your message: {err}</p>}
-      <p className="text-xs text-gray-500">Emails are delivered via Resend. Set RESEND_API_KEY & verified from-domain in Vercel env vars.</p>
-    </div>
+    <main className="min-h-screen bg-black text-white">
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <h1 className="text-4xl font-bold tracking-tight">Contact Us</h1>
+        <p className="mt-2 text-neutral-300">
+          We’ll get back to you as soon as possible.
+        </p>
+
+        <form
+          onSubmit={onSubmit}
+          className="mt-8 grid grid-cols-1 gap-4 rounded-2xl bg-neutral-900 p-6 ring-1 ring-neutral-800"
+        >
+          <label className="grid gap-1">
+            <span className="text-sm text-neutral-300">Name</span>
+            <input
+              name="name"
+              type="text"
+              required
+              className="rounded-md border border-neutral-700 bg-neutral-800 p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </label>
+
+          <label className="grid gap-1">
+            <span className="text-sm text-neutral-300">Email</span>
+            <input
+              name="email"
+              type="email"
+              required
+              className="rounded-md border border-neutral-700 bg-neutral-800 p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </label>
+
+          <label className="grid gap-1">
+            <span className="text-sm text-neutral-300">Phone (optional)</span>
+            <input
+              name="phone"
+              type="tel"
+              className="rounded-md border border-neutral-700 bg-neutral-800 p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </label>
+
+          <label className="grid gap-1">
+            <span className="text-sm text-neutral-300">Message</span>
+            <textarea
+              name="message"
+              required
+              rows={6}
+              className="resize-y rounded-md border border-neutral-700 bg-neutral-800 p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </label>
+
+          <div className="mt-2 flex items-center gap-3">
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="rounded-md bg-yellow-500 px-5 py-2.5 font-semibold text-black hover:bg-yellow-400 disabled:opacity-60"
+            >
+              {status === "sending" ? "Sending…" : "Send Message"}
+            </button>
+
+            {status === "ok" && (
+              <span className="text-sm text-green-400">
+                Message sent successfully!
+              </span>
+            )}
+            {status === "error" && (
+              <span className="text-sm text-red-400">
+                {error || "Failed to send."}
+              </span>
+            )}
+          </div>
+        </form>
+      </div>
+    </main>
   );
 }
