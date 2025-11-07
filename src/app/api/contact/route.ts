@@ -1,56 +1,74 @@
-import { NextRequest, NextResponse } from "next/server";
+// src/app/api/contact/route.ts
+import type { NextRequest } from "next/server";
+export const runtime = "nodejs"; // required so Nodemailer runs on Vercel
+
+import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const name = String(body.name || "");
-    const email = String(body.email || "");
-    const phone = String(body.phone || "");
-    const message = String(body.message || "");
+    const name = String(body.name ?? "");
+    const email = String(body.email ?? "");
+    const phone = String(body.phone ?? "");
+    const message = String(body.message ?? "");
 
     if (!email || !message) {
-      return NextResponse.json({ ok: false, error: "Email and message are required." }, { status: 400 });
+      return json({ ok: false, error: "Email and message are required." }, 400);
     }
 
+    const user = process.env.EMAIL_USER;
+    const pass = process.env.EMAIL_PASS;
+    const to = process.env.EMAIL_TO || user;
+
+    if (!user || !pass || !to) {
+      return json(
+        { ok: false, error: "Server email is not configured." },
+        500
+      );
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user, pass },
+    });
+
     const html = `
-      <div style="font-family:system-ui,Arial,sans-serif">
+      <div style="font-family: system-ui, Arial, sans-serif">
         <h2>New Website Inquiry</h2>
-        <p><strong>Name:</strong> ${name || "(not provided)"} </p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || "(not provided)"} </p>
-        <p><strong>Message:</strong><br/>${message.replace(/\n/g, "<br/>")}</p>
+        <p><strong>Name:</strong> ${escapeHtml(name) || "(not provided)"} </p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(phone) || "(not provided)"} </p>
+        <p><strong>Message:</strong><br/>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
       </div>
     `;
 
-    const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    if (!RESEND_API_KEY) {
-      return NextResponse.json({ ok: true, simulated: true });
-    }
-
-    const toEmail = process.env.CONTACT_TO || "JoegDuggar@gmail.com";
-    const fromEmail = process.env.CONTACT_FROM || "site@goodneighbornwa.com";
-
-    const r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from: `Good Neighbor Site <${fromEmail}>`,
-        to: [toEmail],
-        subject: "New inquiry from GoodNeighborNWA.com",
-        html
-      })
+    await transporter.sendMail({
+      from: `"Good Neighbor Realty" <${user}>`,
+      to,
+      replyTo: email,
+      subject: `New website inquiry from ${name || email}`,
+      html,
     });
 
-    if (!r.ok) {
-      const text = await r.text();
-      return NextResponse.json({ ok: false, error: text }, { status: 500 });
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch (err: any) {
-    return NextResponse.json({ ok: false, error: err?.message || "Unknown error" }, { status: 500 });
+    return json({ ok: true }, 200);
+  } catch (err) {
+    console.error("Contact form error:", err);
+    return json({ ok: false, error: "Failed to send." }, 500);
   }
+}
+
+// small helpers
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+function escapeHtml(str: string) {
+  return String(str).replace(/[&<>"']/g, (ch) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" } as const)[
+      ch as "&" | "<" | ">" | '"' | "'"
+    ]!
+  );
 }
