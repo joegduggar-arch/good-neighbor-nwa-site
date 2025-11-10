@@ -1,60 +1,51 @@
-import Image from "next/image";
+// src/app/floorplans/[builder]/[plan]/page.tsx
 import { notFound } from "next/navigation";
-import { getPlan, type BuilderKey, type PlanKey } from "@/lib/floorplans";
+import {
+  getPlan,
+  getBuilderBySlug,
+  type BuilderKey,
+  type PlanKey,
+} from "@/lib/floorplans";
+import PlanGallery from "@/components/PlanGallery";
 
-type Params = { builder: string; plan: string };
+type Props = { params: { builder: BuilderKey; plan: PlanKey } };
 
-export function generateStaticParams(): Params[] {
-  // Keep static generation simple for now. If you add more builders/plans,
-  // you can enumerate them here.
-  return [
-    { builder: "milagro-designs", plan: "brecknock" },
-    { builder: "milagro-designs", plan: "havensworth" },
-  ];
+export function generateMetadata({ params }: Props) {
+  const builder = getBuilderBySlug(params.builder);
+  const plan = getPlan(params.builder, params.plan);
+  const title = plan?.title ?? "Floorplan";
+  return {
+    title: `${title} | ${builder?.name ?? "Builder"} | Good Neighbor Realty`,
+  };
 }
 
-export default function PlanPage({ params }: { params: Params }) {
-  const builderMap: Record<string, BuilderKey> = {
-    "milagro-designs": "timeless",
-  };
-  const b = builderMap[params.builder];
-  if (!b) return notFound();
+export default function PlanDetailPage({ params }: Props) {
+  const builder = getBuilderBySlug(params.builder);
+  const plan = getPlan(params.builder, params.plan);
 
-  const k = params.plan as PlanKey;
-  const plan = getPlan(b, k);
-  if (!plan) return notFound();
+  if (!builder || !plan) return notFound();
 
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="aspect-[4/3] relative rounded-lg overflow-hidden bg-neutral-900">
-            <Image src={plan.hero} alt={plan.name} fill className="object-cover" />
-          </div>
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <h1 className="text-3xl font-semibold">{plan.title}</h1>
+        <p className="mt-1 text-neutral-400">
+          {builder.name}
+          {plan.approxSqft ? ` • ${plan.approxSqft}` : ""}
+        </p>
 
-          <div>
-            <h1 className="text-2xl md:text-3xl font-semibold">{plan.name}</h1>
-            <div className="text-neutral-400 mt-1">{plan.sqft}</div>
-            <p className="mt-4">{plan.blurb}</p>
-            <p className="text-xs text-neutral-400 mt-6">
-              Note: Floorplan, finishes, and specifications may vary per home
-              at the builder’s discretion.
-            </p>
-          </div>
+        {plan.summary && (
+          <p className="mt-6 max-w-3xl text-neutral-300">{plan.summary}</p>
+        )}
+
+        <div className="mt-8">
+          <PlanGallery images={plan.images} />
         </div>
 
-        {/* Gallery */}
-        {plan.gallery.length > 1 && (
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {plan.gallery.map((src, i) => (
-              <a key={i} href={src} target="_blank" rel="noreferrer"
-                 className="block aspect-[4/3] relative rounded overflow-hidden bg-neutral-900">
-                <Image src={src} alt={`${plan.name} ${i+1}`} fill className="object-cover" />
-              </a>
-            ))}
-          </div>
+        {plan.disclaimer && (
+          <p className="mt-8 text-sm text-neutral-400">{plan.disclaimer}</p>
         )}
-      </section>
+      </div>
     </main>
   );
 }
