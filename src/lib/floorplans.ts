@@ -1,63 +1,116 @@
 // src/lib/floorplans.ts
+// Central data + helpers for builders & floorplans
 
-export type BuilderKey = "timeless-homes";
-export type PlanKey = "brecknock" | "havensworth";
+// ---------- Types ----------
+export type Status = "available" | "under-construction" | "sold";
 
-export interface Plan {
-  builder: BuilderKey;
-  slug: PlanKey;
+export type Builder = {
   name: string;
-  sqft: string; // keep as string to support ranges like “~2000”
-  hero: string; // path to a lead image in /public
-  gallery: string[]; // any number of images in /public
+  slug: "milagro-designs" | "swanson-properties";
+  logo: string;            // /public path
+  active: boolean;         // if false, we hide from menus
   blurb: string;
-}
-
-export const BUILDERS: Record<BuilderKey, { name: string; logo?: string }> = {
-  "timeless-homes": {
-    name: "Timeless Homes",
-    logo: "/images/logos/timeless-homes.png", // put your cleaned PNG here
-  },
 };
 
-// ---- Plans (Timeless only) ----
-export const PLANS: Plan[] = [
+export type Plan = {
+  builderSlug: Builder["slug"];
+  planSlug: string;
+  name: string;
+  sqft: string;
+  status: Status;
+  cover: string;           // main image
+  gallery: string[];       // additional images
+  short: string;           // one-liner
+};
+
+// ---------- Builders ----------
+export const BUILDERS: Builder[] = [
   {
-    builder: "timeless-homes",
-    slug: "brecknock",
-    name: "Brecknock",
-    sqft: "±2000 sq ft",
-    hero: "/images/floorplans/timeless/brecknock/hero.jpg",
-    gallery: [
-      "/images/floorplans/timeless/brecknock/1.jpg",
-      "/images/floorplans/timeless/brecknock/2.jpg",
-      "/images/floorplans/timeless/brecknock/3.jpg",
-      // add as many as you want (up to 50+ is fine)
-    ],
+    name: "Timeless Homes (Milagro Designs)",
+    slug: "milagro-designs",
+    logo: "/images/logos/timeless-homes.png", // make sure this file exists in /public/images/logos
+    active: true,
     blurb:
-      "A balanced, livable plan with open entertaining spaces, efficient bedrooms, and thoughtful storage.",
+      "Quality homes throughout Bella Vista with thoughtful layouts and clean detailing.",
   },
   {
-    builder: "timeless-homes",
-    slug: "havensworth",
-    name: "Havensworth",
-    sqft: "±2000 sq ft",
-    hero: "/images/floorplans/timeless/havensworth/hero.jpg",
-    gallery: [
-      "/images/floorplans/timeless/havensworth/1.jpg",
-      "/images/floorplans/timeless/havensworth/2.jpg",
-      "/images/floorplans/timeless/havensworth/3.jpg",
-    ],
+    // Kept in data layer, but hidden from UI per your request
+    name: "Swanson Properties",
+    slug: "swanson-properties",
+    logo: "/images/logos/swanson-properties.png",
+    active: false,
     blurb:
-      "Light-filled living with flexible spaces and a kitchen-first layout — ideal for daily life and hosting.",
+      "Represented by Good Neighbor Realty. Contact us directly for floorplan details.",
   },
 ];
 
-// Helpers
-export function getPlan(builder: BuilderKey, slug: PlanKey) {
-  return PLANS.find((p) => p.builder === builder && p.slug === slug) || null;
+// This is what the Navbar and menus should import
+export const BUILDERS_MENU = BUILDERS.filter((b) => b.active).map((b) => ({
+  name: b.name,
+  slug: b.slug,
+  logo: b.logo,
+}));
+
+// Helper to fetch a builder by slug (used on builder pages)
+export function getBuilderBySlug(slug: string): Builder | undefined {
+  return BUILDERS.find((b) => b.slug === slug);
 }
 
-export function getPlansByBuilder(builder: BuilderKey) {
-  return PLANS.filter((p) => p.builder === builder);
+// ---------- Plans (only active builder plans shown) ----------
+export const PLANS: Plan[] = [
+  // Timeless Homes sample plans (≈2000 sqft per your note)
+  {
+    builderSlug: "milagro-designs",
+    planSlug: "brecknock",
+    name: "Brecknock",
+    sqft: "≈ 2,000 sqft",
+    status: "available",
+    cover: "/images/placeholders/featured-1.jpg",
+    gallery: [
+      "/images/placeholders/interior-living-2.jpg",
+      "/images/placeholders/interior-kitchen-2.jpg",
+      "/images/placeholders/interior-fireplace-2.jpg",
+    ],
+    short:
+      "A balanced, livable layout with bright social spaces and great flow.",
+  },
+  {
+    builderSlug: "milagro-designs",
+    planSlug: "havensworth",
+    name: "Havensworth",
+    sqft: "≈ 2,000 sqft",
+    status: "under-construction",
+    cover: "/images/placeholders/featured-2.jpg",
+    gallery: [
+      "/images/placeholders/foyer.jpg",
+      "/images/placeholders/interior-dining.jpg",
+      "/images/placeholders/interior-living-2.jpg",
+    ],
+    short:
+      "Comfort-forward design with clean detailing and functional storage.",
+  },
+
+  // If later you want to re-enable Swanson plans, add them here and flip active:true above.
+];
+
+// ---------- Helpers used around the app ----------
+
+// Filter plans by status
+export function byStatus(status: Status): Plan[] {
+  return PLANS.filter((p) => p.status === status);
+}
+
+// All plans for a specific builder
+export function getPlansByBuilder(builderSlug: Builder["slug"]): Plan[] {
+  return PLANS.filter((p) => p.builderSlug === builderSlug);
+}
+
+// Find a single plan by builder + plan slug (used by dynamic pages)
+export function getPlan(
+  builderSlug: Builder["slug"],
+  planSlug: string
+): Plan | undefined {
+  return PLANS.find(
+    (p) => p.builderSlug === builderSlug && p.planSlug === planSlug
+  );
 }

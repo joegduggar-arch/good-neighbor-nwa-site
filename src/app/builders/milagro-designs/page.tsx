@@ -1,6 +1,6 @@
 // src/app/builders/timeless/page.tsx
 import Link from "next/link";
-import { byStatus, getBuilderBySlug } from "@/lib/floorplans";
+import { byStatus, getBuilderBySlug, getPlansByBuilder } from "@/lib/floorplans";
 
 export const metadata = {
   title: "Timeless Homes | Good Neighbor Realty",
