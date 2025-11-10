@@ -1,4 +1,4 @@
-Joe Duggar:	// src/app/floorplans/[builder]/page.tsx
+// src/app/floorplans/[builder]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
