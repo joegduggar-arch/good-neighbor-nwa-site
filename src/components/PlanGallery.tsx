@@ -1,61 +1,21 @@
-// src/app/floorplans/[builder]/page.tsx
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import {
-  getBuilderBySlug,
-  getPlansByBuilder,
-  type BuilderKey,
-} from "@/lib/floorplans";
-
-type Props = { params: { builder: BuilderKey } };
-
-export const metadata = {
-  title: "Builder Floorplans | Good Neighbor Realty",
-};
-
-export default function BuilderPlansPage({ params }: Props) {
-  const builder = getBuilderBySlug(params.builder);
-  if (!builder) return notFound();
-
-  const plans = getPlansByBuilder(builder.key);
-
-  return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <h1 className="mb-6 text-3xl font-semibold">{builder.name}</h1>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {plans.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/floorplans/${builder.slug}/${p.slug}`}
-              className="group overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 hover:border-neutral-700"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.cover}
-                alt={p.title}
-                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              />
-              <div className="p-4">
-                <div className="text-lg font-medium">{p.title}</div>
-                {p.approxSqft && (
-                  <div className="mt-1 text-sm text-neutral-400">
-                    {p.approxSqft}
-                  </div>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
-}Joe Duggar:	// src/components/PlanGallery.tsx
+// src/components/PlanGallery.tsx
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
-export default function PlanGallery({ images }: { images: string[] }) {
+type GalleryImage = {
+  src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+};
+
+type Props = {
+  images: GalleryImage[];
+};
+
+export default function PlanGallery({ images }: Props) {
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
 
@@ -64,65 +24,90 @@ export default function PlanGallery({ images }: { images: string[] }) {
     setOpen(true);
   };
 
-  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
-  const next = () => setIdx((i) => (i + 1) % images.length);
+  const prev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  };
+
+  const next = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIdx((i) => (i + 1) % images.length);
+  };
 
   return (
     <>
-      {/* Grid thumbnails (any length) */}
-      <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {images.map((src, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={src + i}
-            src={src}
-            alt=""
-            className="h-44 w-full cursor-zoom-in rounded-md object-cover"
+      {/* Thumb grid (handles dozens of images) */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {images.map((img, i) => (
+          <button
+            key={i}
             onClick={() => openAt(i)}
-          />
+            className="relative aspect-[4/3] overflow-hidden rounded-md ring-1 ring-neutral-800 hover:ring-neutral-600"
+            aria-label={`Open image ${i + 1}`}
+          >
+            <Image
+              src={img.src}
+              alt={img.alt ?? `Photo ${i + 1}`}
+              fill
+              sizes="(min-width:1024px) 25vw, (min-width:768px) 33vw, 50vw"
+              className="object-cover"
+              priority={i < 4}
+            />
+          </button>
         ))}
       </div>
 
-      {/* Simple lightbox */}
+      {/* Lightbox */}
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
           onClick={() => setOpen(false)}
         >
+          {/* Close button */}
           <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded bg-white/10 px-3 py-2 text-white"
-            onClick={(e) => {
-              e.stopPropagation();
-              prev();
-            }}
-          >
-            ‹
-          </button>
-
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={images[idx]}
-            alt=""
-            className="max-h-[90vh] max-w-[90vw] object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded bg-white/10 px-3 py-2 text-white"
-            onClick={(e) => {
-              e.stopPropagation();
-              next();
-            }}
-          >
-            ›
-          </button>
-
-          <button
-            className="absolute right-4 top-4 rounded bg-white/10 px-3 py-2 text-white"
             onClick={() => setOpen(false)}
+            className="absolute top-4 right-4 rounded bg-black/60 px-3 py-2 text-white"
+            aria-label="Close"
           >
-            ✕
+            ×
           </button>
+
+          {/* Image container */}
+          <div
+            className="relative w-[92vw] max-w-5xl aspect-[16/10] md:aspect-[16/9]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              key={idx}
+              src={images[idx].src}
+              alt={images[idx].alt ?? `Photo ${idx + 1}`}
+              fill
+              sizes="100vw"
+              className="object-contain"
+              priority
+            />
+
+            {/* Prev / Next */}
+            <button
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-black/60 px-3 py-2 text-white"
+              aria-label="Previous image"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-black/60 px-3 py-2 text-white"
+              aria-label="Next image"
+            >
+              ›
+            </button>
+
+            {/* Counter */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+              {idx + 1} / {images.length}
+            </div>
+          </div>
         </div>
       )}
     </>
