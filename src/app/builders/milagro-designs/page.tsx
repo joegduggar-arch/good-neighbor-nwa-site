@@ -1,93 +1,79 @@
-// src/app/builders/timeless/page.tsx
+// src/app/builders/milagro-designs/page.tsx
 import Link from "next/link";
-import { byStatus, getBuilderBySlug, getPlansByBuilder } from "@/lib/floorplans";
+import Image from "next/image";
+import {
+  getBuilderBySlug,
+  getPlansByBuilder,
+  groupByStatus,
+  type Plan,
+} from "@/lib/floorplans";
 
 export const metadata = {
   title: "Timeless Homes | Good Neighbor Realty",
   description:
-    "Explore Timeless Homes in Bella Vista: available, under construction, and recently sold plans.",
+    "Floorplans by Timeless Homes (Milagro Designs) — thoughtfully built homes in Northwest Arkansas.",
 };
+
+function PlansRow({ title, items }: { title: string; items: Plan[] }) {
+  if (!items.length) return null;
+  return (
+    <section className="mt-10">
+      <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((p) => (
+          <Link
+            key={p.slug}
+            href={`/floorplans/timeless/${p.slug}`}
+            className="rounded-lg border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900 transition overflow-hidden"
+          >
+            <div className="relative w-full aspect-[16/9] bg-neutral-800">
+              {p.images?.[0] ? (
+                <Image
+                  src={p.images[0]}
+                  alt={p.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : null}
+            </div>
+            <div className="p-4">
+              <div className="font-medium">{p.name}</div>
+              {p.sqft ? (
+                <div className="text-sm text-neutral-400">{p.sqft}</div>
+              ) : null}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function TimelessBuilderPage() {
   const builder = getBuilderBySlug("timeless");
-  const groups = byStatus("timeless");
+  const plans = getPlansByBuilder("timeless");
+  const groups = groupByStatus(plans);
 
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto w-full max-w-5xl px-6 py-16">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-          {builder?.name ?? "Timeless Homes"}
-        </h1>
-
-        <p className="mt-6 text-neutral-300 leading-relaxed">
-          New construction in Bella Vista, designed for everyday comfort with
-          bright, functional layouts. Browse available plans or explore homes
-          currently underway.
-        </p>
-
-        <div className="mt-10 grid gap-10">
-          {/* Available */}
-          {groups.available.length > 0 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Available</h2>
-              <ul className="space-y-3">
-                {groups.available.map((p) => (
-                  <li key={p.id}>
-                    <Link
-                      href={`/floorplans/timeless?plan=${p.id}`}
-                      className="text-amber-400 hover:text-amber-300"
-                    >
-                      {p.name} {p.sqftLabel ? `• ${p.sqftLabel}` : ""}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Under Construction */}
-          {groups.underConstruction.length > 0 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Under Construction</h2>
-              <ul className="space-y-3">
-                {groups.underConstruction.map((p) => (
-                  <li key={p.id}>
-                    <Link
-                      href={`/floorplans/timeless?plan=${p.id}`}
-                      className="text-amber-400 hover:text-amber-300"
-                    >
-                      {p.name} {p.sqftLabel ? `• ${p.sqftLabel}` : ""}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Sold */}
-          {groups.sold.length > 0 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Recently Sold</h2>
-              <ul className="space-y-3">
-                {groups.sold.map((p) => (
-                  <li key={p.id} className="text-neutral-400">
-                    {p.name} {p.sqftLabel ? `• ${p.sqftLabel}` : ""}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="mb-6">
+          <h1 className="text-4xl font-bold">
+            {builder?.name ?? "Timeless Homes"}
+          </h1>
+          <p className="text-neutral-400 mt-2">
+            Explore current and past floorplans from Timeless Homes. (Square
+            footage, finishes, and colors may vary at the builder’s discretion.)
+          </p>
         </div>
 
-        <div className="mt-10">
-          <Link
-            href="/contact"
-            className="inline-flex items-center rounded-lg bg-amber-500 px-5 py-3 text-sm font-medium text-neutral-900 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300"
-          >
-            Ask About Timeless Homes
-          </Link>
-        </div>
-      </section>
+        <PlansRow title="Available" items={groups["available"]} />
+        <PlansRow
+          title="Under Construction"
+          items={groups["under-construction"]}
+        />
+        <PlansRow title="Sold" items={groups["sold"]} />
+      </div>
     </main>
   );
 }
