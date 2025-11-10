@@ -1,116 +1,73 @@
 // src/app/floorplans/[builder]/[plan]/page.tsx
 import Image from "next/image";
-import Link from "next/link";
-import PlanGallery from "@/components/PlanGallery";
-import { BUILDERS, PLANS, type BuilderKey, type PlanKey } from "@/lib/floorplans";
 import { notFound } from "next/navigation";
+import { getPlan, BUILDERS, type BuilderKey, type PlanKey } from "@/lib/floorplans";
 
-type Props = { params: { builder: BuilderKey; plan: PlanKey } };
+type Params = { builder: BuilderKey; plan: PlanKey };
 
-// Prebuild every /floorplans/{builder}/{plan} page
-export function generateStaticParams() {
-  return Object.values(PLANS).map((p) => ({
-    builder: p.builder,
-    plan: p.slug,
-  }));
+export async function generateStaticParams(): Promise<Params[]> {
+  // If you want SSG, enumerate the two plans:
+  return [
+    { builder: "timeless-homes", plan: "brecknock" },
+    { builder: "timeless-homes", plan: "havensworth" },
+  ];
 }
 
-export async function generateMetadata({ params }: Props) {
-  const plan = PLANS[params.plan];
-  const builder = BUILDERS[params.builder];
-  if (!plan || !builder) return {};
-  return {
-    title: `${plan.name} — ${builder.name} | Good Neighbor Realty`,
-    description: `${plan.name} (${plan.sqft}) by ${builder.name}. View photos, specs, and details.`,
-  };
-}
+export default function PlanPage({ params }: { params: Params }) {
+  const plan = getPlan(params.builder, params.plan);
+  if (!plan) return notFound();
 
-export default function PlanDetailPage({ params }: Props) {
-  const plan = PLANS[params.plan];
-  const builder = BUILDERS[params.builder];
-  if (!plan || !builder || plan.builder !== builder.key) return notFound();
+  const builder = BUILDERS[plan.builder];
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
-      <section className="mx-auto max-w-6xl px-6 py-14">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <Image src={builder.logo} alt={builder.name} width={56} height={56} className="h-12 w-12 object-contain" />
+    <main className="min-h-screen bg-neutral-950 text-neutral-100">
+      <section className="mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-semibold">{plan.name}</h1>
-            <p className="text-neutral-300">{builder.name} • {plan.sqft}</p>
+            <h1 className="text-3xl font-semibold">{plan.name}</h1>
+            <p className="mt-1 text-sm text-neutral-300">
+              {builder?.name} • {plan.sqft}
+            </p>
           </div>
+          {builder?.logo && (
+            <Image
+              src={builder.logo}
+              alt={builder.name}
+              width={140}
+              height={60}
+              className="h-10 w-auto object-contain"
+            />
+          )}
         </div>
 
         {/* Hero */}
-        <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-800">
-          <div className="relative h-[44vh] w-full">
-            <Image
-              src={plan.hero || "/images/placeholders/home-exterior-2.jpg"}
-              alt={plan.name}
-              fill
-              priority
-              className="object-cover"
-            />
-          </div>
+        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-neutral-800">
+          <Image
+            src={plan.hero}
+            alt={`${plan.name} hero`}
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
-        {/* Content grid */}
-        <div className="mt-10 grid gap-10 lg:grid-cols-5">
-          {/* Main */}
-          <div className="lg:col-span-3">
-            <h2 className="text-xl font-medium">Overview</h2>
-            <p className="mt-2 text-neutral-300">{plan.summary}</p>
+        <p className="mb-8 max-w-3xl text-neutral-300">{plan.blurb}</p>
 
-            {/* Gallery (supports up to 50+) */}
-            {plan.gallery?.length ? (
-              <>
-                <h3 className="mt-8 text-lg font-medium">Gallery</h3>
-                <PlanGallery images={plan.gallery} initialVisible={12} />
-              </>
-            ) : null}
-
-            {/* Disclaimer */}
-            <div className="mt-10 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-sm text-neutral-300">
-              <strong>Disclaimer:</strong> Home renderings, floor plans, dimensions, and features are for illustrative
-              purposes and may be modified at the builder’s discretion. Each home may vary in design details, finishes,
-              or measurements.
+        {/* Gallery (supports 50+ images) */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {plan.gallery.map((src, i) => (
+            <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-800">
+              <Image src={src} alt={`${plan.name} photo ${i + 1}`} fill className="object-cover" />
             </div>
-          </div>
-
-          {/* Specs */}
-          <aside className="lg:col-span-2">
-            <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
-              <h3 className="text-lg font-medium">Specs</h3>
-              <dl className="mt-4 space-y-3 text-sm">
-                <Spec label="Square Footage" value={plan.sqft} />
-                {plan.beds ? <Spec label="Bedrooms" value={`${plan.beds}`} /> : null}
-                {plan.baths ? <Spec label="Bathrooms" value={`${plan.baths}`} /> : null}
-                {plan.garage ? <Spec label="Garage" value={plan.garage} /> : null}
-                <Spec label="Builder" value={builder.name} />
-              </dl>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Link href={`/floorplans/${builder.key}`} className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
-                  ← Back to {builder.name}
-                </Link>
-                <Link href="/floorplans" className="rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
-                  All Floorplans
-                </Link>
-              </div>
-            </div>
-          </aside>
+          ))}
         </div>
+
+        {/* Note */}
+        <p className="mt-10 text-sm text-neutral-400">
+          * Floorplan, features, selections, and dimensions may vary by homesite and build and are
+          subject to the builder’s discretion.
+        </p>
       </section>
     </main>
-  );
-}
-
-function Spec({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between gap-4 border-b border-neutral-800/70 pb-2">
-      <dt className="text-neutral-400">{label}</dt>
-      <dd className="font-medium">{value}</dd>
-    </div>
   );
 }

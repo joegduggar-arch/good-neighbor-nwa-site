@@ -1,131 +1,63 @@
 // src/lib/floorplans.ts
 
-import type { StaticImageData } from "next/image";
+export type BuilderKey = "timeless-homes";
+export type PlanKey = "brecknock" | "havensworth";
 
-/** ---------------------------------------------------------
- *  Types
- *  --------------------------------------------------------*/
-export type BuilderSlug = "timeless"; // floorplans are only for Timeless now
-
-export type Status = "available" | "under-construction" | "sold";
-
-export interface Builder {
+export interface Plan {
+  builder: BuilderKey;
+  slug: PlanKey;
   name: string;
-  slug: BuilderSlug;
-  logo?: string;
+  sqft: string; // keep as string to support ranges like “~2000”
+  hero: string; // path to a lead image in /public
+  gallery: string[]; // any number of images in /public
+  blurb: string;
 }
 
-export interface MenuBuilder {
-  /** shown in the Navbar “Properties ▸ Builders” menu */
-  name: string;
-  slug: string; // can include non-floorplan builders (e.g., "swanson")
-  logo?: string;
-}
-
-export interface Floorplan {
-  id: string;
-  builder: BuilderSlug;
-  name: string;
-  sqftLabel?: string; // e.g. "±2000 sq ft"
-  bedrooms?: number;
-  bathrooms?: number;
-  garage?: string;
-  description?: string;
-  status: Status;
-  cover?: string | StaticImageData;
-  images: (string | StaticImageData)[];
-}
-
-/** ---------------------------------------------------------
- *  Builders (for FLOORPLANS) — Timeless only
- *  --------------------------------------------------------*/
-export const BUILDERS: Builder[] = [
-  {
+export const BUILDERS: Record<BuilderKey, { name: string; logo?: string }> = {
+  "timeless-homes": {
     name: "Timeless Homes",
-    slug: "timeless",
-    logo: "/images/logos/timeless.png", // put your file here if you have one
+    logo: "/images/logos/timeless-homes.png", // put your cleaned PNG here
   },
-];
+};
 
-/** ---------------------------------------------------------
- *  Builders menu (Navbar) — includes Swanson for “contact us”
- *  --------------------------------------------------------*/
-export const BUILDERS_MENU: MenuBuilder[] = [
+// ---- Plans (Timeless only) ----
+export const PLANS: Plan[] = [
   {
-    name: "Timeless Homes",
-    slug: "timeless",
-    logo: "/images/logos/timeless.png",
-  },
-  {
-    // we still show Swanson in the menu, but there are no plans listed
-    name: "Swanson Properties",
-    slug: "swanson",
-    logo: "/images/logos/swanson.png",
-  },
-];
-
-/** ---------------------------------------------------------
- *  Floorplans — ONLY Timeless Homes here
- *  (add as many images as you'd like; the gallery supports many)
- *  --------------------------------------------------------*/
-export const FLOORPLANS: Floorplan[] = [
-  {
-    id: "brecknock",
-    builder: "timeless",
+    builder: "timeless-homes",
+    slug: "brecknock",
     name: "Brecknock",
-    sqftLabel: "±2000 sq ft",
-    status: "available",
-    description:
-      "A thoughtful single-level layout with open living, generous kitchen island, and a bright owner’s suite.",
-    cover: "/images/floorplans/timeless/brecknock/cover.jpg",
-    images: [
+    sqft: "±2000 sq ft",
+    hero: "/images/floorplans/timeless/brecknock/hero.jpg",
+    gallery: [
       "/images/floorplans/timeless/brecknock/1.jpg",
       "/images/floorplans/timeless/brecknock/2.jpg",
       "/images/floorplans/timeless/brecknock/3.jpg",
-      // add up to 50+ files here — gallery will handle it
+      // add as many as you want (up to 50+ is fine)
     ],
+    blurb:
+      "A balanced, livable plan with open entertaining spaces, efficient bedrooms, and thoughtful storage.",
   },
   {
-    id: "havensworth",
-    builder: "timeless",
+    builder: "timeless-homes",
+    slug: "havensworth",
     name: "Havensworth",
-    sqftLabel: "±2000 sq ft",
-    status: "under-construction",
-    description:
-      "Easy entertaining with an open great room, dining, and kitchen — plus a covered back porch.",
-    cover: "/images/floorplans/timeless/havensworth/cover.jpg",
-    images: [
+    sqft: "±2000 sq ft",
+    hero: "/images/floorplans/timeless/havensworth/hero.jpg",
+    gallery: [
       "/images/floorplans/timeless/havensworth/1.jpg",
       "/images/floorplans/timeless/havensworth/2.jpg",
       "/images/floorplans/timeless/havensworth/3.jpg",
     ],
+    blurb:
+      "Light-filled living with flexible spaces and a kitchen-first layout — ideal for daily life and hosting.",
   },
 ];
 
-/** ---------------------------------------------------------
- *  Helpers
- *  --------------------------------------------------------*/
-export function getBuilderBySlug(slug: BuilderSlug) {
-  return BUILDERS.find((b) => b.slug === slug) || null;
+// Helpers
+export function getPlan(builder: BuilderKey, slug: PlanKey) {
+  return PLANS.find((p) => p.builder === builder && p.slug === slug) || null;
 }
 
-export function getPlansByBuilder(slug: BuilderSlug): Floorplan[] {
-  return FLOORPLANS.filter((p) => p.builder === slug);
-}
-
-export function getPlanById(id: string): Floorplan | null {
-  return FLOORPLANS.find((p) => p.id === id) || null;
-}
-
-export function getAllPlans(): Floorplan[] {
-  return FLOORPLANS;
-}
-
-export function byStatus(slug: BuilderSlug) {
-  const plans = getPlansByBuilder(slug);
-  return {
-    available: plans.filter((p) => p.status === "available"),
-    underConstruction: plans.filter((p) => p.status === "under-construction"),
-    sold: plans.filter((p) => p.status === "sold"),
-  };
+export function getPlansByBuilder(builder: BuilderKey) {
+  return PLANS.filter((p) => p.builder === builder);
 }

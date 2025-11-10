@@ -38,3 +38,17 @@
     "node_modules"
   ]
 }
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "module": "esnext",
+    "target": "es2020",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/types/*.d.ts"],
+  "exclude": ["node_modules"]
+}
+
