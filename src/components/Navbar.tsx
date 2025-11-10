@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import NavbarClient from "./NavbarClient";
 import { BUILDERS_MENU } from "@/lib/floorplans";
 
@@ -16,10 +15,16 @@ export default function Navbar() {
     { label: "Contact", href: "/contact" },
   ];
 
+  // 🧩 Normalize builders to include href
+  const builders = BUILDERS_MENU.map((b) => ({
+    ...b,
+    href: b.href || `/builders/${b.slug}`,
+  }));
+
   return (
     <NavbarClient
       phone={phone}
-      builders={BUILDERS_MENU}
+      builders={builders}
       brand={brand}
       links={links}
     />
