@@ -1,33 +1,27 @@
-// src/components/Navbar.tsx
+// src/components/Navbar.tsx
 import NavbarClient from "./NavbarClient";
-
-const BUILDERS = [
-  {
-    name: "Swanson Properties (DreamBuilt Custom Homes)",
-    slug: "swanson",
-    href: "/floorplans/swanson",
-    logo: "/images/logos/swanson.png",
-  },
-  {
-    name: "Timeless Home (Milagro Designs)",
-    slug: "timeless",
-    href: "/floorplans/timeless",
-    logo: "/images/logos/timeless.png",
-  },
-];
+import { BUILDERS_MENU } from "@/lib/floorplans";
 
 export default function Navbar() {
-  return (
-    <NavbarClient
-      phone="(479) 713-9565"
-      builders={BUILDERS}
-      brand={{ name: "Good Neighbor Realty • NWA", logo: "/logo.png", href: "/" }}
-      links={{
-        propertiesLanding: "/new-construction",
-        search: "/search",
-        agents: "/agents",
-        contact: "/contact",
-      }}
-    />
-  );
+  const brand = {
+    name: "Good Neighbor Realty • NWA",
+    logo: "/logo.png",
+    href: "/",
+  };
+
+  const phone = "(479) 713-9565";
+
+  const links = [
+    { label: "Agents", href: "/agents" },
+    { label: "Contact", href: "/contact" },
+  ];
+
+  return (
+    <NavbarClient
+      phone={phone}
+      builders={BUILDERS_MENU}
+      brand={brand}
+      links={links}
+    />
+  );
 }
