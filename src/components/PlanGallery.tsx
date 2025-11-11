@@ -4,86 +4,66 @@
 import { useState } from "react";
 import Image from "next/image";
 
-type GalleryImage = string | { src: string; alt?: string };
-
-export default function PlanGallery({ images }: { images: GalleryImage[] }) {
-  const normalized = images.map((img) =>
-    typeof img === "string" ? { src: img, alt: "" } : img
-  );
-
+export default function PlanGallery({ images }: { images: string[] }) {
   const [open, setOpen] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [idx, setIdx] = useState(0);
+
+  const openAt = (i: number) => {
+    setIdx(i);
+    setOpen(true);
+  };
+
+  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+  const next = () => setIdx((i) => (i + 1) % images.length);
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-        {normalized.map((img, i) => (
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {images.map((src, i) => (
           <button
-            key={`${img.src}-${i}`}
-            type="button"
-            className="relative aspect-[4/3] overflow-hidden rounded-lg ring-1 ring-black/10"
-            onClick={() => {
-              setIndex(i);
-              setOpen(true);
-            }}
+            key={src + i}
+            onClick={() => openAt(i)}
+            className="relative aspect-square overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900"
           >
-            <Image
-              src={img.src}
-              alt={img.alt || `Photo ${i + 1}`}
-              fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-              className="object-cover"
-            />
+            <Image src={src} alt={`Photo ${i + 1}`} fill className="object-cover" />
           </button>
         ))}
       </div>
 
-      {/* Lightbox */}
       {open && (
         <div
-          className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
+          className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setOpen(false)}
         >
           <div
-            className="absolute inset-0 mx-auto flex max-w-6xl items-center justify-center px-4"
+            className="relative max-w-5xl w-full aspect-[16/9]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative w-full">
-              <Image
-                src={normalized[index].src}
-                alt={normalized[index].alt || `Photo ${index + 1}`}
-                width={1920}
-                height={1080}
-                className="w-full rounded-lg object-contain"
-                priority
-              />
-
-              <div className="mt-3 flex items-center justify-between text-neutral-200">
-                <button
-                  className="rounded bg-neutral-800 px-3 py-1 text-sm"
-                  onClick={() => setOpen(false)}
-                >
-                  Close
-                </button>
-
-                <div className="space-x-2">
-                  <button
-                    className="rounded bg-neutral-800 px-3 py-1 text-sm"
-                    onClick={() => setIndex((i) => (i - 1 + normalized.length) % normalized.length)}
-                  >
-                    Prev
-                  </button>
-                  <button
-                    className="rounded bg-neutral-800 px-3 py-1 text-sm"
-                    onClick={() => setIndex((i) => (i + 1) % normalized.length)}
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Image
+              src={images[idx]}
+              alt={`Preview ${idx + 1}`}
+              fill
+              className="object-contain"
+              priority
+            />
+            <button
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 hover:bg-white/20"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 hover:bg-white/20"
+            >
+              ›
+            </button>
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute right-2 top-2 rounded bg-white/10 px-3 py-1 text-sm hover:bg-white/20"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
