@@ -1,122 +1,81 @@
 // src/lib/floorplans.ts
-// Single source of truth for builders + plans.
-// Swanson/DreamBuilt is intentionally REMOVED per your direction.
-// Timeless Homes (Milagro Designs) only, for now.
 
-export type BuilderKey = "timeless";
+/** Builder slugs we expose on the site */
+export type BuilderKey = "timeless-homes"; // (Swanson removed)
 
-export type PlanKey = "brecknock" | "havensworth";
-
+/** Status buckets you may want to group by */
 export type Status = "available" | "under-construction" | "sold";
 
-export interface Builder {
-  key: BuilderKey;
-  slug: string;           // same as key for simplicity
-  name: string;
-  logo: string;           // public path to transparent PNG
-  blurb?: string;
-}
-
-export interface Plan {
-  key: PlanKey;
-  slug: string;           // same as key
-  builder: BuilderKey;
-  title: string;
-  approxSqft?: string;    // "≈ 2000 sq ft" etc
-  status?: Status;
-  cover: string;          // hero image path (public/)
-  images: string[];       // up to 50+ images OK
-  summary?: string;
+/** One floorplan record */
+export type Plan = {
+  slug: string;           // url-safe id, e.g. "brecknock"
+  name: string;           // display name
+  builder: BuilderKey;    // which builder owns this plan
+  sqft?: string;          // "≈ 2,000 sf" (free text)
+  beds?: number;          // optional
+  baths?: number;         // optional
+  status?: Status;        // optional
+  /** Put image paths in /public, e.g. /plans/brecknock/1.jpg */
+  images: string[];       // any length (1..50+)
+  /** Shown under the gallery if present */
   disclaimer?: string;
+};
+
+/** Small items used by the navbar dropdown */
+export type BuilderMenuItem = {
+  name: string;
+  slug: BuilderKey;
+  logo: string; // /logos/timeless-homes.png
+};
+
+export const BUILDERS_MENU: BuilderMenuItem[] = [
+  { name: "Timeless Homes", slug: "timeless-homes", logo: "/logos/timeless-homes.png" },
+];
+
+/** In-memory plans (safe defaults; swap to your real images as you add them) */
+const PLANS: Plan[] = [
+  {
+    slug: "brecknock",
+    name: "Brecknock",
+    builder: "timeless-homes",
+    sqft: "≈ 2,000 sf",
+    images: [
+      "/plans/brecknock/1.jpg",
+      "/plans/brecknock/2.jpg",
+      "/plans/brecknock/3.jpg",
+    ],
+    disclaimer:
+      "Floorplan, finishes, and dimensions are subject to change at builder’s discretion.",
+  },
+  {
+    slug: "havensworth",
+    name: "Havensworth",
+    builder: "timeless-homes",
+    sqft: "≈ 2,000 sf",
+    images: [
+      "/plans/havensworth/1.jpg",
+      "/plans/havensworth/2.jpg",
+      "/plans/havensworth/3.jpg",
+    ],
+    disclaimer:
+      "Each build may vary in colors, fixtures, and materials at the builder’s discretion.",
+  },
+];
+
+/** --- Query helpers (used by pages/components) --- */
+
+export function getBuilders(): BuilderMenuItem[] {
+  return BUILDERS_MENU;
 }
 
-// ------------------------------------------------------------
-// BUILDERS
-// ------------------------------------------------------------
-export const BUILDERS: Builder[] = [
-  {
-    key: "timeless",
-    slug: "timeless",
-    name: "Timeless Homes (Milagro Designs, LLC)",
-    logo: "/images/logos/timeless-homes.png", // <-- use the transparent PNG you exported
-    blurb:
-      "Thoughtful floor plans and finishes across Northwest Arkansas. Built in Bella Vista exclusively.",
-  },
-];
+export function getPlans(): Plan[] {
+  return PLANS;
+}
 
-// Used by the Navbar dropdown (kept, since your Navbar expects it)
-export const BUILDERS_MENU = BUILDERS.map((b) => ({
-  name: b.name,
-  slug: b.slug,
-  logo: b.logo,
-}));
-
-// Simple helpers
-export const getBuilders = () => BUILDERS;
-
-export const getBuilderBySlug = (slug: string) =>
-  BUILDERS.find((b) => b.slug === slug);
-
-// ------------------------------------------------------------
-// PLANS (Timeless Homes)
-// Note: images can be as many as you want (20–50+). Just drop
-// them into /public/floorplans/timeless/<plan>/ and list them.
-// ------------------------------------------------------------
-const disclaimer =
-  "Floorplan, finishes, and colors may vary by home at the builder’s discretion.";
-
-export const PLANS: Plan[] = [
-  {
-    key: "brecknock",
-    slug: "brecknock",
-    builder: "timeless",
-    title: "Brecknock",
-    approxSqft: "≈ 2000 sq ft",
-    status: "available",
-    cover: "/floorplans/timeless/brecknock/1.jpg",
-    images: [
-      "/floorplans/timeless/brecknock/1.jpg",
-      "/floorplans/timeless/brecknock/2.jpg",
-      "/floorplans/timeless/brecknock/3.jpg",
-      // add up to 50+ as you wish
-    ],
-    summary:
-      "Comfortable, efficient layout with inviting common spaces and flexible bedrooms.",
-    disclaimer,
-  },
-  {
-    key: "havensworth",
-    slug: "havensworth",
-    builder: "timeless",
-    title: "Havensworth",
-    approxSqft: "≈ 2000 sq ft",
-    status: "under-construction",
-    cover: "/floorplans/timeless/havensworth/1.jpg",
-    images: [
-      "/floorplans/timeless/havensworth/1.jpg",
-      "/floorplans/timeless/havensworth/2.jpg",
-      "/floorplans/timeless/havensworth/3.jpg",
-      // add more here
-    ],
-    summary:
-      "Bright, open living with an easy flow to kitchen and dining—great for everyday life.",
-    disclaimer,
-  },
-];
-
-// ------------------------------------------------------------
-// Queries your pages/components import
-// ------------------------------------------------------------
 export function getPlansByBuilder(builder: BuilderKey): Plan[] {
   return PLANS.filter((p) => p.builder === builder);
 }
 
-export function getPlan(
-  builder: BuilderKey,
-  plan: PlanKey
-): Plan | undefined {
-  return PLANS.find((p) => p.builder === builder && p.slug === plan);
+export function getPlan(builder: BuilderKey, slug: string): Plan | undefined {
+  return PLANS.find((p) => p.builder === builder && p.slug === slug);
 }
-
-// Types exported for convenience in routes
-export type { Plan as FloorPlan };

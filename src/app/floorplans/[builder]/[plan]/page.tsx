@@ -1,51 +1,31 @@
 // src/app/floorplans/[builder]/[plan]/page.tsx
 import { notFound } from "next/navigation";
-import {
-  getPlan,
-  getBuilderBySlug,
-  type BuilderKey,
-  type PlanKey,
-} from "@/lib/floorplans";
+import { getPlan, type BuilderKey } from "@/lib/floorplans";
 import PlanGallery from "@/components/PlanGallery";
 
-type Props = { params: { builder: BuilderKey; plan: PlanKey } };
+type Params = { builder: BuilderKey; plan: string };
 
-export function generateMetadata({ params }: Props) {
-  const builder = getBuilderBySlug(params.builder);
-  const plan = getPlan(params.builder, params.plan);
-  const title = plan?.title ?? "Floorplan";
-  return {
-    title: `${title} | ${builder?.name ?? "Builder"} | Good Neighbor Realty`,
-  };
-}
-
-export default function PlanDetailPage({ params }: Props) {
-  const builder = getBuilderBySlug(params.builder);
-  const plan = getPlan(params.builder, params.plan);
-
-  if (!builder || !plan) return notFound();
+export default function PlanDetailPage({ params }: { params: Params }) {
+  const { builder, plan } = params;
+  const p = getPlan(builder, plan);
+  if (!p) return notFound();
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <h1 className="text-3xl font-semibold">{plan.title}</h1>
-        <p className="mt-1 text-neutral-400">
-          {builder.name}
-          {plan.approxSqft ? ` • ${plan.approxSqft}` : ""}
+    <main className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+      <header className="mb-6">
+        <h1 className="text-2xl font-semibold text-white">{p.name}</h1>
+        {p.sqft && <p className="mt-1 text-neutral-400">{p.sqft}</p>}
+      </header>
+
+      <section className="mb-8">
+        <PlanGallery images={p.images} />
+      </section>
+
+      {p.disclaimer && (
+        <p className="rounded-lg bg-neutral-900 p-4 text-sm text-neutral-300">
+          {p.disclaimer}
         </p>
-
-        {plan.summary && (
-          <p className="mt-6 max-w-3xl text-neutral-300">{plan.summary}</p>
-        )}
-
-        <div className="mt-8">
-          <PlanGallery images={plan.images} />
-        </div>
-
-        {plan.disclaimer && (
-          <p className="mt-8 text-sm text-neutral-400">{plan.disclaimer}</p>
-        )}
-      </div>
+      )}
     </main>
   );
 }
