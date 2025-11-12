@@ -1,56 +1,25 @@
-// src/components/Navbar.tsx
 import NavbarClient from "./NavbarClient";
-import { BUILDERS_MENU } from "@/lib/floorplans";
 
-/**
- * Types used by NavbarClient
- */
-export type BuilderMenuItem = {
-  name: string;
-  slug: string;
-  logo: string;
-  href: string;
-};
+const BUILDERS = [
+  { name: "Timeless Homes", slug: "timeless-homes", logo: "/logos/timeless.svg", href: "/builders/timeless-homes" },
+  { name: "Dream Built Homes", slug: "dream-built-homes", logo: "/logos/dreambuilt.svg", href: "/builders/dream-built-homes" }
+];
 
-export type Brand = {
-  name: string;
-  logo: string;
-  href: string;
-};
+const BRAND = { name: "Good Neighbor Realty • NWA", logo: "/logo.svg", href: "/" };
 
-export type TopLink = {
-  label: string;
-  href: string;
-};
+const LINKS = [
+  { label: "New Construction", href: "/new-construction" },
+  { label: "Agents", href: "/agents" },
+  { label: "Contact", href: "/contact" }
+];
 
 export default function Navbar() {
-  const brand: Brand = {
-    name: "Good Neighbor Realty • NWA",
-    logo: "/logo.png",
-    href: "/",
-  };
-
-  const phone = "(479) 713-9565";
-
-  const links: TopLink[] = [
-    { label: "Agents", href: "/agents" },
-    { label: "Contact", href: "/contact" },
-  ];
-
-  // IMPORTANT: normalize to include 'href' (we do NOT read b.href)
-  const builders: BuilderMenuItem[] = BUILDERS_MENU.map((b) => ({
-    name: b.name,
-    slug: b.slug,
-    logo: b.logo,
-    href: `/builders/${b.slug}`,
-  }));
-
-  return (
-    <NavbarClient
-      phone={phone}
-      builders={builders}
-      brand={brand}
-      links={links}
-    />
-  );
+  return (
+    <NavbarClient
+      phone="(479) 713-9565"
+      brand={BRAND}
+      builders={BUILDERS}
+      links={LINKS}
+    />
+  );
 }

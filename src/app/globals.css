@@ -1,5 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-html,body{height:100%;background-color:#f8fafc}
+html,body { background:#0a0a0a; color:#e5e5e5; }
+a { color:#f5d37a; }
+.container { @apply mx-auto max-w-7xl px-4 md:px-6; }
+.section { @apply container py-12 md:py-16; }
+.card { @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800; }
