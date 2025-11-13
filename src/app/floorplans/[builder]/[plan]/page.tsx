@@ -25,6 +25,13 @@ export default function PlanDetailPage({ params }: PageProps) {
   // Only use fields that actually exist on Plan
   const { name, sqft, beds, baths, disclaimer, images } = data;
 
+  // Convert string[] -> GalleryImage[] for PlanGallery
+  const galleryImages =
+    images?.map((src, index) => ({
+      src,
+      alt: `${name} – image ${index + 1}`,
+    })) ?? [];
+
   // Nice label for the builder based on the slug
   const builderLabel =
     builder === "timeless"
@@ -52,9 +59,9 @@ export default function PlanDetailPage({ params }: PageProps) {
         </header>
 
         {/* Image gallery */}
-        {images && images.length > 0 && (
+        {galleryImages.length > 0 && (
           <div className="mt-4">
-            <PlanGallery images={images} />
+            <PlanGallery images={galleryImages} />
           </div>
         )}
 
