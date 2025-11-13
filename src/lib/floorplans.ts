@@ -1,49 +1,32 @@
-export type BuilderKey = "timeless-homes";
-export type PlanKey = "brecknock" | "havensworth";
+// src/lib/floorplans.ts
 
-export type GalleryImage = { src: string; alt?: string };
-export type Plan = {
-  builder: BuilderKey;
-  key: PlanKey;
+// Slugs we use in URLs for each builder.
+export type BuilderSlug = "milagro-designs" | "dream-built";
+
+// Shape of a builder item in the navbar menu.
+export type BuilderMenuItem = {
   name: string;
-  sqft?: string;
-  beds?: string;
-  baths?: string;
-  images: GalleryImage[];
-  disclaimer?: string;
+  slug: BuilderSlug;
+  href: string;
 };
 
-export const PLANS: Plan[] = [
+// These are the builders that show up under “Property Search” in the navbar.
+// You can tweak the text here any time.
+export const BUILDERS_MENU: BuilderMenuItem[] = [
   {
-    builder: "timeless-homes",
-    key: "brecknock",
-    name: "Brecknock",
-    sqft: "≈ 2,000 sq ft",
-    beds: "3–4",
-    baths: "2",
-    images: [],
-    disclaimer: "Plans, materials, and selections may change at the builder’s discretion."
+    name: "Timeless Homes (Milagro Designs, LLC)",
+    slug: "milagro-designs",
+    href: "/builders/milagro-designs",
   },
   {
-    builder: "timeless-homes",
-    key: "havensworth",
-    name: "Havensworth",
-    sqft: "≈ 2,000 sq ft",
-    beds: "3–4",
-    baths: "2–3",
-    images: [
-  { src: "/images/timeless-homes/brecknock/1.jpg", alt: "Brecknock front elevation" },
-  { src: "/images/timeless-homes/brecknock/2.jpg", alt: "Brecknock kitchen" },
-  { src: "/images/timeless-homes/brecknock/3.jpg", alt: "Brecknock living room" }
-]
-,
-    disclaimer: "Plans, materials, and selections may change at the builder’s discretion."
-  }
+    name: "Dream Built Custom Homes",
+    slug: "dream-built",
+    href: "/builders/dream-built",
+  },
 ];
 
-export function getPlansByBuilder(builder: BuilderKey) {
-  return PLANS.filter(p => p.builder === builder);
-}
-export function getPlan(builder: BuilderKey, plan: PlanKey) {
-  return PLANS.find(p => p.builder === builder && p.key === plan);
-}
+// If you want a simple list of builders elsewhere in the app, you can reuse this.
+export const BUILDERS = BUILDERS_MENU;
+
+// Default export (optional, but can be handy)
+export default BUILDERS_MENU;
