@@ -22,7 +22,8 @@ export default function PlanDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const { name, sqft, beds, baths, notes, disclaimer, images } = data;
+  // Only use fields that actually exist on Plan
+  const { name, sqft, beds, baths, disclaimer, images } = data;
 
   // Nice label for the builder based on the slug
   const builderLabel =
@@ -48,11 +49,6 @@ export default function PlanDetailPage({ params }: PageProps) {
             {beds && <> • {beds} Bed</>}
             {baths && <> • {baths} Bath</>}
           </p>
-          {notes && (
-            <p className="mt-3 max-w-2xl text-sm text-neutral-300">
-              {notes}
-            </p>
-          )}
         </header>
 
         {/* Image gallery */}
