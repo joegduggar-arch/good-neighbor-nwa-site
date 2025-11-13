@@ -1,65 +1,73 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BUILDERS_MENU } from "@/lib/floorplans";
 
-const IDX_SEARCH_URL = "https://example.com/idx/search"; // ← change to your real IDX search URL
+type BuilderMenuItem = (typeof BUILDERS_MENU)[number];
 
-export default function NavbarClient() {
+type Props = {
+  phone: string;
+  brand: { name: string; logo: string; href: string };
+  builders?: BuilderMenuItem[]; // kept optional so Navbar.tsx props still type-check
+  idxLinks: { label: string; href: string }[];
+};
+
+export default function NavbarClient({ phone, brand, idxLinks }: Props) {
+  const [open, setOpen] = useState(false);
+
+  const searchLink = idxLinks[0] ?? { label: "Search homes", href: "#" };
+  const newConstructionHref = "/builders/timeless-homes";
+
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-800 bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+    <header className="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         {/* Left: Brand */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href={brand.href} className="flex items-center gap-3">
           <Image
-            src="/logo.png"
-            alt="Good Neighbor Realty"
+            src={brand.logo}
+            alt={brand.name}
             width={40}
             height={40}
-            className="h-9 w-9 rounded-full object-contain"
+            className="rounded-full"
           />
-          <span className="text-sm font-semibold tracking-wide">
-            Good Neighbor Realty • NWA
+          <span className="text-sm font-semibold tracking-wide text-neutral-50">
+            {brand.name}
           </span>
         </Link>
 
-        {/* Right: Main nav */}
-        <div className="flex items-center gap-4 md:gap-6">
-          {/* Property search mega menu */}
-          <div className="relative hidden md:block">
-            <div className="group inline-flex">
-              <button
-                type="button"
-                className="rounded-full px-3 py-1 text-sm font-medium text-neutral-200 hover:bg-neutral-800"
-              >
-                Property search
-              </button>
+        {/* Right: Links + phone */}
+        <div className="flex items-center gap-6 text-sm text-neutral-100">
+          {/* Property Search dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setOpen(true)}
+            onMouseLeave={() => setOpen(false)}
+          >
+            <button
+              type="button"
+              className="rounded-full border border-neutral-700 px-4 py-1.5 text-sm font-medium hover:border-neutral-500 hover:bg-neutral-900"
+            >
+              Property Search
+            </button>
 
-              {/* Panel */}
-              <div
-                className="
-                  pointer-events-none absolute left-1/2 top-full z-40 mt-3 hidden
-                  w-[760px] -translate-x-1/2 rounded-2xl border border-neutral-800
-                  bg-neutral-900/95 p-5 text-sm shadow-2xl
-                  group-hover:pointer-events-auto group-hover:block
-                "
-              >
-                <div className="grid gap-6 md:grid-cols-2">
-                  {/* Left column – Get started */}
-                  <section>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+            {open && (
+              <div className="absolute right-0 mt-3 w-[520px] max-w-[90vw] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl">
+                <div className="grid gap-4 md:grid-cols-2">
+                  {/* Left column: search actions */}
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
                       Get started
                     </p>
                     <div className="mt-3 space-y-3">
                       {/* Search homes */}
                       <Link
-                        href={IDX_SEARCH_URL}
-                        target="_blank"
-                        className="block rounded-xl bg-neutral-800/90 px-4 py-3 hover:bg-neutral-700"
+                        href={searchLink.href}
+                        className="block rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
                       >
-                        <div className="text-sm font-semibold text-neutral-50">
-                          Search homes
+                        <div className="text-sm font-semibold">
+                          {searchLink.label || "Search homes"}
                         </div>
                         <p className="mt-1 text-xs text-neutral-300">
                           City, address, MLS # — find your next place fast.
@@ -68,10 +76,10 @@ export default function NavbarClient() {
 
                       {/* New construction */}
                       <Link
-                        href="/new-construction"
-                        className="block rounded-xl bg-neutral-800/90 px-4 py-3 hover:bg-neutral-700"
+                        href={newConstructionHref}
+                        className="block rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
                       >
-                        <div className="text-sm font-semibold text-neutral-50">
+                        <div className="text-sm font-semibold">
                           New construction
                         </div>
                         <p className="mt-1 text-xs text-neutral-300">
@@ -79,81 +87,79 @@ export default function NavbarClient() {
                         </p>
                       </Link>
                     </div>
-                  </section>
+                  </div>
 
-                  {/* Right column – Builders we represent */}
-                  <section>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+                  {/* Right column: builders we represent */}
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
                       Builders we represent
                     </p>
-
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="mt-3 space-y-3">
                       {BUILDERS_MENU.map((b) => (
                         <Link
                           key={b.slug}
-                          href={`/builders/${b.slug}`}
-                          className="flex items-center gap-3 rounded-xl bg-neutral-800/90 px-4 py-3 hover:bg-neutral-700"
+                          href={b.href}
+                          className="flex items-center gap-3 rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
                         >
-                          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-950">
+                          {b.logo && (
                             <Image
                               src={b.logo}
                               alt={b.name}
-                              width={28}
-                              height={28}
-                              className="h-7 w-7 object-contain"
+                              width={32}
+                              height={32}
+                              className="rounded-md"
                             />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-xs font-semibold text-neutral-50">
+                          )}
+                          <div>
+                            <div className="text-sm font-semibold">
                               {b.name}
-                            </span>
-                            <span className="text-[11px] text-neutral-300">
-                              Floorplans & current builds.
-                            </span>
+                            </div>
+                            {b.subtitle && (
+                              <p className="mt-1 text-xs text-neutral-300">
+                                {b.subtitle}
+                              </p>
+                            )}
                           </div>
                         </Link>
                       ))}
                     </div>
-                  </section>
+                  </div>
                 </div>
 
-                {/* Footer line */}
-                <p className="mt-4 text-[11px] text-neutral-400">
+                <p className="mt-4 text-xs text-neutral-400">
                   Looking for something specific?{" "}
                   <Link
                     href="/contact"
-                    className="underline underline-offset-2 hover:text-neutral-200"
+                    className="font-medium text-yellow-400 hover:text-yellow-300"
                   >
                     Tell us what you need.
                   </Link>
                 </p>
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Simple desktop links */}
-          <Link href="/agents" className="hidden text-sm text-neutral-200 md:inline-block hover:text-white">
+          {/* Other top-level links */}
+          <Link
+            href="/agents"
+            className="hidden text-sm hover:text-yellow-300 md:inline-block"
+          >
             Agents
           </Link>
-          <Link href="/contact" className="hidden text-sm text-neutral-200 md:inline-block hover:text-white">
+          <Link
+            href="/contact"
+            className="text-sm hover:text-yellow-300"
+          >
             Contact
           </Link>
 
-          {/* Phone button */}
+          {/* Phone pill */}
           <a
-            href="tel:+14797139565"
-            className="hidden rounded-full border border-neutral-700 px-4 py-1 text-sm font-medium text-neutral-100 hover:border-neutral-500 md:inline-block"
+            href={`tel:${phone.replace(/[^\d]/g, "")}`}
+            className="hidden rounded-full border border-neutral-700 px-4 py-1.5 text-sm font-semibold hover:border-yellow-500 hover:bg-yellow-500/10 md:inline-block"
           >
-            (479) 713-9565
+            {phone}
           </a>
-
-          {/* Mobile: simple links, no mega menu for now */}
-          <Link
-            href="/property-search"
-            className="text-sm text-neutral-200 md:hidden"
-          >
-            Search
-          </Link>
         </div>
       </nav>
     </header>
