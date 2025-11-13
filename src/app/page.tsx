@@ -1,5 +1,7 @@
+import HeroMovingImage from "@/components/HeroMovingImage";
 export default function HomePage() {
   return (
+    <HeroMovingImage />
     <main>
       <section className="section text-center">
         <h1 className="text-3xl md:text-5xl font-semibold">Welcome to Good Neighbor Realty </h1>
