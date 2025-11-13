@@ -22,16 +22,15 @@ export default function PlanDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const {
-    name,
-    builderName,
-    sqft,
-    beds,
-    baths,
-    notes,
-    disclaimer,
-    images,
-  } = data;
+  const { name, sqft, beds, baths, notes, disclaimer, images } = data;
+
+  // Nice label for the builder based on the slug
+  const builderLabel =
+    builder === "timeless"
+      ? "Timeless Homes • Milagro Designs"
+      : builder === "swanson"
+      ? "Swanson Properties • Dreambuilt Custom Homes"
+      : builder;
 
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
@@ -39,7 +38,7 @@ export default function PlanDetailPage({ params }: PageProps) {
         {/* Header */}
         <header className="mb-8">
           <p className="text-sm uppercase tracking-wide text-neutral-400">
-            {builderName}
+            {builderLabel}
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
             {name}
@@ -50,7 +49,9 @@ export default function PlanDetailPage({ params }: PageProps) {
             {baths && <> • {baths} Bath</>}
           </p>
           {notes && (
-            <p className="mt-3 max-w-2xl text-sm text-neutral-300">{notes}</p>
+            <p className="mt-3 max-w-2xl text-sm text-neutral-300">
+              {notes}
+            </p>
           )}
         </header>
 
