@@ -1,24 +1,37 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { BUILDERS_MENU } from "@/lib/floorplans";
 
-type BuilderMenuItem = (typeof BUILDERS_MENU)[number];
+type Brand = {
+  name: string;
+  logo: string;
+  href: string;
+};
+
+type IdxLink = {
+  label: string;
+  href: string;
+};
+
+type BuilderMenuItem = {
+  name: string;
+  slug: string;
+  logo: string;
+};
 
 type Props = {
   phone: string;
-  brand: { name: string; logo: string; href: string };
-  builders?: BuilderMenuItem[]; // kept optional so Navbar.tsx props still type-check
-  idxLinks: { label: string; href: string }[];
+  brand: Brand;
+  idxLinks: IdxLink[];
 };
 
 export default function NavbarClient({ phone, brand, idxLinks }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<"properties" | null>(null);
 
-  const searchLink = idxLinks[0] ?? { label: "Search homes", href: "#" };
-  const newConstructionHref = "/builders/timeless-homes";
+  const builders: BuilderMenuItem[] = BUILDERS_MENU;
 
   return (
     <header className="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70">
@@ -32,109 +45,72 @@ export default function NavbarClient({ phone, brand, idxLinks }: Props) {
             height={40}
             className="rounded-full"
           />
-          <span className="text-sm font-semibold tracking-wide text-neutral-50">
+          <span className="text-sm font-semibold text-neutral-50">
             {brand.name}
           </span>
         </Link>
 
-        {/* Right: Links + phone */}
-        <div className="flex items-center gap-6 text-sm text-neutral-100">
+        {/* Right: Main nav (desktop) */}
+        <div className="hidden items-center gap-6 md:flex">
           {/* Property Search dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
+            onMouseEnter={() => setOpen("properties")}
+            onMouseLeave={() => setOpen(null)}
           >
             <button
               type="button"
-              className="rounded-full border border-neutral-700 px-4 py-1.5 text-sm font-medium hover:border-neutral-500 hover:bg-neutral-900"
+              className="text-sm font-medium text-neutral-100 hover:text-yellow-300"
             >
               Property Search
             </button>
 
-            {open && (
-              <div className="absolute right-0 mt-3 w-[520px] max-w-[90vw] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {/* Left column: search actions */}
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-                      Get started
-                    </p>
-                    <div className="mt-3 space-y-3">
-                      {/* Search homes */}
-                      <Link
-                        href={searchLink.href}
-                        className="block rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
-                      >
-                        <div className="text-sm font-semibold">
-                          {searchLink.label || "Search homes"}
-                        </div>
-                        <p className="mt-1 text-xs text-neutral-300">
-                          City, address, MLS # — find your next place fast.
-                        </p>
-                      </Link>
+            {open === "properties" && (
+              <div className="absolute right-0 mt-3 w-[480px] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl">
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                  Get Started
+                </div>
 
-                      {/* New construction */}
-                      <Link
-                        href={newConstructionHref}
-                        className="block rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
-                      >
-                        <div className="text-sm font-semibold">
-                          New construction
-                        </div>
-                        <p className="mt-1 text-xs text-neutral-300">
-                          Explore upcoming communities and floorplans.
-                        </p>
-                      </Link>
+                <div className="grid gap-3">
+                  {/* IDX search card(s) */}
+                  {idxLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block rounded-xl bg-neutral-800 px-4 py-3 text-sm text-neutral-100 hover:bg-neutral-700"
+                    >
+                      <div className="font-medium">{link.label}</div>
+                      <div className="text-xs text-neutral-400">
+                        City, address, MLS # — start your search.
+                      </div>
+                    </Link>
+                  ))}
+
+                  {/* Builders section */}
+                  <div className="mt-1 border-t border-neutral-800 pt-3">
+                    <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                      Builders We Represent
                     </div>
-                  </div>
-
-                  {/* Right column: builders we represent */}
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-                      Builders we represent
-                    </p>
-                    <div className="mt-3 space-y-3">
-                      {BUILDERS_MENU.map((b) => (
+                    <div className="grid gap-2">
+                      {builders.map((b) => (
                         <Link
                           key={b.slug}
-                          href={b.href}
-                          className="flex items-center gap-3 rounded-xl bg-neutral-800 px-3 py-3 hover:bg-neutral-700"
+                          href={`/builders/${b.slug}`}
+                          className="flex items-center gap-3 rounded-xl bg-neutral-800 px-3 py-2 text-sm text-neutral-100 hover:bg-neutral-700"
                         >
-                          {b.logo && (
-                            <Image
-                              src={b.logo}
-                              alt={b.name}
-                              width={32}
-                              height={32}
-                              className="rounded-md"
-                            />
-                          )}
-                          <div>
-                            <div className="text-sm font-semibold">
-                              {b.name}
-                            </div>
-                            {b.subtitle && (
-                              <p className="mt-1 text-xs text-neutral-300">
-                                {b.subtitle}
-                              </p>
-                            )}
-                          </div>
+                          <Image
+                            src={b.logo}
+                            alt={b.name}
+                            width={28}
+                            height={28}
+                            className="rounded"
+                          />
+                          <span>{b.name}</span>
                         </Link>
                       ))}
                     </div>
                   </div>
                 </div>
-
-                <p className="mt-4 text-xs text-neutral-400">
-                  Looking for something specific?{" "}
-                  <Link
-                    href="/contact"
-                    className="font-medium text-yellow-400 hover:text-yellow-300"
-                  >
-                    Tell us what you need.
-                  </Link>
-                </p>
               </div>
             )}
           </div>
@@ -142,13 +118,13 @@ export default function NavbarClient({ phone, brand, idxLinks }: Props) {
           {/* Other top-level links */}
           <Link
             href="/agents"
-            className="hidden text-sm hover:text-yellow-300 md:inline-block"
+            className="text-sm font-medium text-neutral-100 hover:text-yellow-300"
           >
             Agents
           </Link>
           <Link
             href="/contact"
-            className="text-sm hover:text-yellow-300"
+            className="text-sm font-medium text-neutral-100 hover:text-yellow-300"
           >
             Contact
           </Link>
@@ -156,7 +132,7 @@ export default function NavbarClient({ phone, brand, idxLinks }: Props) {
           {/* Phone pill */}
           <a
             href={`tel:${phone.replace(/[^\d]/g, "")}`}
-            className="hidden rounded-full border border-neutral-700 px-4 py-1.5 text-sm font-semibold hover:border-yellow-500 hover:bg-yellow-500/10 md:inline-block"
+            className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-100 hover:border-yellow-400 hover:text-yellow-300"
           >
             {phone}
           </a>
