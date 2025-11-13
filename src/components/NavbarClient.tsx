@@ -29,7 +29,7 @@ type Props = {
 };
 
 export default function NavbarClient({ phone, brand, idxLinks }: Props) {
-  const [open, setOpen] = useState<"properties" | null>(null);
+  const [open, setOpen] = useState(false);
 
   const builders: BuilderMenuItem[] = BUILDERS_MENU;
 
@@ -52,21 +52,18 @@ export default function NavbarClient({ phone, brand, idxLinks }: Props) {
 
         {/* Right: Main nav (desktop) */}
         <div className="hidden items-center gap-6 md:flex">
-          {/* Property Search dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setOpen("properties")}
-            onMouseLeave={() => setOpen(null)}
-          >
+          {/* Property Search dropdown (click-to-toggle) */}
+          <div className="relative">
             <button
               type="button"
+              onClick={() => setOpen((prev) => !prev)}
               className="text-sm font-medium text-neutral-100 hover:text-yellow-300"
             >
               Property Search
             </button>
 
-            {open === "properties" && (
-              <div className="absolute right-0 mt-3 w-[480px] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl">
+            {open && (
+              <div className="absolute right-0 top-full mt-2 w-[480px] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl">
                 <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
                   Get Started
                 </div>
