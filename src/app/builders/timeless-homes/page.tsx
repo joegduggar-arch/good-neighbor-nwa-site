@@ -1,69 +1,82 @@
 // src/app/builders/timeless-homes/page.tsx
 
-import Link from "next/link";
-import Image from "next/image";
 import PlanCard from "@/components/PlanCard";
 import { getPlansByBuilder } from "@/lib/floorplans";
 
 export const metadata = {
-  title: "Timeless Homes | Good Neighbor Realty",
-  description:
-    "Explore Timeless Homes plans by Milagro Designs, LLC — ±2000 sq ft new-construction homes in Northwest Arkansas.",
+  title: "Timeless Homes | Good Neighbor Realty",
+  description:
+    "Explore floorplans and new construction options from Timeless Homes, represented by Good Neighbor Realty.",
 };
 
 export default function TimelessHomesPage() {
-  const plans = getPlansByBuilder("timeless");
+  const plans = getPlansByBuilder("timeless-homes");
 
-  return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Image
-            src="/logos/timeless.png"
-            alt="Timeless Homes – Milagro Designs, LLC"
-            width={56}
-            height={56}
-            className="rounded-xl border border-neutral-800 bg-neutral-900 p-2"
-          />
-          <div>
-            <h1 className="text-2xl md:text-3xl font-semibold">
-              Timeless Homes – Milagro Designs, LLC
-            </h1>
-            <p className="text-sm text-neutral-300">
-              Thoughtfully designed homes around ±2000 sq ft, with classic curb
-              appeal and efficient, livable layouts.
-            </p>
-          </div>
-        </div>
+  return (
+    <main className="min-h-screen bg-neutral-950 text-neutral-100">
+      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16">
+        {/* Header */}
+        <header className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <p className="text-sm uppercase tracking-wide text-neutral-400">
+              Builders We Represent
+            </p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+              Timeless Homes
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm text-neutral-300 md:text-base">
+              Timeless Homes offers thoughtfully designed floorplans with a
+              focus on craftsmanship, comfort, and everyday livability. Browse a
+              sampling of their plans below, then reach out to Good Neighbor
+              Realty to talk through options, availability, and next steps.
+            </p>
+          </div>
+        </header>
 
-        <p className="text-sm text-neutral-300 mb-8 max-w-3xl">
-          Timeless Homes offers comfortable floorplans that focus on everyday
-          living — practical footprints, inviting front elevations, and
-          well-planned interior spaces. Browse the current plan lineup below,
-          then connect with us to learn where these homes are being built.
-        </p>
+        {/* Plans */}
+        <div className="mt-10 border-t border-neutral-800 pt-8">
+          {plans.length === 0 ? (
+            <p className="text-neutral-300">
+              There are no plans published online yet. Please contact Joe at{" "}
+              <a
+                href="tel:14797139565"
+                className="font-medium text-neutral-50 underline underline-offset-4"
+              >
+                (479) 713-9565
+              </a>{" "}
+              to discuss current and upcoming Timeless Homes builds.
+            </p>
+          ) : (
+            <>
+              <h2 className="text-lg font-semibold text-neutral-50">
+                Available Floorplans
+              </h2>
+              <p className="mb-4 mt-1 text-sm text-neutral-400">
+                Plan details and availability can vary by lot and community.
+                Contact us for the most up-to-date information.
+              </p>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          {plans.map((plan) => (
-            <PlanCard key={plan.key} plan={plan} />
-          ))}
-        </div>
+              <div className="grid gap-5 md:grid-cols-2">
+                {plans.map((plan) => (
+                  <PlanCard key={plan.slug} plan={plan} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
 
-        <p className="mt-8 text-xs text-neutral-400">
-          Square footage and features are approximate and subject to change at
-          the builder&apos;s discretion. Final specifications, colors, and
-          finishes may vary from home to home.
-        </p>
-
-        <div className="mt-10">
-          <Link
-            href="/contact"
-            className="inline-flex items-center rounded-full border border-amber-500 px-5 py-2 text-sm font-medium text-amber-300 hover:bg-amber-500/10"
-          >
-            Have questions about a Timeless Homes plan? Let&apos;s talk.
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
+        {/* Contact blurb */}
+        <div className="mt-10 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-sm text-neutral-200 md:p-6">
+          <p className="font-medium text-neutral-50">
+            Want to talk through Timeless Homes options?
+          </p>
+          <p className="mt-1">
+            Reach out directly and we’ll walk you through current builds,
+            customization possibilities, and the next steps for getting into a
+            Timeless Homes property.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
 }
