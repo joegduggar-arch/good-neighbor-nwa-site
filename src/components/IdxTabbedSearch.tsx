@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 
-type WidgetKey = "featured" | "map"; // we’re using 2 widgets for now
+type WidgetKey = "featured" | "sold" | "slideshow" | "map";
 
 type WidgetConfig = {
   label: string;
@@ -18,20 +18,18 @@ const WIDGETS: Record<WidgetKey, WidgetConfig> = {
     description:
       "Browse a curated selection of homes currently available through Good Neighbor Realty.",
   },
-  // If you want Sold/Pending back, uncomment this and add it to WidgetKey above:
-  // sold: {
-  //   label: "Sold / Pending",
-  //   id: "122996",
-  //   description:
-  //     "See homes that have recently gone under contract or sold in Northwest Arkansas.",
-  // },
-  // And the slideshow:
-  // slideshow: {
-  //   label: "Featured Slideshow",
-  //   id: "122997",
-  //   description:
-  //     "View an automatic slideshow of highlighted properties across the area.",
-  // },
+  sold: {
+    label: "Sold / Pending",
+    id: "122996",
+    description:
+      "See homes that have recently gone under contract or sold across Northwest Arkansas.",
+  },
+  slideshow: {
+    label: "Featured Slideshow",
+    id: "122997",
+    description:
+      "Watch a rotating slideshow of highlighted listings in and around Bella Vista.",
+  },
   map: {
     label: "Map Search",
     id: "122998",
@@ -51,7 +49,7 @@ export default function IdxTabbedSearch() {
 
     if (!container || !config) return;
 
-    // Clear any previous widget markup
+    // Clear anything that was there before
     container.innerHTML = "";
 
     const script = document.createElement("script");
@@ -62,7 +60,7 @@ export default function IdxTabbedSearch() {
 
     container.appendChild(script);
 
-    // optional cleanup
+    // Cleanup when tab changes
     return () => {
       container.innerHTML = "";
     };
@@ -102,7 +100,7 @@ export default function IdxTabbedSearch() {
             })}
           </div>
 
-          {/* Dynamic description under the tabs */}
+          {/* Description that changes with the active tab */}
           <p className="mt-4 text-sm text-neutral-300 max-w-2xl mx-auto">
             {activeConfig.description}
           </p>
