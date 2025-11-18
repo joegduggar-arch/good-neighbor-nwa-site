@@ -1,58 +1,81 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html,body { background:#0a0a0a; color:#e5e5e5; }
-a { color:#f5d37a; }
-.container { @apply mx-auto max-w-7xl px-4 md:px-6; }
-.section { @apply container py-12 md:py-16; }
-.card { @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800; }
-/* === Hero slow-pan animation === */
+
+/* ===== Base layout ===== */
+html,
+body {
+  background: #0a0a0a;
+  color: #e5e5e5;
+}
+
+a {
+  color: #f5d37a;
+}
+
+.container {
+  @apply mx-auto max-w-7xl px-4 md:px-6;
+}
+
+.section {
+  @apply container py-12 md:py-16;
+}
+
+.card {
+  @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
+}
+
+/* ===== Hero slow-pan animation ===== */
 @keyframes heroZoom {
-  0% {
-    transform: scale(1.05) translate3d(0, 0, 0);
-  }
-  50% {
-    transform: scale(1.12) translate3d(-12px, -8px, 0);
-  }
-  100% {
-    transform: scale(1.18) translate3d(0, 0, 0);
-  }
+  0% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.12) translate3d(-12px, -8px, 0);
+  }
+  100% {
+    transform: scale(1.18) translate3d(0, 0, 0);
+  }
 }
 
 .hero-zoom {
-  animation: heroZoom 28s ease-in-out infinite alternate;
-}/* === IDX widget styling overrides === */
+  animation: heroZoom 28s ease-in-out infinite alternate;
+}
 
-/* Outer container (we created this around the widget) */
+/* =========================================================
+   Generic IDX wrapper (if you wrap a widget in #idx-widget-container)
+   ========================================================= */
+
 #idx-widget-container {
   border-radius: 1.5rem;
   background: #020202;
   padding: 1.5rem;
 }
 
-/* Make IDX’s own wrapper transparent so our black shows through */
-#idx-widget-container [class*="IDX"], 
+/* Make IDX’s internal wrappers transparent so our black shows through */
+#idx-widget-container [class*="IDX"],
 #idx-widget-container [id*="IDX"] {
   background-color: transparent !important;
   border-color: transparent !important;
 }
 
-/* Round all listing photos inside the widget */
+/* Round listing photos */
 #idx-widget-container img {
   border-radius: 0.75rem;
 }
 
-/* Optional: soften boxes around each listing card */
+/* Soften boxes around each listing card */
 #idx-widget-container a,
 #idx-widget-container div {
   border-radius: 0.75rem;
 }
 
-/* Style the “View All” link more like your tabs */
+/* Reset default link look */
 #idx-widget-container a {
   text-decoration: none;
 }
 
+/* “View All” style – pill button */
 #idx-widget-container a[href*="results"] {
   display: inline-flex;
   align-items: center;
@@ -71,22 +94,26 @@ a { color:#f5d37a; }
 #idx-widget-container a[href*="results"]:hover {
   background: #facc15;
   color: #020617;
-}/* =========================================================
-   IDX Broker widget styling – Featured/Sold/Slideshow/Map
+}
+
+/* =========================================================
+   IDX Broker widget styling – Featured / Sold / Slideshow / Map
+   (these IDs come from the wrappers you added around each widget)
    ========================================================= */
 
-/* Shared card-style wrapper for every tab */
 #idx-featured,
 #idx-sold,
 #idx-slideshow,
 #idx-map {
   border-radius: 1.5rem;
-  background: #020617;        /* near-black backdrop */
+  background: #020617; /* near-black backdrop */
   padding: 1.75rem 1.5rem;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  color: #e5e7eb;       /* neutral-200 */
+  font-size: 0.9rem;
 }
 
-/* Kill the default light grey backgrounds IDX adds */
+/* Remove any light backgrounds IDX injects inline */
 #idx-featured *[style*="background"],
 #idx-sold *[style*="background"],
 #idx-slideshow *[style*="background"],
@@ -94,7 +121,7 @@ a { color:#f5d37a; }
   background: transparent !important;
 }
 
-/* Soften any boxes IDX uses around listings */
+/* Soften inner boxes */
 #idx-featured div,
 #idx-sold div,
 #idx-slideshow div,
@@ -102,7 +129,7 @@ a { color:#f5d37a; }
   border-radius: 0.75rem;
 }
 
-/* Round all listing photos */
+/* Round listing photos */
 #idx-featured img,
 #idx-sold img,
 #idx-slideshow img,
@@ -110,16 +137,7 @@ a { color:#f5d37a; }
   border-radius: 0.75rem;
 }
 
-/* Make text use your softer neutrals instead of default greys */
-#idx-featured,
-#idx-sold,
-#idx-slideshow,
-#idx-map {
-  color: #e5e7eb; /* Tailwind's neutral-200 */
-  font-size: 0.9rem;
-}
-
-/* "View All" style – looks like your tabs */
+/* “View All” button in each widget – matches your tab style */
 #idx-featured a[href*="results"],
 #idx-sold a[href*="results"],
 #idx-slideshow a[href*="results"],
