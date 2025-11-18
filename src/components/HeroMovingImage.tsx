@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export default function HeroMovingImage() {
   return (
-    <main className="bg-black text-white">
+    <>
       {/* HERO – moving background image / video */}
       <section className="relative min-h-[70vh] overflow-hidden bg-black">
-        {/* Background video (or image fallback) */}
+        {/* Background video */}
         <video
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
@@ -16,6 +16,7 @@ export default function HeroMovingImage() {
           loop
           playsInline
         >
+          {/* These must exist in /public/videos */}
           <source src="/videos/hero-loop.webm" type="video/webm" />
           <source src="/videos/hero-loop.mp4" type="video/mp4" />
         </video>
@@ -79,16 +80,16 @@ export default function HeroMovingImage() {
             >
               <div className="relative h-14 w-14 overflow-hidden rounded-md bg-neutral-800">
                 <Image
-                  src="/builders/milagro-thumb.jpg" // update this path to a real image
-                  alt="Milagro Designs"
+                  src="/builders/timeless-homes-logo.png" // make sure this file exists
+                  alt="Milagro Designs - Timeless Homes"
                   fill
-                  className="object-cover"
+                  className="object-contain p-1"
                 />
               </div>
               <div>
-                <div className="font-semibold">Milagro Designs</div>
+                <div className="font-semibold">Timeless Homes</div>
                 <div className="text-xs text-neutral-300">
-                  Custom + spec homes tailored for Bella Vista living.
+                  Milagro Designs, LLC – thoughtful Bella Vista homes.
                 </div>
               </div>
             </Link>
@@ -99,10 +100,10 @@ export default function HeroMovingImage() {
             >
               <div className="relative h-14 w-14 overflow-hidden rounded-md bg-neutral-800">
                 <Image
-                  src="/builders/dreambuilt-thumb.jpg" // update this path to a real image
+                  src="/builders/dream-built-logo.png" // make sure this file exists
                   alt="Dream Built Custom Homes"
                   fill
-                  className="object-cover"
+                  className="object-contain p-1"
                 />
               </div>
               <div>
@@ -129,6 +130,6 @@ export default function HeroMovingImage() {
           </div>
         </div>
       </section>
-    </main>
+    </>
   );
 }
