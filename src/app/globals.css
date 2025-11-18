@@ -71,4 +71,79 @@ a { color:#f5d37a; }
 #idx-widget-container a[href*="results"]:hover {
   background: #facc15;
   color: #020617;
+}/* =========================================================
+   IDX Broker widget styling – Featured/Sold/Slideshow/Map
+   ========================================================= */
+
+/* Shared card-style wrapper for every tab */
+#idx-featured,
+#idx-sold,
+#idx-slideshow,
+#idx-map {
+  border-radius: 1.5rem;
+  background: #020617;        /* near-black backdrop */
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Kill the default light grey backgrounds IDX adds */
+#idx-featured *[style*="background"],
+#idx-sold *[style*="background"],
+#idx-slideshow *[style*="background"],
+#idx-map *[style*="background"] {
+  background: transparent !important;
+}
+
+/* Soften any boxes IDX uses around listings */
+#idx-featured div,
+#idx-sold div,
+#idx-slideshow div,
+#idx-map div {
+  border-radius: 0.75rem;
+}
+
+/* Round all listing photos */
+#idx-featured img,
+#idx-sold img,
+#idx-slideshow img,
+#idx-map img {
+  border-radius: 0.75rem;
+}
+
+/* Make text use your softer neutrals instead of default greys */
+#idx-featured,
+#idx-sold,
+#idx-slideshow,
+#idx-map {
+  color: #e5e7eb; /* Tailwind's neutral-200 */
+  font-size: 0.9rem;
+}
+
+/* "View All" style – looks like your tabs */
+#idx-featured a[href*="results"],
+#idx-sold a[href*="results"],
+#idx-slideshow a[href*="results"],
+#idx-map a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#idx-featured a[href*="results"]:hover,
+#idx-sold a[href*="results"]:hover,
+#idx-slideshow a[href*="results"]:hover,
+#idx-map a[href*="results"]:hover {
+  background: #facc15;
+  color: #111827;
 }
