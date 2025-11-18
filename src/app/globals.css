@@ -21,4 +21,54 @@ a { color:#f5d37a; }
 
 .hero-zoom {
   animation: heroZoom 28s ease-in-out infinite alternate;
+}/* === IDX widget styling overrides === */
+
+/* Outer container (we created this around the widget) */
+#idx-widget-container {
+  border-radius: 1.5rem;
+  background: #020202;
+  padding: 1.5rem;
+}
+
+/* Make IDX’s own wrapper transparent so our black shows through */
+#idx-widget-container [class*="IDX"], 
+#idx-widget-container [id*="IDX"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Round all listing photos inside the widget */
+#idx-widget-container img {
+  border-radius: 0.75rem;
+}
+
+/* Optional: soften boxes around each listing card */
+#idx-widget-container a,
+#idx-widget-container div {
+  border-radius: 0.75rem;
+}
+
+/* Style the “View All” link more like your tabs */
+#idx-widget-container a {
+  text-decoration: none;
+}
+
+#idx-widget-container a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#idx-widget-container a[href*="results"]:hover {
+  background: #facc15;
+  color: #020617;
 }
