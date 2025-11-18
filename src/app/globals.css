@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Base layout ===== */
-html,
-body {
+/* Basic theme */
+html, body {
   background: #0a0a0a;
   color: #e5e5e5;
 }
@@ -13,6 +12,7 @@ a {
   color: #f5d37a;
 }
 
+/* Correct Tailwind container class (NO @apply inside .container!) */
 .container {
   @apply mx-auto max-w-7xl px-4 md:px-6;
 }
@@ -25,7 +25,7 @@ a {
   @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
 }
 
-/* ===== Hero slow-pan animation ===== */
+/* === Hero slow-pan animation === */
 @keyframes heroZoom {
   0% {
     transform: scale(1.05) translate3d(0, 0, 0);
@@ -43,77 +43,23 @@ a {
 }
 
 /* =========================================================
-   Generic IDX wrapper (if you wrap a widget in #idx-widget-container)
+   IDX Broker Overrides (Safe for production)
    ========================================================= */
 
-#idx-widget-container {
-  border-radius: 1.5rem;
-  background: #020202;
-  padding: 1.5rem;
-}
-
-/* Make IDX’s internal wrappers transparent so our black shows through */
-#idx-widget-container [class*="IDX"],
-#idx-widget-container [id*="IDX"] {
-  background-color: transparent !important;
-  border-color: transparent !important;
-}
-
-/* Round listing photos */
-#idx-widget-container img {
-  border-radius: 0.75rem;
-}
-
-/* Soften boxes around each listing card */
-#idx-widget-container a,
-#idx-widget-container div {
-  border-radius: 0.75rem;
-}
-
-/* Reset default link look */
-#idx-widget-container a {
-  text-decoration: none;
-}
-
-/* “View All” style – pill button */
-#idx-widget-container a[href*="results"] {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem 1.1rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  border-radius: 999px;
-  border: 1px solid #facc15;
-  color: #fde68a;
-  background: transparent;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-#idx-widget-container a[href*="results"]:hover {
-  background: #facc15;
-  color: #020617;
-}
-
-/* =========================================================
-   IDX Broker widget styling – Featured / Sold / Slideshow / Map
-   (these IDs come from the wrappers you added around each widget)
-   ========================================================= */
-
+/* Shared card-style wrappers */
 #idx-featured,
 #idx-sold,
 #idx-slideshow,
 #idx-map {
   border-radius: 1.5rem;
-  background: #020617; /* near-black backdrop */
+  background: #020617;
   padding: 1.75rem 1.5rem;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
-  color: #e5e7eb;       /* neutral-200 */
+  color: #e5e7eb;
   font-size: 0.9rem;
 }
 
-/* Remove any light backgrounds IDX injects inline */
+/* Remove IDX default backgrounds */
 #idx-featured *[style*="background"],
 #idx-sold *[style*="background"],
 #idx-slideshow *[style*="background"],
@@ -121,7 +67,7 @@ a {
   background: transparent !important;
 }
 
-/* Soften inner boxes */
+/* Rounded listing containers */
 #idx-featured div,
 #idx-sold div,
 #idx-slideshow div,
@@ -129,7 +75,7 @@ a {
   border-radius: 0.75rem;
 }
 
-/* Round listing photos */
+/* Rounded listing images */
 #idx-featured img,
 #idx-sold img,
 #idx-slideshow img,
@@ -137,7 +83,7 @@ a {
   border-radius: 0.75rem;
 }
 
-/* “View All” button in each widget – matches your tab style */
+/* "View All" buttons styled like your tabs */
 #idx-featured a[href*="results"],
 #idx-sold a[href*="results"],
 #idx-slideshow a[href*="results"],
