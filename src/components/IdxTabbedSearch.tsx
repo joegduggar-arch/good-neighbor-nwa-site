@@ -1,104 +1,117 @@
+// src/components/IdxTabbedSearch.tsx
 "use client";
 
-import { useState } from "react";
-import Script from "next/script";
+import { useEffect, useState } from "react";
 
-type TabKey = "featured" | "sold" | "slideshow" | "map";
+type WidgetKey = "featured" | "map"; // we’re using 2 widgets for now
 
-const TABS: { key: TabKey; label: string; blurb: string }[] = [
-  {
-    key: "featured",
+type WidgetConfig = {
+  label: string;
+  id: string; // IDX Broker widget ID
+  description: string;
+};
+
+const WIDGETS: Record<WidgetKey, WidgetConfig> = {
+  featured: {
     label: "Featured Homes",
-    blurb: "Curated listings we think are worth a closer look.",
+    id: "122995",
+    description:
+      "Browse a curated selection of homes currently available through Good Neighbor Realty.",
   },
-  {
-    key: "sold",
-    label: "Sold / Pending",
-    blurb: "Recent activity so you can see what the market is doing.",
-  },
-  {
-    key: "slideshow",
-    label: "Featured Slideshow",
-    blurb: "A rotating highlight reel of current homes.",
-  },
-  {
-    key: "map",
+  // If you want Sold/Pending back, uncomment this and add it to WidgetKey above:
+  // sold: {
+  //   label: "Sold / Pending",
+  //   id: "122996",
+  //   description:
+  //     "See homes that have recently gone under contract or sold in Northwest Arkansas.",
+  // },
+  // And the slideshow:
+  // slideshow: {
+  //   label: "Featured Slideshow",
+  //   id: "122997",
+  //   description:
+  //     "View an automatic slideshow of highlighted properties across the area.",
+  // },
+  map: {
     label: "Map Search",
-    blurb: "Search visually across Northwest Arkansas on an interactive map.",
+    id: "122998",
+    description:
+      "Search visually across Northwest Arkansas on an interactive map.",
   },
-];
+};
+
+const IDX_BASE = "//goodneighbornwa.idxbroker.com/idx/widgets/";
 
 export default function IdxTabbedSearch() {
-  const [active, setActive] = useState<TabKey>("featured");
+  const [active, setActive] = useState<WidgetKey>("featured");
+
+  useEffect(() => {
+    const config = WIDGETS[active];
+    const container = document.getElementById("idx-widget-container");
+
+    if (!container || !config) return;
+
+    // Clear any previous widget markup
+    container.innerHTML = "";
+
+    const script = document.createElement("script");
+    script.charset = "UTF-8";
+    script.type = "text/javascript";
+    script.id = `idxwidgetsrc-${config.id}`;
+    script.src = `${IDX_BASE}${config.id}`;
+
+    container.appendChild(script);
+
+    // optional cleanup
+    return () => {
+      container.innerHTML = "";
+    };
+  }, [active]);
+
+  const activeConfig = WIDGETS[active];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10">
-      {/* Tabs header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold md:text-3xl">
-          Search Properties
-        </h1>
+    <section className="bg-neutral-950 text-neutral-50 py-12">
+      <div className="mx-auto max-w-6xl px-4">
+        {/* Heading */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Search Properties
+          </h2>
 
-        <div className="flex flex-wrap gap-2">
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => setActive(tab.key)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                active === tab.key
-                  ? "bg-yellow-400 text-black"
-                  : "bg-neutral-900 text-neutral-200 hover:bg-neutral-800"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+          {/* Rounded tab buttons */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            {Object.entries(WIDGETS).map(([key, cfg]) => {
+              const k = key as WidgetKey;
+              const isActive = k === active;
+              return (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setActive(k)}
+                  className={
+                    "px-4 py-1.5 text-sm font-medium rounded-full border transition " +
+                    (isActive
+                      ? "border-yellow-400 bg-yellow-400/10 text-yellow-300"
+                      : "border-neutral-700 bg-neutral-900 text-neutral-200 hover:border-yellow-400 hover:text-yellow-300")
+                  }
+                >
+                  {cfg.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Dynamic description under the tabs */}
+          <p className="mt-4 text-sm text-neutral-300 max-w-2xl mx-auto">
+            {activeConfig.description}
+          </p>
         </div>
-      </div>
 
-      {/* Tab blurb */}
-      <p className="mt-3 text-sm text-neutral-300">
-        {TABS.find((t) => t.key === active)?.blurb}
-      </p>
-
-      {/* Active widget */}
-      <div className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
-        {active === "featured" && (
-          <Script
-            id="idxwidgetsrc-122995"
-            src="//goodneighbornwa.idxbroker.com/idx/widgets/122995"
-            strategy="afterInteractive"
-            charSet="UTF-8"
-          />
-        )}
-
-        {active === "sold" && (
-          <Script
-            id="idxwidgetsrc-122996"
-            src="//goodneighbornwa.idxbroker.com/idx/widgets/122996"
-            strategy="afterInteractive"
-            charSet="UTF-8"
-          />
-        )}
-
-        {active === "slideshow" && (
-          <Script
-            id="idxwidgetsrc-122997"
-            src="//goodneighbornwa.idxbroker.com/idx/widgets/122997"
-            strategy="afterInteractive"
-            charSet="UTF-8"
-          />
-        )}
-
-        {active === "map" && (
-          <Script
-            id="idxwidgetsrc-122998"
-            src="//goodneighbornwa.idxbroker.com/idx/widgets/122998"
-            strategy="afterInteractive"
-            charSet="UTF-8"
-          />
-        )}
+        {/* IDX widget container */}
+        <div className="mt-8 rounded-2xl bg-black/40 p-4 sm:p-6">
+          <div id="idx-widget-container" />
+        </div>
       </div>
     </section>
   );
