@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Basic theme */
+/* ---------------------------------------------------
+   Base Theme
+--------------------------------------------------- */
 html, body {
   background: #0a0a0a;
   color: #e5e5e5;
@@ -12,7 +14,7 @@ a {
   color: #f5d37a;
 }
 
-/* Correct Tailwind container class (NO @apply inside .container!) */
+/* Correct Tailwind container class */
 .container {
   @apply mx-auto max-w-7xl px-4 md:px-6;
 }
@@ -25,7 +27,9 @@ a {
   @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
 }
 
-/* === Hero slow-pan animation === */
+/* ---------------------------------------------------
+   Hero Moving Image Animation
+--------------------------------------------------- */
 @keyframes heroZoom {
   0% {
     transform: scale(1.05) translate3d(0, 0, 0);
@@ -42,11 +46,10 @@ a {
   animation: heroZoom 28s ease-in-out infinite alternate;
 }
 
-/* =========================================================
-   IDX Broker Overrides (Safe for production)
-   ========================================================= */
+/* ---------------------------------------------------
+   IDX Widget Wrapper (our custom unified styling)
+--------------------------------------------------- */
 
-/* Shared card-style wrappers */
 #idx-featured,
 #idx-sold,
 #idx-slideshow,
@@ -54,12 +57,12 @@ a {
   border-radius: 1.5rem;
   background: #020617;
   padding: 1.75rem 1.5rem;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.55);
   color: #e5e7eb;
   font-size: 0.9rem;
 }
 
-/* Remove IDX default backgrounds */
+/* Remove IDX’s inline backgrounds */
 #idx-featured *[style*="background"],
 #idx-sold *[style*="background"],
 #idx-slideshow *[style*="background"],
@@ -67,7 +70,11 @@ a {
   background: transparent !important;
 }
 
-/* Rounded listing containers */
+/* Round IDX images + cards */
+#idx-featured img,
+#idx-sold img,
+#idx-slideshow img,
+#idx-map img,
 #idx-featured div,
 #idx-sold div,
 #idx-slideshow div,
@@ -75,15 +82,7 @@ a {
   border-radius: 0.75rem;
 }
 
-/* Rounded listing images */
-#idx-featured img,
-#idx-sold img,
-#idx-slideshow img,
-#idx-map img {
-  border-radius: 0.75rem;
-}
-
-/* "View All" buttons styled like your tabs */
+/* “View All” link */
 #idx-featured a[href*="results"],
 #idx-sold a[href*="results"],
 #idx-slideshow a[href*="results"],
