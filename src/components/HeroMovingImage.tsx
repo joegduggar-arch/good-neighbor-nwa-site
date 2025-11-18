@@ -1,3 +1,4 @@
+"Use client";
 import Link from "next/link";
 import Image from "next/image";
 import HeroMovingImage from "@/components/HeroMovingImage";
