@@ -38,6 +38,7 @@ export default function IdxTabbedSearch() {
         <h1 className="text-2xl font-semibold md:text-3xl">
           Search Properties
         </h1>
+
         <div className="flex flex-wrap gap-2">
           {TABS.map((tab) => (
             <button
@@ -61,50 +62,42 @@ export default function IdxTabbedSearch() {
         {TABS.find((t) => t.key === active)?.blurb}
       </p>
 
-      {/* Active tab content */}
+      {/* Active widget */}
       <div className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
         {active === "featured" && (
-          <div className="overflow-hidden">
-            <Script
-              id="idxwidgetsrc-122995"
-              src="//goodneighbornwa.idxbroker.com/idx/widgets/122995"
-              strategy="afterInteractive"
-              charSet="UTF-8"
-            />
-          </div>
+          <Script
+            id="idxwidgetsrc-122995"
+            src="//goodneighbornwa.idxbroker.com/idx/widgets/122995"
+            strategy="afterInteractive"
+            charSet="UTF-8"
+          />
         )}
 
         {active === "sold" && (
-          <div className="overflow-hidden">
-            <Script
-              id="idxwidgetsrc-122996"
-              src="//goodneighbornwa.idxbroker.com/idx/widgets/122996"
-              strategy="afterInteractive"
-              charSet="UTF-8"
-            />
-          </div>
+          <Script
+            id="idxwidgetsrc-122996"
+            src="//goodneighbornwa.idxbroker.com/idx/widgets/122996"
+            strategy="afterInteractive"
+            charSet="UTF-8"
+          />
         )}
 
         {active === "slideshow" && (
-          <div className="overflow-hidden">
-            <Script
-              id="idxwidgetsrc-122997"
-              src="//goodneighbornwa.idxbroker.com/idx/widgets/122997"
-              strategy="afterInteractive"
-              charSet="UTF-8"
-            />
-          </div>
+          <Script
+            id="idxwidgetsrc-122997"
+            src="//goodneighbornwa.idxbroker.com/idx/widgets/122997"
+            strategy="afterInteractive"
+            charSet="UTF-8"
+          />
         )}
 
         {active === "map" && (
-          <div className="overflow-hidden">
-            <Script
-              id="idxwidgetsrc-122998"
-              src="//goodneighbornwa.idxbroker.com/idx/widgets/122998"
-              strategy="afterInteractive"
-              charSet="UTF-8"
-            />
-          </div>
+          <Script
+            id="idxwidgetsrc-122998"
+            src="//goodneighbornwa.idxbroker.com/idx/widgets/122998"
+            strategy="afterInteractive"
+            charSet="UTF-8"
+          />
         )}
       </div>
     </section>
