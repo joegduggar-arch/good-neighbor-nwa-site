@@ -1,8 +1,13 @@
-"use client";
-
-import Link from "next/link";
-import Image from "next/image";
 import HeroMovingImage from "@/components/HeroMovingImage";
+import Link from "next/link";
+// If you have this component already:
+// import NWAOverview from "@/components/NWAOverview";
+
+export const metadata = {
+  title: "Good Neighbor Realty | Northwest Arkansas",
+  description:
+    "Good Neighbor Realty serves Northwest Arkansas with a special focus on Bella Vista new construction and forever homes.",
+};
 
 export default function HomePage() {
   return (
@@ -10,95 +15,66 @@ export default function HomePage() {
       {/* HERO */}
       <HeroMovingImage />
 
-      {/* Welcome Section */}
-      <section className="px-4 py-16 text-center">
-        <h1 className="text-4xl font-bold md:text-5xl">
-          Welcome to Good Neighbor Realty
-        </h1>
-
-        <p className="mt-4 text-lg text-neutral-300 md:text-xl">
-          Your trusted real estate professionals serving all of Northwest Arkansas —
-          from new construction to forever homes.
-        </p>
-
-        <p className="mt-2 text-sm text-neutral-400 md:text-base">
-          Serving Northwest Arkansas — with a special focus on Bella Vista new construction.
-        </p>
-      </section>
-
-      {/* Partner Builders + Contact */}
-      <section className="border-t border-neutral-800 bg-neutral-950 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 md:flex-row md:items-center md:justify-between">
-          
-          {/* Left: Heading */}
-          <div className="md:w-1/3">
-            <h2 className="text-2xl font-bold md:text-3xl">Our Partner Builders</h2>
-            <p className="mt-3 text-sm text-neutral-300 md:text-base">
-              Milagro Designs and Dream Built Custom Homes bring thoughtful new
-              construction options to Bella Vista and the greater NWA area.
-            </p>
-          </div>
-
-          {/* Builder Cards */}
-          <div className="flex flex-1 flex-col gap-4 md:flex-row md:justify-center">
-            {/* Milagro Designs */}
+      {/* Quick Actions – keeps home short but useful */}
+      <section className="border-t border-neutral-900 bg-neutral-950 py-10">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-xl font-semibold md:text-2xl">
+            How can we help today?
+          </h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {/* New Construction */}
             <Link
-              href="/builders/milagro-designs"
-              className="group flex flex-1 items-center gap-3 rounded-lg border border-neutral-800 bg-neutral-900/70 p-3 hover:border-yellow-400 hover:bg-neutral-900 transition"
+              href="/new-construction"
+              className="group rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4 hover:border-yellow-400 hover:bg-neutral-900 transition"
             >
-              <div className="relative h-14 w-14 overflow-hidden rounded-md bg-neutral-800">
-                <Image
-                  src="/builders/milagro-thumb.jpg"
-                  alt="Milagro Designs"
-                  fill
-                  className="object-cover"
-                />
+              <div className="text-sm font-semibold text-yellow-300">
+                Bella Vista New Construction
               </div>
-              <div>
-                <div className="font-semibold">Milagro Designs</div>
-                <div className="text-xs text-neutral-300">
-                  Custom + spec homes tailored for Bella Vista living.
-                </div>
-              </div>
+              <p className="mt-2 text-xs text-neutral-300">
+                Explore current and upcoming spec homes and floorplans.
+              </p>
             </Link>
 
-            {/* Dream Built */}
+            {/* Search All Properties */}
             <Link
-              href="/builders/dream-built-homes"
-              className="group flex flex-1 items-center gap-3 rounded-lg border border-neutral-800 bg-neutral-900/70 p-3 hover:border-yellow-400 hover:bg-neutral-900 transition"
+              href="/search"
+              className="group rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4 hover:border-yellow-400 hover:bg-neutral-900 transition"
             >
-              <div className="relative h-14 w-14 overflow-hidden rounded-md bg-neutral-800">
-                <Image
-                  src="/builders/dreambuilt-thumb.jpg"
-                  alt="Dream Built Custom Homes"
-                  fill
-                  className="object-cover"
-                />
+              <div className="text-sm font-semibold text-yellow-300">
+                Search All Properties
               </div>
-              <div>
-                <div className="font-semibold">Dream Built Custom Homes</div>
-                <div className="text-xs text-neutral-300">
-                  Durable, well-planned builds across Bella Vista and NWA.
-                </div>
-              </div>
+              <p className="mt-2 text-xs text-neutral-300">
+                Use our IDX search to browse the full MLS across Northwest Arkansas.
+              </p>
             </Link>
-          </div>
 
-          {/* Right: Contact Button */}
-          <div className="md:w-1/4">
-            <p className="mb-3 text-sm text-neutral-300">
-              Ready to talk through a build or purchase? Reach out and let’s see
-              what fits your family best.
-            </p>
+            {/* Meet the Agents */}
             <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full border border-yellow-400 px-5 py-2 text-sm font-semibold text-yellow-300 hover:bg-yellow-400 hover:text-black transition"
+              href="/agents"
+              className="group rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4 hover:border-yellow-400 hover:bg-neutral-900 transition"
             >
-              Contact Us
+              <div className="text-sm font-semibold text-yellow-300">
+                Meet Our Agents
+              </div>
+              <p className="mt-2 text-xs text-neutral-300">
+                Get to know the team that will walk with you through every step.
+              </p>
             </Link>
           </div>
         </div>
       </section>
+
+      {/* OPTIONAL: very light NWA overview */}
+      {/*
+      <section className="bg-neutral-950 py-10">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-xl font-semibold md:text-2xl">
+            Northwest Arkansas at a Glance
+          </h2>
+          <NWAOverview />
+        </div>
+      </section>
+      */}
     </main>
   );
 }
