@@ -2,42 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Base layout ---------- */
-
+/* Global background + text color */
 html,
 body {
   background: #0a0a0a;
   color: #e5e5e5;
 }
 
-/* Links default to your gold accent */
+/* Global link color */
 a {
   color: #f5d37a;
 }
 
-/* Correct Tailwind container class */
-.container {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 72rem;        /* ~ Tailwind max-w-7xl */
-  padding-left: 1rem;      /* px-4 equivalent */
-  padding-right: 1rem;
-}
-
-/* Section + card helpers in plain CSS */
+/* Simple section helper if you still use it */
 .section {
-  padding-top: 3rem;       /* ~ py-12 */
-  padding-bottom: 4rem;    /* ~ py-16 on md, close enough */
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
+/* Card helper */
 .card {
-  border-radius: 0.75rem;  /* ~ rounded-xl */
-  background-color: rgba(23, 23, 23, 0.6); /* neutral-900/60 */
-  border: 1px solid #27272a; /* neutral-800 */
+  border-radius: 0.75rem;
+  background-color: rgba(23, 23, 23, 0.7);
+  border: 1px solid #171717;
 }
 
-/* ---------- Hero slow-pan animation ---------- */
-
+/* === Hero slow-pan animation === */
 @keyframes heroZoom {
   0% {
     transform: scale(1.05) translate3d(0, 0, 0);
@@ -55,9 +45,56 @@ a {
 }
 
 /* =========================================================
-   IDX Broker widget styling – wrappers for each tab
+   IDX Broker widget styling – wrappers
    ========================================================= */
 
+/* Wrapper we put around the Search Properties widget area */
+#idx-widget-container {
+  border-radius: 1.5rem;
+  background: #020202;
+  padding: 1.5rem;
+}
+
+/* Make IDX’s own wrappers transparent so our black shows through */
+#idx-widget-container [class*="IDX"],
+#idx-widget-container [id*="IDX"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Round listing photos + soften cards in that wrapper */
+#idx-widget-container img {
+  border-radius: 0.75rem;
+}
+
+#idx-widget-container a,
+#idx-widget-container div {
+  border-radius: 0.75rem;
+}
+
+/* "View All" link in that wrapper */
+#idx-widget-container a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+#idx-widget-container a[href*="results"]:hover {
+  background: #facc15;
+  color: #020617;
+}
+
+/* Per-tab wrappers: Featured / Sold / Slideshow / Map */
 #idx-featured,
 #idx-sold,
 #idx-slideshow,
@@ -70,7 +107,7 @@ a {
   font-size: 0.9rem;
 }
 
-/* Kill the default light grey backgrounds IDX adds inline */
+/* Kill any light grey backgrounds IDX injects */
 #idx-featured *[style*="background"],
 #idx-sold *[style*="background"],
 #idx-slideshow *[style*="background"],
@@ -78,7 +115,7 @@ a {
   background: transparent !important;
 }
 
-/* Soften any boxes IDX uses around listings */
+/* Soften boxes IDX uses around listings */
 #idx-featured div,
 #idx-sold div,
 #idx-slideshow div,
@@ -86,7 +123,7 @@ a {
   border-radius: 0.75rem;
 }
 
-/* Round all listing photos */
+/* Round listing photos in each tab */
 #idx-featured img,
 #idx-sold img,
 #idx-slideshow img,
@@ -94,7 +131,7 @@ a {
   border-radius: 0.75rem;
 }
 
-/* “View All” style – pill similar to your tabs */
+/* "View All" links inside each tab */
 #idx-featured a[href*="results"],
 #idx-sold a[href*="results"],
 #idx-slideshow a[href*="results"],
