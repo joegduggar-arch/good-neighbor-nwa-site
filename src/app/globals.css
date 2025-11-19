@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---- Base site colors ---- */
-html, body {
+html,
+body {
   background: #0a0a0a;
   color: #e5e5e5;
 }
@@ -12,35 +12,11 @@ a {
   color: #f5d37a;
 }
 
-/* ---- Container utility ---- */
-.container {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 72rem;      /* Tailwind max-w-7xl */
-  padding-left: 1rem;    /* px-4 equivalent */
-  padding-right: 1rem;   /* px-4 */
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-left: 1.5rem;  /* md:px-6 */
-    padding-right: 1.5rem;
-  }
-}
-
-/* ---- Section wrapper ---- */
-.section {
-  @apply container py-12 md:py-16;
-}
-
-/* ---- Card utility ---- */
 .card {
   @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
 }
 
-/* =========================================================
-   HERO SLOW-PAN ANIMATION (FULLY VALIDATED)
-   ========================================================= */
+/* === Hero slow-pan animation === */
 @keyframes heroZoom {
   0% {
     transform: scale(1.05) translate3d(0, 0, 0);
@@ -57,11 +33,56 @@ a {
   animation: heroZoom 28s ease-in-out infinite alternate;
 }
 
+/* === IDX widget styling overrides === */
+#idx-widget-container {
+  border-radius: 1.5rem;
+  background: #020202;
+  padding: 1.5rem;
+}
+
+#idx-widget-container [class*="IDX"],
+#idx-widget-container [id*="IDX"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+#idx-widget-container img {
+  border-radius: 0.75rem;
+}
+
+#idx-widget-container a,
+#idx-widget-container div {
+  border-radius: 0.75rem;
+}
+
+#idx-widget-container a {
+  text-decoration: none;
+}
+
+#idx-widget-container a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#idx-widget-container a[href*="results"]:hover {
+  background: #facc15;
+  color: #020617;
+}
+
 /* =========================================================
-   IDX Broker widget styling: Featured / Sold / Slideshow / Map
+   IDX Broker widget styling – Featured/Sold/Slideshow/Map
    ========================================================= */
 
-/* Shared wrapper */
 #idx-featured,
 #idx-sold,
 #idx-slideshow,
@@ -74,7 +95,6 @@ a {
   font-size: 0.9rem;
 }
 
-/* Remove IDX default backgrounds */
 #idx-featured *[style*="background"],
 #idx-sold *[style*="background"],
 #idx-slideshow *[style*="background"],
@@ -82,7 +102,6 @@ a {
   background: transparent !important;
 }
 
-/* Round IDX cards */
 #idx-featured div,
 #idx-sold div,
 #idx-slideshow div,
@@ -90,7 +109,6 @@ a {
   border-radius: 0.75rem;
 }
 
-/* Round IDX images */
 #idx-featured img,
 #idx-sold img,
 #idx-slideshow img,
@@ -98,7 +116,6 @@ a {
   border-radius: 0.75rem;
 }
 
-/* “View All” buttons styled like your tabs */
 #idx-featured a[href*="results"],
 #idx-sold a[href*="results"],
 #idx-slideshow a[href*="results"],
@@ -114,8 +131,8 @@ a {
   background: transparent;
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
   text-decoration: none;
+  text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
