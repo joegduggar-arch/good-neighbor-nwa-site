@@ -2,35 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------- Base layout ---------- */
+
 html,
 body {
   background: #0a0a0a;
   color: #e5e5e5;
 }
 
+/* Links default to your gold accent */
 a {
   color: #f5d37a;
 }
 
-/* Simple container helper – mirrors Tailwind's .container */
+/* Simple container helper – plain CSS, no @apply */
 .container {
   margin-left: auto;
   margin-right: auto;
-  max-width: 72rem;
-  padding-left: 1rem;
+  max-width: 72rem;        /* ~ Tailwind max-w-7xl */
+  padding-left: 1rem;      /* px-4 equivalent-ish */
   padding-right: 1rem;
 }
 
-/* Section + card helpers (using Tailwind @apply) */
+/* Section + card helpers in plain CSS */
 .section {
-  @apply container py-12 md:py-16;
+  padding-top: 3rem;       /* ~ py-12 */
+  padding-bottom: 4rem;    /* ~ py-16 on md, close enough */
 }
 
 .card {
-  @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
+  border-radius: 0.75rem;  /* ~ rounded-xl */
+  background-color: rgba(23, 23, 23, 0.6); /* neutral-900/60 */
+  border: 1px solid #27272a; /* neutral-800 */
 }
 
-/* === Hero slow-pan animation === */
+/* ---------- Hero slow-pan animation ---------- */
+
 @keyframes heroZoom {
   0% {
     transform: scale(1.05) translate3d(0, 0, 0);
