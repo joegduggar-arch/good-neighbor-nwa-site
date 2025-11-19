@@ -15,12 +15,12 @@ a {
   color: #f5d37a;
 }
 
-/* Simple container helper – plain CSS, no @apply */
+/* Correct Tailwind container class */
 .container {
   margin-left: auto;
   margin-right: auto;
   max-width: 72rem;        /* ~ Tailwind max-w-7xl */
-  padding-left: 1rem;      /* px-4 equivalent-ish */
+  padding-left: 1rem;      /* px-4 equivalent */
   padding-right: 1rem;
 }
 
