@@ -1,4 +1,6 @@
 // src/app/search/page.tsx
+"use client";
+
 import IdxWidget from "@/components/IdxWidget";
 
 export default function SearchPage() {
@@ -21,45 +23,48 @@ export default function SearchPage() {
         </div>
       </section>
 
-     {/* Lower sections: Featured / Sold / Slideshow */}
-<section className="bg-neutral-950 py-14">
-  <div className="mx-auto max-w-6xl space-y-14 px-4 md:px-6">
+      {/* Lower sections: Featured / Sold / Slideshow */}
+      <section className="bg-neutral-950 py-14">
+        <div className="mx-auto max-w-6xl space-y-12 px-4 md:px-6">
 
-    {/* Featured Homes */}
-    <div>
-      <h2 className="text-2xl font-semibold">Featured Homes</h2>
-      <p className="mt-2 text-sm text-neutral-300">
-        A curated selection of homes currently highlighted through Good Neighbor Realty.
-      </p>
+          {/* Featured Homes */}
+          <div className="idx-section-wrapper">
+            <h2 className="text-2xl font-semibold">Featured Homes</h2>
+            <p className="mt-2 text-sm text-neutral-300">
+              A curated selection of homes currently highlighted through Good
+              Neighbor Realty.
+            </p>
+            <div className="mt-6">
+              <IdxWidget widgetId="122995" containerId="idx-search-featured" />
+            </div>
+          </div>
 
-      <div className="mt-6 idx-section-wrapper">
-        <IdxWidget widgetId="122995" containerId="idx-search-featured" />
-      </div>
-    </div>
+          {/* Sold / Pending */}
+          <div className="idx-section-wrapper">
+            <h2 className="text-2xl font-semibold">Sold / Pending</h2>
+            <p className="mt-2 text-sm text-neutral-300">
+              See recent activity on properties that have gone under contract or
+              recently closed.
+            </p>
+            <div className="mt-6">
+              <IdxWidget widgetId="122996" containerId="idx-search-sold" />
+            </div>
+          </div>
 
-    {/* Sold / Pending */}
-    <div>
-      <h2 className="text-2xl font-semibold">Sold / Pending</h2>
-      <p className="mt-2 text-sm text-neutral-300">
-        See recent activity on properties that have gone under contract or recently closed.
-      </p>
+          {/* Featured Slideshow */}
+          <div className="idx-section-wrapper">
+            <h2 className="text-2xl font-semibold">Featured Slideshow</h2>
+            <p className="mt-2 text-sm text-neutral-300">
+              A rotating slideshow of highlighted listings across Northwest
+              Arkansas.
+            </p>
+            <div className="mt-6">
+              <IdxWidget widgetId="122997" containerId="idx-search-slideshow" />
+            </div>
+          </div>
 
-      <div className="mt-6 idx-section-wrapper">
-        <IdxWidget widgetId="122996" containerId="idx-search-sold" />
-      </div>
-    </div>
-
-    {/* Featured Slideshow */}
-    <div>
-      <h2 className="text-2xl font-semibold">Featured Slideshow</h2>
-      <p className="mt-2 text-sm text-neutral-300">
-        A rotating slideshow of highlighted listings across Northwest Arkansas.
-      </p>
-
-      <div className="mt-6 idx-section-wrapper">
-        <IdxWidget widgetId="122997" containerId="idx-search-slideshow" />
-      </div>
-    </div>
-
-  </div>
-</section>
+        </div>
+      </section>
+    </main>
+  );
+}
