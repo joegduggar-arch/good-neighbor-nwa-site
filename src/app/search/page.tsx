@@ -1,3 +1,4 @@
+// src/app/search/page.tsx
 import IdxWidget from "@/components/IdxWidget";
 
 export default function SearchPage() {
@@ -16,7 +17,7 @@ export default function SearchPage() {
 
         <div className="mt-8">
           {/* Full-width map widget */}
-          <IdxWidget widgetId="122998" />
+          <IdxWidget widgetId="122998" containerId="idx-search-map" />
         </div>
       </section>
 
@@ -31,7 +32,10 @@ export default function SearchPage() {
               Neighbor Realty.
             </p>
             <div className="mt-6">
-              <IdxWidget widgetId="122995" />
+              <IdxWidget
+                widgetId="122995"
+                containerId="idx-search-featured"
+              />
             </div>
           </div>
 
@@ -43,7 +47,10 @@ export default function SearchPage() {
               recently closed.
             </p>
             <div className="mt-6">
-              <IdxWidget widgetId="122996" />
+              <IdxWidget
+                widgetId="122996"
+                containerId="idx-search-sold"
+              />
             </div>
           </div>
 
@@ -55,7 +62,10 @@ export default function SearchPage() {
               Arkansas.
             </p>
             <div className="mt-6">
-              <IdxWidget widgetId="122997" />
+              <IdxWidget
+                widgetId="122997"
+                containerId="idx-search-slideshow"
+              />
             </div>
           </div>
         </div>

@@ -1,42 +1,46 @@
+// src/components/IdxWidget.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type IdxWidgetProps = {
-  /** The numeric widget ID from IDX Broker, e.g. "122995" */
-  widgetId: string;
-  /** Optional: HTML id for the container div */
-  containerId?: string;
+  widgetId: string;      // e.g. "122995"
+  containerId?: string;  // optional; if omitted, we'll generate from widgetId
 };
 
 export default function IdxWidget({ widgetId, containerId }: IdxWidgetProps) {
-  const targetId = containerId ?? `idx-widget-${widgetId}`;
+  const loadedRef = useRef(false);
+
+  // Use a default container ID if one isn't provided
+  const actualContainerId =
+    containerId ?? `idx-widget-${widgetId}`;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // Avoid double-loading the script on rerenders
+    if (loadedRef.current) return;
+    loadedRef.current = true;
 
-    const container = document.getElementById(targetId);
-    if (!container) return;
+    const container = document.getElementById(actualContainerId);
 
-    // Clear any previous render in this container
-    container.innerHTML = "";
-
-    // If the script for this widget already exists, reuse it by cloning
-    const existingScript = document.getElementById(
-      `idxwidgetsrc-${widgetId}`
-    ) as HTMLScriptElement | null;
+    if (container) {
+      container.innerHTML = "";
+    }
 
     const script = document.createElement("script");
     script.charset = "UTF-8";
     script.type = "text/javascript";
-    script.id = `idxwidgetsrc-${widgetId}-${Date.now()}`;
+    script.id = `idxwidgetsrc-${widgetId}`;
     script.src = `//goodneighbornwa.idxbroker.com/idx/widgets/${widgetId}`;
 
-    container.appendChild(script);
+    (container ?? document.body).appendChild(script);
 
-    // We don't remove the script on unmount because IDX Broker widgets
-    // are basically "write once" into the container.
-  }, [widgetId, targetId]);
+    return () => {
+      const existing = document.getElementById(`idxwidgetsrc-${widgetId}`);
+      if (existing && existing.parentNode) {
+        existing.parentNode.removeChild(existing);
+      }
+    };
+  }, [widgetId, actualContainerId]);
 
-  return <div id={targetId} />;
+  return <div id={actualContainerId} />;
 }
