@@ -1,16 +1,14 @@
 // src/lib/idx.ts
 
-export const IDX_LINKS = [
+export type IdxLink = {
+  label: string;
+  href: string;
+};
+
+// Links used by the Property Search dropdown in the navbar
+export const IDX_LINKS: IdxLink[] = [
   {
-    label: "IDX Search",
-    href: "/search",   // <-- THIS fixes the Lindsey redirect
-  },
-  {
-    label: "Featured Listings",
-    href: "/search#featured",
-  },
-  {
-    label: "Map Search",
-    href: "/search#map",
+    label: "Search Properties",
+    href: "/search", // our internal search page
   },
 ];
