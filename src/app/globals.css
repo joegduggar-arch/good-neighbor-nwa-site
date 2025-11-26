@@ -24,3 +24,24 @@
     @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
   }
 }
+/* ============================================
+   Dark rounded wrapper for IDX widget sections
+   ============================================ */
+.idx-section-wrapper {
+  border-radius: 1.25rem;
+  background: #0f0f0f;              /* deep neutral backdrop */
+  padding: 1.75rem 1.25rem;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Round images inside widgets */
+.idx-section-wrapper img {
+  border-radius: 0.75rem !important;
+}
+
+/* Kill IDX background colors */
+.idx-section-wrapper *[style*="background"],
+.idx-section-wrapper *[style*="background-color"] {
+  background: transparent !important;
+}
