@@ -22,6 +22,200 @@ a {
   max-width: 72rem;        /* ~ Tailwind max-w-7xl */
   padding-left: 1rem;      /* ~ px-4 */
   padding-right: 1rem;
+}@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------- Global base styles ----------------- */
+
+html,
+body {
+  background: #0a0a0a;
+  color: #e5e5e5;
+}
+
+/* Default link color */
+a {
+  color: #f5d37a;
+}
+
+/* ----------------- Layout helpers ----------------- */
+/* These replace the old @apply lines with plain CSS */
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80rem;        /* Tailwind max-w-7xl */
+  padding-left: 1rem;      /* px-4 */
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 1.5rem;  /* md:px-6 */
+    padding-right: 1.5rem;
+  }
+}
+
+.section {
+  padding-top: 3rem;       /* py-12 */
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: 4rem;     /* md:py-16 */
+    padding-bottom: 4rem;
+  }
+}
+
+/* Card helper – matches rounded dark cards on the site */
+.card {
+  border-radius: 0.75rem;                          /* rounded-xl */
+  background-color: rgba(15, 23, 42, 0.6);         /* neutral-900 w/opacity */
+  border: 1px solid #1f2937;                       /* ring-neutral-800 */
+}
+
+/* ----------------- Hero slow-pan animation ----------------- */
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.12) translate3d(-12px, -8px, 0);
+  }
+  100% {
+    transform: scale(1.18) translate3d(0, 0, 0);
+  }
+}
+
+.hero-zoom {
+  animation: heroZoom 28s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   IDX Broker widget styling – single-widget wrapper
+   (if you use #idx-widget-container around a widget)
+   ========================================================= */
+
+#idx-widget-container {
+  border-radius: 1.5rem;
+  background: #020202;
+  padding: 1.5rem;
+}
+
+/* Make IDX’s own wrapper transparent so our black shows through */
+#idx-widget-container [class*="IDX"],
+#idx-widget-container [id*="IDX"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Round all listing photos inside the widget */
+#idx-widget-container img {
+  border-radius: 0.75rem;
+}
+
+/* Optional: soften boxes around each listing card */
+#idx-widget-container a,
+#idx-widget-container div {
+  border-radius: 0.75rem;
+}
+
+/* Style the “View All” link more like your tabs */
+#idx-widget-container a {
+  text-decoration: none;
+}
+
+#idx-widget-container a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#idx-widget-container a[href*="results"]:hover {
+  background: #facc15;
+  color: #020617;
+}
+
+/* =========================================================
+   IDX Broker widget styling – Featured/Sold/Slideshow/Map
+   (the 4-tab layout under "Search Properties")
+   ========================================================= */
+
+#idx-featured,
+#idx-sold,
+#idx-slideshow,
+#idx-map {
+  border-radius: 1.5rem;
+  background: #020617;                       /* near-black backdrop */
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  color: #e5e7eb;                            /* neutral-200-ish text */
+  font-size: 0.9rem;
+}
+
+/* Remove default light backgrounds IDX adds inline */
+#idx-featured *[style*="background"],
+#idx-sold *[style*="background"],
+#idx-slideshow *[style*="background"],
+#idx-map *[style*="background"] {
+  background: transparent !important;
+}
+
+/* Soften any boxes IDX uses around listings */
+#idx-featured div,
+#idx-sold div,
+#idx-slideshow div,
+#idx-map div {
+  border-radius: 0.75rem;
+}
+
+/* Round all listing photos */
+#idx-featured img,
+#idx-sold img,
+#idx-slideshow img,
+#idx-map img {
+  border-radius: 0.75rem;
+}
+
+/* "View All" style – looks like your tabs */
+#idx-featured a[href*="results"],
+#idx-sold a[href*="results"],
+#idx-slideshow a[href*="results"],
+#idx-map a[href*="results"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #fde68a;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#idx-featured a[href*="results"]:hover,
+#idx-sold a[href*="results"]:hover,
+#idx-slideshow a[href*="results"]:hover,
+#idx-map a[href*="results"]:hover {
+  background: #facc15;
+  color: #111827;
 }
 
 @media (min-width: 768px) {
