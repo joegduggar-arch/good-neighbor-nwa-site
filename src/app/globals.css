@@ -24,24 +24,35 @@
     @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
   }
 }
-/* ============================================
-   Dark rounded wrapper for IDX widget sections
-   ============================================ */
-.idx-section-wrapper {
-  border-radius: 1.25rem;
-  background: #0f0f0f;              /* deep neutral backdrop */
-  padding: 1.75rem 1.25rem;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.06);
+/* === IDX NEW WIDGET STYLING – Good Neighbor cards === */
+/* Featured Homes */
+#idx-listings-showcase-122995 {
+  background-color: #111111 !important;     /* dark card panel */
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-/* Round images inside widgets */
-.idx-section-wrapper img {
-  border-radius: 0.75rem !important;
+/* Sold / Pending */
+#idx-listings-showcase-122996 {
+  background-color: #111111 !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-/* Kill IDX background colors */
-.idx-section-wrapper *[style*="background"],
-.idx-section-wrapper *[style*="background-color"] {
-  background: transparent !important;
+/* Featured Slideshow */
+#idx-listings-showcase-122997 {
+  background-color: #111111 !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Optional: tighten up inside spacing a bit so the white cells
+   don’t touch the rounded edges */
+#idx-listings-showcase-122995 .idx-listings-showcase__properties,
+#idx-listings-showcase-122996 .idx-listings-showcase__properties,
+#idx-listings-showcase-122997 .idx-listings-showcase__properties {
+  padding: 0.5rem !important;
 }
