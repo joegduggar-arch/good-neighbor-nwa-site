@@ -1,55 +1,14 @@
-/* Tailwind base layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* -----------------------
-   Base site styles
-   ----------------------- */
-
+/* Base body styling */
 body {
   background-color: #000000; /* black background */
-  color: #ffffff;            /* white text */
+  color: #ffffff; /* white text */
 }
 
-/* Constrained content width helper (if you want to use it later) */
-.section-max-width {
-  max-width: 72rem;   /* ~1152px */
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-/* -----------------------
-   Hero background animation
-   (used by className="hero-zoom")
-   ----------------------- */
-
-.hero-zoom {
-  transform: scale(1.05);
-  animation: heroZoom 24s ease-in-out infinite alternate;
-}
-
-@keyframes heroZoom {
-  from {
-    transform: scale(1.05);
-  }
-  to {
-    transform: scale(1.12);
-  }
-}
-
-/* -----------------------
-   IDX styling placeholders
-   (we’ll add specific widget IDs here later)
-   ----------------------- */
-
-/* Example legacy Featured Homes card styles (safe, valid CSS)
-   NOTE: Only works once these IDs exist on the page.
-*/
-
-/*
+/* Legacy IDX widget: Featured Homes (showcase id 10047) */
 #IDX-showcaseGallery-10047 {
   background-color: #111111 !important;
   border-radius: 18px !important;
@@ -61,4 +20,3 @@ body {
   border-radius: 12px !important;
   overflow: hidden;
 }
-*/
