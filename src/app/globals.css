@@ -2,29 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom global styles */
-@layer base {
-  body {
-    @apply bg-white text-neutral-900;
-  }
-}
-
+/* ========== IDX WIDGET GLOBAL OVERRIDES ========== */
 @layer components {
- /* Wrapper card for all IDX widgets on the site */
-.idx-panel {
-  border-radius: 1.5rem;
-  background: rgba(15, 23, 42, 0.98); /* very dark slate */
-  padding: 1.75rem;
-  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(75, 85, 99, 0.8); /* neutral-ish border */
+  /* Wrapper card for all IDX widgets on the site */
+  .idx-panel {
+    background-color: #111111;
+    padding: 24px;
+    border-radius: 18px;
+  }
 }
 
-/* Optional: let the widget stretch full width but respect our padding */
-.idx-widget-inner {
-  width: 100%;
+/* ========== LEGACY FEATURED HOMES WIDGET ========== */
+#IDX-showcaseGallery-10047 {
+  background-color: #111111 !important;
+  border-radius: 18px !important;
+  padding: 24px !important;
 }
 
-/* You can still keep your widget-specific CSS from IDX, e.g.:
-   #IDX-showcaseGallery-10047 { ... } etc.
-   That controls the INSIDE of the widget cards.
-*/
+#IDX-showcaseGallery-10047 .IDX-showcase {
+  background-color: #18181b !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
