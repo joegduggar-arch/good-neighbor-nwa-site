@@ -1,37 +1,54 @@
-/* Tailwind directives */
+/* ============================
+   Global Site Styles
+============================ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global site styles */
+/* Base body styling */
 body {
-  Background-color: #000000;
-   Color:#ffffff;
+  @apply bg-black text-white;
 }
 
-/* ================= IDX WIDGET STYLING ================= */
+/* ==========================================================
+   LEGACY IDX WIDGET STYLING (safe, valid, no syntax errors)
+   Featured Homes Showcase (Widget ID 10047)
+========================================================== */
 
-@layer components {
-  /* Generic wrapper card you can use around widgets */
-  .idx-panel {
-    background-color: #020617; /* neutral-950 */
-    border-radius: 18px;
-    padding: 24px;
-  }
-
-  /* Legacy IDX widget: Featured Homes (showcase id 10047) */
-  #IDX-showcaseGallery-10047 {
-    background-color: #020617 !important; /* dark panel */
-    border-radius: 18px !important;
-    padding: 24px !important;
-  }
-
-  #IDX-showcaseGallery-10047 .IDX-showcase {
-    background-color: #111827 !important; /* slightly lighter inside */
-    border-radius: 12px !important;
-    overflow: hidden;
-  }
-
-  /* You can copy these two blocks and change the ID
-     for Sold/Pending, Slideshow, Map widgets later. */
+#IDX-showcaseGallery-10047 {
+  background-color: #111111 !important;
+  border-radius: 18px !important;
+  padding: 24px !important;
 }
+
+#IDX-showcaseGallery-10047 .IDX-showcase {
+  background-color: #18181b !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+/* Make listing cards dark + rounded */
+#IDX-showcaseGallery-10047 .IDX-showcasePhoto {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+#IDX-showcaseGallery-10047 .IDX-showcaseText {
+  background-color: #111111 !important;
+  padding: 12px !important;
+  border-radius: 0 0 12px 12px !important;
+  color: #ffffff !important;
+}
+
+/* Remove white backgrounds IDX injects */
+#IDX-showcaseGallery-10047 td,
+#IDX-showcaseGallery-10047 table {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ==========================================================
+   ADDITIONAL LEGACY WIDGET PLACEMENT (Sold/Pending, Slideshow, Map)
+   ← I can generate full styling for each once you confirm widget IDs.
+========================================================== */
