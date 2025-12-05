@@ -1,21 +1,55 @@
-/* ============================
-   Global Site Styles
-============================ */
-
+/* Tailwind base layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base body styling */
+/* -----------------------
+   Base site styles
+   ----------------------- */
+
 body {
-  @apply bg-black text-white;
+  background-color: #000000; /* black background */
+  color: #ffffff;            /* white text */
 }
 
-/* ==========================================================
-   LEGACY IDX WIDGET STYLING (safe, valid, no syntax errors)
-   Featured Homes Showcase (Widget ID 10047)
-========================================================== */
+/* Constrained content width helper (if you want to use it later) */
+.section-max-width {
+  max-width: 72rem;   /* ~1152px */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 
+/* -----------------------
+   Hero background animation
+   (used by className="hero-zoom")
+   ----------------------- */
+
+.hero-zoom {
+  transform: scale(1.05);
+  animation: heroZoom 24s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+/* -----------------------
+   IDX styling placeholders
+   (we’ll add specific widget IDs here later)
+   ----------------------- */
+
+/* Example legacy Featured Homes card styles (safe, valid CSS)
+   NOTE: Only works once these IDs exist on the page.
+*/
+
+/*
 #IDX-showcaseGallery-10047 {
   background-color: #111111 !important;
   border-radius: 18px !important;
@@ -25,30 +59,6 @@ body {
 #IDX-showcaseGallery-10047 .IDX-showcase {
   background-color: #18181b !important;
   border-radius: 12px !important;
-  overflow: hidden !important;
+  overflow: hidden;
 }
-
-/* Make listing cards dark + rounded */
-#IDX-showcaseGallery-10047 .IDX-showcasePhoto {
-  border-radius: 12px !important;
-  overflow: hidden !important;
-}
-
-#IDX-showcaseGallery-10047 .IDX-showcaseText {
-  background-color: #111111 !important;
-  padding: 12px !important;
-  border-radius: 0 0 12px 12px !important;
-  color: #ffffff !important;
-}
-
-/* Remove white backgrounds IDX injects */
-#IDX-showcaseGallery-10047 td,
-#IDX-showcaseGallery-10047 table {
-  background: transparent !important;
-  border: none !important;
-}
-
-/* ==========================================================
-   ADDITIONAL LEGACY WIDGET PLACEMENT (Sold/Pending, Slideshow, Map)
-   ← I can generate full styling for each once you confirm widget IDs.
-========================================================== */
+*/
