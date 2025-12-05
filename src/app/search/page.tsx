@@ -23,21 +23,26 @@ export default function SearchPage() {
         </div>
       </section>
 
-      {/* Lower sections: Featured / Sold / Slideshow */}
-      <section className="bg-neutral-950 py-14">
-        <div className="mx-auto max-w-6xl space-y-12 px-4 md:px-6">
+      import LegacyIdxWidget from "@/components/LegacyIdxWidget";
+// (make sure this import is at the top of the file, with your other imports)
 
-          {/* Featured Homes */}
-          <div className="idx-section-wrapper">
-            <h2 className="text-2xl font-semibold">Featured Homes</h2>
-            <p className="mt-2 text-sm text-neutral-300">
-              A curated selection of homes currently highlighted through Good
-              Neighbor Realty.
-            </p>
-            <div className="mt-6">
-              <IdxWidget widgetId="122995" containerId="idx-search-featured" />
-            </div>
-          </div>
+
+// ...later in the JSX:
+
+{/* Featured Homes (Legacy widget) */}
+<div>
+  <h2 className="text-2xl font-semibold">Featured Homes</h2>
+  <p className="mt-2 text-sm text-neutral-300">
+    A curated selection of homes currently highlighted through Good
+    Neighbor Realty.
+  </p>
+  <div className="mt-6">
+    <LegacyIdxWidget
+      widgetKey="featured-homes-legacy"
+      scriptSrc="//goodneighbornwa.idxbroker.com/idx/customshowcasejs.php?widgetid=104877"
+    />
+  </div>
+</div>
 
           {/* Sold / Pending */}
           <div className="idx-section-wrapper">
