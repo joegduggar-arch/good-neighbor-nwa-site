@@ -1,35 +1,36 @@
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global site styles */
+body {
+  @apply bg-black text-white;
+}
+
 /* ================= IDX WIDGET STYLING ================= */
 
 @layer components {
-  /* Generic wrapper class you can reuse anywhere */
+  /* Generic wrapper card you can use around widgets */
   .idx-panel {
-    background-color: #111111 !important; /* dark background */
+    background-color: #020617; /* neutral-950 */
+    border-radius: 18px;
+    padding: 24px;
+  }
+
+  /* Legacy IDX widget: Featured Homes (showcase id 10047) */
+  #IDX-showcaseGallery-10047 {
+    background-color: #020617 !important; /* dark panel */
     border-radius: 18px !important;
     padding: 24px !important;
   }
 
-  /* Legacy IDX widgets: Featured Homes, Sold/Pending, Slideshow, Map */
-  /* Use the actual IDs from your Legacy Widgets screen: 10047, 10048, 10049, 10051 */
-
-  #IDX-showcaseGallery-10047, /* Featured Homes (Legacy) */
-  #IDX-showcaseGallery-10048, /* Sold/Pending Showcase (Legacy) */
-  #IDX-slideshowGallery-10049, /* Featured Slideshow (Legacy) */
-  #IDX-mapSearch-10051 {       /* Map Search (Legacy) */
-    background-color: #111111 !important;
-    border-radius: 18px !important;
-    padding: 24px !important;
-  }
-
-  #IDX-showcaseGallery-10047 .IDX-showcase,
-  #IDX-showcaseGallery-10048 .IDX-showcase,
-  #IDX-slideshowGallery-10049 .IDX-slideshowWrapper,
-  #IDX-mapSearch-10051 #IDX-mapsearchMap {
-    background-color: #18181b !important;
+  #IDX-showcaseGallery-10047 .IDX-showcase {
+    background-color: #111827 !important; /* slightly lighter inside */
     border-radius: 12px !important;
     overflow: hidden;
   }
+
+  /* You can copy these two blocks and change the ID
+     for Sold/Pending, Slideshow, Map widgets later. */
 }
