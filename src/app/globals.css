@@ -5,7 +5,8 @@
 
 /* Global site styles */
 body {
-  @apply bg-black text-white;
+  Background-color: #000000;
+   Color:#ffffff;
 }
 
 /* ================= IDX WIDGET STYLING ================= */
