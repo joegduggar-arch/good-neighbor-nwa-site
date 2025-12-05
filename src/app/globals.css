@@ -2,25 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========== IDX WIDGET GLOBAL OVERRIDES ========== */
+/* ================= IDX WIDGET STYLING ================= */
+
 @layer components {
-  /* Wrapper card for all IDX widgets on the site */
+  /* Generic wrapper class you can reuse anywhere */
   .idx-panel {
-    background-color: #111111;
-    padding: 24px;
-    border-radius: 18px;
+    background-color: #111111 !important; /* dark background */
+    border-radius: 18px !important;
+    padding: 24px !important;
   }
-}
 
-/* ========== LEGACY FEATURED HOMES WIDGET ========== */
-#IDX-showcaseGallery-10047 {
-  background-color: #111111 !important;
-  border-radius: 18px !important;
-  padding: 24px !important;
-}
+  /* Legacy IDX widgets: Featured Homes, Sold/Pending, Slideshow, Map */
+  /* Use the actual IDs from your Legacy Widgets screen: 10047, 10048, 10049, 10051 */
 
-#IDX-showcaseGallery-10047 .IDX-showcase {
-  background-color: #18181b !important;
-  border-radius: 12px !important;
-  overflow: hidden;
+  #IDX-showcaseGallery-10047, /* Featured Homes (Legacy) */
+  #IDX-showcaseGallery-10048, /* Sold/Pending Showcase (Legacy) */
+  #IDX-slideshowGallery-10049, /* Featured Slideshow (Legacy) */
+  #IDX-mapSearch-10051 {       /* Map Search (Legacy) */
+    background-color: #111111 !important;
+    border-radius: 18px !important;
+    padding: 24px !important;
+  }
+
+  #IDX-showcaseGallery-10047 .IDX-showcase,
+  #IDX-showcaseGallery-10048 .IDX-showcase,
+  #IDX-slideshowGallery-10049 .IDX-slideshowWrapper,
+  #IDX-mapSearch-10051 #IDX-mapsearchMap {
+    background-color: #18181b !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+  }
 }
