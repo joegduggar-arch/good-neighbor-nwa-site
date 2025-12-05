@@ -10,49 +10,21 @@
 }
 
 @layer components {
-  /* Correct Tailwind-style container */
-  .container {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 80rem; /* Tailwind max-w-7xl */
-    padding-left: 1rem; /* px-4 */
-    padding-right: 1rem;
-  }
-
-  /* FIXED card class */
-  .card {
-    @apply rounded-xl bg-neutral-900/60 ring-1 ring-neutral-800;
-  }
-}
-/* === IDX NEW WIDGET STYLING – Good Neighbor cards === */
-
-/* Featured Homes */
-#idx-listings-showcase-122995 {
-  background-color: #111111 !important;
-  border-radius: 20px !important;
-  padding: 1.5rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+ /* Wrapper card for all IDX widgets on the site */
+.idx-panel {
+  border-radius: 1.5rem;
+  background: rgba(15, 23, 42, 0.98); /* very dark slate */
+  padding: 1.75rem;
+  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(75, 85, 99, 0.8); /* neutral-ish border */
 }
 
-/* Sold / Pending */
-#idx-listings-showcase-122996 {
-  background-color: #111111 !important;
-  border-radius: 20px !important;
-  padding: 1.5rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+/* Optional: let the widget stretch full width but respect our padding */
+.idx-widget-inner {
+  width: 100%;
 }
 
-/* Featured Slideshow */
-#idx-listings-showcase-122997 {
-  background-color: #111111 !important;
-  border-radius: 20px !important;
-  padding: 1.5rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Reduce inside padding for better rounded look */
-#idx-listings-showcase-122995 .idx-listings-showcase__properties,
-#idx-listings-showcase-122996 .idx-listings-showcase__properties,
-#idx-listings-showcase-122997 .idx-listings-showcase__properties {
-  padding: 0.5rem !important;
-}
+/* You can still keep your widget-specific CSS from IDX, e.g.:
+   #IDX-showcaseGallery-10047 { ... } etc.
+   That controls the INSIDE of the widget cards.
+*/

@@ -1,88 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import LegacyIdxWidget from "./LegacyIdxWidget";
+import IdxLegacyWidget from "./IdxLegacyWidget";
 
-// Legacy widget IDs from your screenshot
-const FEATURED_ID = "10047";
-const SOLD_ID = "10048";
-const SLIDESHOW_ID = "10049";
-const MAP_ID = "10051";
+type TabKey = "featured" | "sold" | "slideshow" | "map";
 
-type TabId = "featured" | "sold" | "slideshow" | "map";
-
-const TABS: {
-  id: TabId;
-  label: string;
-  description: string;
-  widgetId: string;
-  type: "showcase" | "slideshow" | "mapsearch";
-}[] = [
-  {
-    id: "featured",
-    label: "Featured Homes",
-    description:
-      "A curated selection of homes currently highlighted through Good Neighbor Realty.",
-    widgetId: FEATURED_ID,
-    type: "showcase",
-  },
-  {
-    id: "sold",
-    label: "Sold / Pending",
-    description:
-      "See recent activity on properties that have gone under contract or recently closed.",
-    widgetId: SOLD_ID,
-    type: "showcase",
-  },
-  {
-    id: "slideshow",
-    label: "Featured Slideshow",
-    description:
-      "A rotating slideshow of highlighted listings across Northwest Arkansas.",
-    widgetId: SLIDESHOW_ID,
-    type: "slideshow",
-  },
-  {
-    id: "map",
-    label: "Map Search",
-    description:
-      "Explore Northwest Arkansas on an interactive map, powered by IDX Broker.",
-    widgetId: MAP_ID,
-    type: "mapsearch",
-  },
+const TABS: { key: TabKey; label: string }[] = [
+  { key: "featured", label: "Featured Homes" },
+  { key: "sold", label: "Sold / Pending" },
+  { key: "slideshow", label: "Featured Slideshow" },
+  { key: "map", label: "Map Search" },
 ];
 
 export default function SearchPropertiesSection() {
-  const [activeTab, setActiveTab] = useState<TabId>("featured");
-  const active = TABS.find((t) => t.id === activeTab)!;
+  const [activeTab, setActiveTab] = useState<TabKey>("featured");
 
   return (
-    <section className="border-t border-neutral-900 bg-black py-16">
+    <section className="border-t border-neutral-900 bg-black text-white py-12">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         {/* Heading */}
-        <div className="text-center">
+        <header className="text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Search Properties</h2>
-          <p className="mt-4 text-sm text-neutral-300 md:text-base">
+          <p className="mt-3 text-sm text-neutral-300 md:text-base">
             Browse featured homes, recently sold and pending properties, or
             explore Northwest Arkansas on an interactive map — all powered by
             IDX Broker and styled to match Good Neighbor Realty.
           </p>
-        </div>
+        </header>
 
         {/* Tabs */}
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           {TABS.map((tab) => {
-            const isActive = tab.id === activeTab;
+            const isActive = tab.key === activeTab;
+
             return (
               <button
-                key={tab.id}
+                key={tab.key}
                 type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`rounded-full px-6 py-2 text-sm font-semibold transition
-                  ${isActive
-                    ? "bg-yellow-400 text-black shadow-lg"
-                    : "border border-neutral-700 text-neutral-200 hover:border-yellow-300 hover:text-yellow-300"
-                  }`}
+                onClick={() => setActiveTab(tab.key)}
+                className={
+                  "rounded-full px-6 py-2 text-sm font-semibold transition-colors " +
+                  (isActive
+                    ? "bg-yellow-400 text-black shadow"
+                    : "border border-neutral-600 text-neutral-200 hover:border-yellow-300 hover:text-yellow-300")
+                }
               >
                 {tab.label}
               </button>
@@ -90,13 +51,39 @@ export default function SearchPropertiesSection() {
           })}
         </div>
 
-        {/* Description + Widget */}
-        <div className="mt-8 text-center text-sm text-neutral-300 md:text-base">
-          {active.description}
-        </div>
+        {/* Card that holds the widget */}
+        <div className="idx-panel mt-10">
+          {activeTab === "featured" && (
+            <IdxLegacyWidget
+              kind="showcase"
+              widgetId={10047}
+              className="idx-widget-inner"
+            />
+          )}
 
-        <div className="mt-10 rounded-2xl bg-neutral-950 p-6 shadow-xl">
-          <LegacyIdxWidget widgetId={active.widgetId} type={active.type} />
+          {activeTab === "sold" && (
+            <IdxLegacyWidget
+              kind="showcase"
+              widgetId={10048}
+              className="idx-widget-inner"
+            />
+          )}
+
+          {activeTab === "slideshow" && (
+            <IdxLegacyWidget
+              kind="slideshow"
+              widgetId={10049}
+              className="idx-widget-inner"
+            />
+          )}
+
+          {activeTab === "map" && (
+            <IdxLegacyWidget
+              kind="map"
+              widgetId={10051}
+              className="idx-widget-inner"
+            />
+          )}
         </div>
       </div>
     </section>

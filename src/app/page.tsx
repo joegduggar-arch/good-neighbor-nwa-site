@@ -83,8 +83,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============== IDX TABBED SEARCH SECTION (HOME) ============== */}
-      <SearchPropertiesSection />
+           {/* ============== IDX TABBED SEARCH SECTION (HOME) ============== */}
+      <div className="-mt-16 md:-mt-20">
+        <SearchPropertiesSection />
+      </div>
 
       {/* ============== SIMPLE ABOUT BAND ============== */}
       <section className="border-t border-neutral-900 bg-neutral-950 py-12">
