@@ -1,5 +1,6 @@
 // src/components/AgentCard.tsx
 
+import Link from "next/link";
 import Image from "next/image";
 import type { Agent } from "@/lib/agents";
 
@@ -13,7 +14,10 @@ export default function AgentCard({ agent }: Props) {
     : undefined;
 
   return (
-    <article className="flex flex-col gap-4 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 shadow-sm">
+    <Link
+      href={`/agents/${agent.slug}`}
+      className="flex flex-col gap-4 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-400"
+    >
       <div className="flex items-center gap-4">
         <div className="relative h-20 w-20 overflow-hidden rounded-full border border-neutral-700">
           <Image
@@ -34,6 +38,7 @@ export default function AgentCard({ agent }: Props) {
               {telHref ? (
                 <a
                   href={telHref}
+                  onClick={(e) => e.stopPropagation()}
                   className="hover:text-yellow-300 underline-offset-2 hover:underline"
                 >
                   {agent.phone}
@@ -47,6 +52,7 @@ export default function AgentCard({ agent }: Props) {
             <p className="text-sm text-neutral-300">
               <a
                 href={`mailto:${agent.email}`}
+                onClick={(e) => e.stopPropagation()}
                 className="hover:text-yellow-300 underline-offset-2 hover:underline"
               >
                 {agent.email}
@@ -56,7 +62,13 @@ export default function AgentCard({ agent }: Props) {
         </div>
       </div>
 
-      <p className="text-sm leading-relaxed text-neutral-300">{agent.bio}</p>
-    </article>
+      <p className="text-sm leading-relaxed text-neutral-300">
+        {agent.bio}
+      </p>
+
+      <span className="text-xs font-semibold text-yellow-300">
+        View full profile →
+      </span>
+    </Link>
   );
 }
