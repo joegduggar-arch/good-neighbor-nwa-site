@@ -33,6 +33,7 @@ export default function AgentCard({ agent }: Props) {
             {agent.name}
           </h3>
           <p className="text-sm text-yellow-300">{agent.title}</p>
+
           {agent.phone && (
             <p className="mt-1 text-sm text-neutral-300">
               {telHref ? (
@@ -48,6 +49,7 @@ export default function AgentCard({ agent }: Props) {
               )}
             </p>
           )}
+
           {agent.email && (
             <p className="text-sm text-neutral-300">
               <a

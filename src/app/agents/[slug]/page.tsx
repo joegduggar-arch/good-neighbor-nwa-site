@@ -12,22 +12,19 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  // lets Next pre-generate /agents/joe-duggar etc.
   return getAgents().map((agent) => ({ slug: agent.slug }));
 }
 
 export function generateMetadata({ params }: PageProps): Metadata {
   const agent = getAgent(params.slug);
-
   if (!agent) {
     return {
-      title: "Agent not found | Good Neighbor Realty",
+      title: "Agent not found | Good Neighbor Realty"
     };
   }
-
   return {
     title: `${agent.name} | Good Neighbor Realty`,
-    description: agent.bio.slice(0, 155),
+    description: agent.bio.slice(0, 155)
   };
 }
 
@@ -102,7 +99,7 @@ export default function AgentDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Bio / full description */}
+          {/* Bio */}
           <div>
             <h2 className="text-lg font-semibold text-neutral-50">
               About {agent.name.split(" ")[0]}
