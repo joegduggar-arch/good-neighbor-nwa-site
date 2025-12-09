@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,7 +10,7 @@ export default function HomePage() {
   return (
     <main className="bg-black text-white">
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-black">
+      <section className="relative overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
           <Image
@@ -19,14 +18,14 @@ export default function HomePage() {
             alt="Northwest Arkansas landscape"
             fill
             priority
-            className="object-cover"
+            className="hero-zoom object-cover"
           />
           {/* Dark overlay so text stays readable */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/90" />
         </div>
 
         {/* Hero content */}
-        <div className="relative mx-auto flex min-h-[70vh] max-w-6xl flex-col gap-8 px-4 pb-20 pt-32 md:flex-row md:items-end md:px-6 md:pb-28 md:pt-40">
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-32 md:flex-row md:items-end md:px-6 md:pb-28 md:pt-40">
           {/* Left: tagline + buttons */}
           <div className="max-w-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-yellow-300">
@@ -57,26 +56,26 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right: builders card (single instance) */}
-          <div className="flex-1 rounded-2xl bg-black/70 p-5 ring-1 ring-white/10 backdrop-blur">
+          {/* Right: builders card (pulls from BUILDERS_MENU) */}
+          <div className="flex-1 rounded-2xl bg-black/60 p-5 ring-1 ring-white/10 backdrop-blur">
             <h2 className="text-sm font-semibold text-neutral-100">
               Builders We Represent
             </h2>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {builders.map((b) => (
                 <Link
                   key={b.slug}
                   href={`/builders/${b.slug}`}
-                  className="flex items-center gap-3 rounded-xl bg-neutral-900/80 px-3 py-2 text-sm text-neutral-100 hover:bg-neutral-800"
+                  className="flex items-center gap-4 rounded-xl bg-neutral-900/70 px-4 py-3 text-sm text-neutral-100 hover:bg-neutral-800"
                 >
                   <Image
                     src={b.logo}
                     alt={b.name}
-                    width={32}
-                    height={32}
-                    className="rounded"
+                    width={96}
+                    height={48}
+                    className="h-12 w-auto rounded object-contain"
                   />
-                  <span>{b.name}</span>
+                  <span className="text-sm font-medium">{b.name}</span>
                 </Link>
               ))}
             </div>
@@ -96,7 +95,7 @@ export default function HomePage() {
           <p className="mt-4 max-w-3xl text-sm text-neutral-300 md:text-base">
             Good Neighbor Realty is a locally owned brokerage focused on
             communities like Bella Vista, Bentonville, Rogers, Springdale,
-            Fayetteville, and the surrounding areas. Whether
+            Fayetteville, Prairie Grove, and the surrounding areas. Whether
             you&apos;re building new, buying, or selling, our team is here to
             walk with you through every step of the process.
           </p>
