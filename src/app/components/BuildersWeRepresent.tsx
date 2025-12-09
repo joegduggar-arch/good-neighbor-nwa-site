@@ -13,12 +13,12 @@ const builders: Builder[] = [
   {
     name: "Timeless Homes",
     slug: "timeless-homes",
-    logoSrc: "/builders/timeless-homes-logo.png", // in /public
+    logoSrc: "/builders/timeless-homes-logo.png",
   },
   {
     name: "Swanson Properties",
     slug: "swanson-properties",
-    logoSrc: "/builders/swanson-properties-logo.png", // in /public
+    logoSrc: "/builders/swanson-properties-logo.png",
   },
 ];
 
@@ -55,13 +55,13 @@ export default function BuildersWeRepresent() {
               className="flex items-center justify-between gap-3 rounded-xl bg-white/5 px-4 py-3 hover:bg-white/10 transition"
             >
               <div className="flex items-center gap-3">
-                <div className="relative h-8 w-8 overflow-hidden rounded-full bg-white">
+                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-white">
                   <Image
                     src={builder.logoSrc}
                     alt={`${builder.name} logo`}
-                    fill
+                    width={32}
+                    height={32}
                     className="object-contain"
-                    sizes="32px"
                   />
                 </div>
                 <span className="text-sm font-medium">{builder.name}</span>

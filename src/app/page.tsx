@@ -103,4 +103,16 @@ export default function HomePage() {
       </section>
     </main>
   );
-}
+}<div style={{ position: "fixed", bottom: 16, left: 16, zIndex: 9999 }}>
+  <h4 style={{ color: "white" }}>Logo Test</h4>
+  <img
+    src="/builders/timeless-homes-logo.png"
+    alt="Timeless test"
+    style={{ width: 80, height: "auto", background: "white" }}
+  />
+  <img
+    src="/builders/swanson-properties-logo.png"
+    alt="Swanson test"
+    style={{ width: 80, height: "auto", background: "white" }}
+  />
+</div>
