@@ -23,29 +23,29 @@ const AGENTS: Agent[] = [
     title: "Principal Broker / Owner",
     photo: "/images/agents/joe.jpg",
     phone: "(479) 713-9565",
-    email: "joe@goodneighbornwa.com",
+      email: "joegduggar@gmail.com",
     shortBio:
       "Joe is a lifelong Northwest Arkansas local and principal broker of Good Neighbor Realty, serving Bella Vista, Bentonville, and the surrounding areas.",
   },
   {
-    slug: "marcus-agent",
-    name: "Marcus Example",
-    title: "Realtor®",
-    photo: "/images/agents/marcus.jpg",
-    phone: "(479) 555-1234",
-    email: "marcus@goodneighbornwa.com",
-    shortBio:
-      "Marcus helps buyers and sellers navigate the fast-moving NWA market with clear communication and a steady approach.",
-  },
-  {
-    slug: "christy-agent",
-    name: "Christy Example",
+    slug: "christy-rainier",
+    name: "Christy Rainier",
     title: "Realtor®",
     photo: "/images/agents/christy.jpg",
-    phone: "(479) 555-5678",
-    email: "christy@goodneighbornwa.com",
+    phone: "(321) 961-8263",
+    email: "christyrainier@gmail.com",
     shortBio:
       "Christy loves matching clients with homes that fit their lifestyle, from first-time buyers to growing families.",
+  },
+  {
+    slug: "marcus-day",
+    name: "Marcus Day",
+    title: "Realtor®",
+    photo: "/images/agents/marcus.jpg",
+    phone: "(479) 877-5327",
+    email: "marcusdfe@gmail.com",
+    shortBio:
+      "Marcus helps buyers and sellers navigate the fast-moving NWA market with clear communication and a steady approach.",
   },
 ];
 
