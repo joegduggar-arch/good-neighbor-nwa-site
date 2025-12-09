@@ -64,15 +64,15 @@ export default function AgentsPage() {
           </p>
         </header>
 
-        {/* Grid of agent cards */}
+        {/* Agent Cards */}
         <div className="mt-12 grid gap-8 md:grid-cols-3">
           {AGENTS.map((agent) => (
             <article
               key={agent.slug}
               className="flex flex-col overflow-hidden rounded-3xl border border-neutral-800 bg-neutral-950 shadow-[0_18px_45px_rgba(0,0,0,0.75)]"
             >
-              {/* Photo */}
-              <div className="relative h-72 w-full overflow-hidden">
+              {/* Image wrapper with fixed aspect ratio */}
+              <div className="relative aspect-[4/5] w-full overflow-hidden">
                 <Image
                   src={agent.photo}
                   alt={agent.name}
@@ -81,11 +81,8 @@ export default function AgentsPage() {
                 />
               </div>
 
-              {/* Content */}
               <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
-                <h2 className="text-lg font-semibold text-white">
-                  {agent.name}
-                </h2>
+                <h2 className="text-lg font-semibold">{agent.name}</h2>
                 <p className="mt-1 text-xs font-medium uppercase tracking-wide text-yellow-300">
                   {agent.roleLine}
                 </p>
