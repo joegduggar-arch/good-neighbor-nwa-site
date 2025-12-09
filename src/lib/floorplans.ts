@@ -31,7 +31,8 @@ export type Builder = {
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  logo: "/images/logos/timeless.png",
+  // IMPORTANT: must match /public/images/logos/timeless.svg exactly
+  logo: "/images/logos/timeless.svg",
   description:
     "Browse floorplans and available homes built by Timeless Homes.",
   plans: [
@@ -61,11 +62,11 @@ export const TIMELESS_HOMES: Builder = {
    ----------------------------------- */
 
 export const SWANSON_PROPERTIES: Builder = {
-  // Use the slug that matches your existing page:
-  // src/app/builders/dream-built-homes/page.tsx  ->  /builders/dream-built-homes
+  // This slug must match your page folder: src/app/builders/dream-built-homes
   slug: "dream-built-homes",
   name: "Swanson Properties",
-  logo: "/images/logos/dreambuilt.png",
+  // IMPORTANT: /public/images/logos/dreambuilt.svg
+  logo: "/images/logos/dreambuilt.svg",
   description:
     "Floorplans and builds for Swanson Properties are not available online. Please contact Joe directly for more information.",
   plans: [],
