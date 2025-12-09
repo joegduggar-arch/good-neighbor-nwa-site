@@ -31,7 +31,8 @@ export type Builder = {
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  logo: "/builders/timeless/logo.png",
+  // points to /public/images/logos/timeless.png
+  logo: "/images/logos/timeless.png",
   description:
     "Browse floorplans and available homes built by Timeless Homes.",
   plans: [
@@ -63,7 +64,8 @@ export const TIMELESS_HOMES: Builder = {
 export const SWANSON_PROPERTIES: Builder = {
   slug: "swanson-properties",
   name: "Swanson Properties",
-  logo: "/builders/swanson/logo.png",
+  // points to /public/images/logos/dreambuilt.png
+  logo: "/images/logos/dreambuilt.png",
   description:
     "Floorplans and builds for Swanson Properties are not available online. Please contact Joe directly for more information.",
   plans: [],
@@ -93,8 +95,9 @@ export function getPlansByBuilder(slug: string): Plan[] {
   return getBuilder(slug)?.plans ?? [];
 }
 
-export function getPlan(builderSlug: string, planSlug: string): Plan | undefined {
-  return (
-    getBuilder(builderSlug)?.plans.find((p) => p.slug === planSlug)
-  );
+export function getPlan(
+  builderSlug: string,
+  planSlug: string
+): Plan | undefined {
+  return getBuilder(builderSlug)?.plans.find((p) => p.slug === planSlug);
 }
