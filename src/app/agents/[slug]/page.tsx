@@ -1,9 +1,50 @@
 // src/app/agents/[slug]/page.tsx
 
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getAgent, getAgents } from "@/lib/agents";
+import Image from "next/image";
+
+export const dynamic = "force-dynamic";
+
+type Agent = {
+  slug: string;
+  name: string;
+  title: string;
+  photo: string;
+  phone?: string;
+  email?: string;
+  bio: string;
+};
+
+const AGENTS: Agent[] = [
+  {
+    slug: "joe-duggar",
+    name: "Joe Duggar",
+    title: "Principal Broker / Owner",
+    photo: "/images/agents/joe.jpg",
+    phone: "(479) 713-9565",
+    email: "joe@goodneighbornwa.com",
+    bio: "Joe is a lifelong Northwest Arkansas local and the principal broker of Good Neighbor Realty, helping clients with new construction and forever homes across Bella Vista, Bentonville, and beyond.",
+  },
+  {
+    slug: "marcus-agent",
+    name: "Marcus Example",
+    title: "Realtor®",
+    photo: "/images/agents/marcus.jpg",
+    phone: "(479) 555-1234",
+    email: "marcus@goodneighbornwa.com",
+    bio: "Marcus focuses on helping buyers and sellers navigate the fast-moving NWA market with clear communication and a calm, steady approach.",
+  },
+  {
+    slug: "christy-agent",
+    name: "Christy Example",
+    title: "Realtor®",
+    photo: "/images/agents/christy.jpg",
+    phone: "(479) 555-5678",
+    email: "christy@goodneighbornwa.com",
+    bio: "Christy loves matching clients with homes that fit their lifestyle, from first-time buyers to families looking for more space.",
+  },
+];
 
 type PageProps = {
   params: {
@@ -11,25 +52,23 @@ type PageProps = {
   };
 };
 
-export function generateStaticParams() {
-  return getAgents().map((agent) => ({ slug: agent.slug }));
-}
-
 export function generateMetadata({ params }: PageProps): Metadata {
-  const agent = getAgent(params.slug);
+  const agent = AGENTS.find((a) => a.slug === params.slug);
+
   if (!agent) {
     return {
-      title: "Agent not found | Good Neighbor Realty"
+      title: "Agent Not Found | Good Neighbor Realty",
     };
   }
+
   return {
     title: `${agent.name} | Good Neighbor Realty`,
-    description: agent.bio.slice(0, 155)
+    description: agent.bio,
   };
 }
 
 export default function AgentDetailPage({ params }: PageProps) {
-  const agent = getAgent(params.slug);
+  const agent = AGENTS.find((a) => a.slug === params.slug);
 
   if (!agent) {
     notFound();
@@ -41,72 +80,60 @@ export default function AgentDetailPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
-        <div className="mb-6">
-          <a
-            href="/agents"
-            className="text-sm text-neutral-400 hover:text-yellow-300"
-          >
-            ← Back to all agents
-          </a>
-        </div>
+      <section className="mx-auto max-w-4xl px-4 py-12 md:px-6 md:py-16">
+        <button
+          onClick={() => history.back()}
+          className="text-sm text-neutral-400 hover:text-yellow-300"
+        >
+          ← Back to agents
+        </button>
 
-        <div className="grid gap-10 md:grid-cols-[260px,1fr] md:items-start">
-          {/* Photo + quick info */}
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative h-56 w-56 overflow-hidden rounded-full border border-neutral-700">
-              <Image
-                src={agent.photo}
-                alt={agent.name}
-                fill
-                className="object-cover"
-              />
-            </div>
+        <div className="mt-6 flex flex-col gap-8 md:flex-row md:items-start">
+          {/* Photo */}
+          <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-full border border-neutral-700">
+            <Image
+              src={agent.photo}
+              alt={agent.name}
+              fill
+              className="object-cover"
+            />
+          </div>
 
-            <div className="text-center">
-              <h1 className="text-2xl font-semibold text-neutral-50">
-                {agent.name}
-              </h1>
-              <p className="mt-1 text-sm text-yellow-300">{agent.title}</p>
+          {/* Info */}
+          <div>
+            <h1 className="text-3xl font-semibold md:text-4xl">
+              {agent.name}
+            </h1>
+            <p className="mt-2 text-yellow-300">{agent.title}</p>
 
-              {agent.phone && (
-                <p className="mt-3 text-sm text-neutral-200">
+            <div className="mt-4 space-y-1 text-sm text-neutral-200">
+              {agent.phone && telHref && (
+                <p>
                   Phone:{" "}
-                  {telHref ? (
-                    <a
-                      href={telHref}
-                      className="hover:text-yellow-300 underline-offset-2 hover:underline"
-                    >
-                      {agent.phone}
-                    </a>
-                  ) : (
-                    agent.phone
-                  )}
+                  <a
+                    href={telHref}
+                    className="underline underline-offset-2 hover:text-yellow-300"
+                  >
+                    {agent.phone}
+                  </a>
                 </p>
               )}
-
               {agent.email && (
-                <p className="text-sm text-neutral-200">
+                <p>
                   Email:{" "}
                   <a
                     href={`mailto:${agent.email}`}
-                    className="hover:text-yellow-300 underline-offset-2 hover:underline"
+                    className="underline underline-offset-2 hover:text-yellow-300"
                   >
                     {agent.email}
                   </a>
                 </p>
               )}
             </div>
-          </div>
 
-          {/* Bio */}
-          <div>
-            <h2 className="text-lg font-semibold text-neutral-50">
-              About {agent.name.split(" ")[0]}
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-neutral-200">
+            <div className="mt-6 text-sm leading-relaxed text-neutral-200">
               {agent.bio}
-            </p>
+            </div>
           </div>
         </div>
       </section>
