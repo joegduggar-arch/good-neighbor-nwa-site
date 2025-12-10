@@ -12,6 +12,7 @@ export type Plan = {
   sqft?: number;
   beds?: number;
   baths?: number;
+  summary?: string;     // ⬅ NEW
   disclaimer?: string;
   images?: string[];
 };
@@ -39,7 +40,7 @@ const HAVENSWORTH_IMAGES: string[] = [
   "/images/timeless-homes/havens-07.jpg",
   "/images/timeless-homes/havens-08.jpg",
   "/images/timeless-homes/havens-09.jpg",
-  // you can keep adding here up to 50 images if you want
+  // add more here as you upload them (up to ~50 is fine)
 ];
 
 // The Brecknock images (brecknock-01.jpg … brecknock-27.jpg under /public/images/timeless-homes)
@@ -71,7 +72,6 @@ const BRECKNOCK_IMAGES: string[] = [
   "/images/timeless-homes/brecknock-25.jpg",
   "/images/timeless-homes/brecknock-26.jpg",
   "/images/timeless-homes/brecknock-27.jpg",
-  // same here — feel free to keep adding if you upload more
 ];
 
 /* -------------------------
@@ -81,7 +81,7 @@ const BRECKNOCK_IMAGES: string[] = [
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  // make sure this matches your logo location in /public/images/logos
+  // adjust if your logo lives somewhere else
   logo: "/images/logos/timeless.png",
   description:
     "Quality new-construction homes with thoughtful layouts and attention to detail.",
@@ -93,6 +93,8 @@ export const TIMELESS_HOMES: Builder = {
       sqft: 1950,
       beds: 3,
       baths: 2,
+      summary:
+        "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen.",
       disclaimer:
         "Renderings, specifications, and selections for The Havensworth are for illustration only and may vary slightly from the final build.",
       images: HAVENSWORTH_IMAGES,
@@ -104,6 +106,8 @@ export const TIMELESS_HOMES: Builder = {
       sqft: 2050,
       beds: 3,
       baths: 2,
+      summary:
+        "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft, with a welcoming entry and great flow for everyday life and entertaining.",
       disclaimer:
         "Renderings, specifications, and selections for The Brecknock are for illustration only and may vary slightly from the final build.",
       images: BRECKNOCK_IMAGES,
@@ -118,7 +122,6 @@ export const TIMELESS_HOMES: Builder = {
 export const SWANSON_PROPERTIES: Builder = {
   slug: "swanson-properties",
   name: "Swanson Properties",
-  // if you’re using the Dream Built logo for this, keep this path:
   logo: "/images/logos/dreambuilt.png",
   description:
     "Floorplans and builds for Swanson Properties are not available online. Please contact Good Neighbor Realty directly for current offerings.",
