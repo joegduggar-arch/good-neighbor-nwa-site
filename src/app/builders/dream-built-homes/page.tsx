@@ -3,9 +3,9 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "Dream Built Homes | Good Neighbor Realty",
+  title: "Swanson Properties | Good Neighbor Realty",
   description:
-    "Dream Built Homes new-construction properties in Bella Vista and Tontitown, typically ranging from 1,900–2,500 sq ft.",
+    "Swanson Properties new-construction homes in Bella Vista and Tontitown, typically ranging from 1,900–2,500 sq ft.",
 };
 
 const PHONE = "(479) 713-9565";
@@ -18,7 +18,7 @@ export default function DreamBuiltPage() {
         <div className="flex flex-col items-center">
           <Image
             src="/images/logos/dreambuilt.png"
-            alt="Dream Built Homes"
+            alt="Swanson Properties"
             width={320}
             height={180}
             className="object-contain mb-6"
@@ -48,8 +48,7 @@ export default function DreamBuiltPage() {
           </h2>
 
           <p className="mt-3 text-neutral-300">
-            Contact Good Neighbor Realty for floorplans, availability, pricing,
-            and build timelines in Bella Vista and Tontitown.
+            Contact Good Neighbor Realty for floorplans, availability, pricing, and build timelines in Bella Vista and Tontitown.
           </p>
 
           <div className="mt-6 flex justify-center gap-4 flex-wrap">
