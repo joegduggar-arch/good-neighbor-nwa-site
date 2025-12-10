@@ -1,3 +1,4 @@
+// src/components/SearchPropertiesSection.tsx
 "use client";
 
 import { useState } from "react";
@@ -11,6 +12,13 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "sold", label: "Sold / Pending" },
   { key: "map", label: "Map Search" },
 ];
+
+// Legacy showcase widget IDs
+const FEATURED_WIDGET_ID = 10047;
+const SOLD_WIDGET_ID = 10048;
+
+// New-style IDX widget ID for map search
+const MAP_WIDGET_ID = "122998";
 
 export default function SearchPropertiesSection() {
   const [activeTab, setActiveTab] = useState<TabKey>("featured");
@@ -52,29 +60,27 @@ export default function SearchPropertiesSection() {
         </div>
 
         {/* Card that holds the widget */}
-        <div className="idx-panel mt-10">
+        <div className="mt-10 rounded-2xl bg-neutral-950 p-4 shadow-xl ring-1 ring-white/10">
+          {/* Featured */}
           {activeTab === "featured" && (
             <IdxLegacyWidget
               kind="showcase"
-              widgetId={10047}
-              className="idx-widget-inner"
+              widgetId={FEATURED_WIDGET_ID}
+              className="w-full"
             />
           )}
 
+          {/* Sold / Pending */}
           {activeTab === "sold" && (
             <IdxLegacyWidget
               kind="showcase"
-              widgetId={10048}
-              className="idx-widget-inner"
+              widgetId={SOLD_WIDGET_ID}
+              className="w-full"
             />
           )}
 
-          {activeTab === "map" && (
-            <div className="idx-widget-inner">
-              {/* New-style Prime MapSearch widget */}
-              <IdxWidget widgetId="122998" containerId="idx-home-map" />
-            </div>
-          )}
+          {/* Map Search (new widget style) */}
+          {activeTab === "map" && <IdxWidget widgetId={MAP_WIDGET_ID} />}
         </div>
       </div>
     </section>
