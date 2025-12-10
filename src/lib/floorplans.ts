@@ -12,11 +12,17 @@ export type Plan = {
   sqft?: number;
   beds?: number;
   baths?: number;
+  /**
+   * Marketing copy that appears near the top of the plan page.
+   */
+  summary?: string;
+  /**
+   * Legal / fine-print text that appears at the bottom.
+   */
   disclaimer?: string;
   /**
    * Array of image paths (relative to /public).
-   * You can safely put up to 50 photos here (or more).
-   * Example: "/images/floorplans/timeless-homes/havens-01.jpg"
+   * You can safely put 50+ photos here.
    */
   images?: string[];
 };
@@ -36,7 +42,7 @@ export type Builder = {
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  // This is the logo used on the homepage + navbar dropdown
+  // Logo used on homepage + navbar dropdown
   logo: "/images/logos/timeless.png",
   description:
     "Browse floorplans and available homes built by Timeless Homes.",
@@ -45,36 +51,45 @@ export const TIMELESS_HOMES: Builder = {
       slug: "havens",
       builder: "timeless-homes",
       name: "The Havens",
-      // Fill these in once you know them:
-      // sqft: 0,
-      // beds: 0,
-      // baths: 0,
+      sqft: 1950, // approx
+      beds: 3,
+      baths: 2,
+      summary:
+        "The Havens is a comfortably sized plan, typically in the 1,950–2,050 sq ft range. It’s designed for everyday living with an open main living area, generous kitchen, and a layout that keeps bedrooms tucked away for privacy. A great fit for families or anyone wanting new-construction efficiency without feeling cramped.",
       disclaimer:
         "Renderings and specifications for The Havens are for illustration only and may vary slightly from the final build.",
-      // When you have photos, add up to ~50 paths like:
-      // images: [
-      //   "/images/floorplans/timeless-homes/havens-01.jpg",
-      //   "/images/floorplans/timeless-homes/havens-02.jpg",
-      //   ...
-      // ],
-      images: [],
+      images: [
+        // Make sure these files exist under: /public/images/timeless-homes/
+        "/images/timeless-homes/haven-01.jpg",
+        "/images/timeless-homes/haven-02.jpg",
+        "/images/timeless-homes/haven-03.jpg",
+        "/images/timeless-homes/haven-04.jpg",
+        // Add more as needed:
+        // "/images/timeless-homes/haven-05.jpg",
+        // ...
+      ],
     },
     {
       slug: "brecknock",
       builder: "timeless-homes",
       name: "The Brecknock",
-      // sqft,
-      // beds,
-      // baths,
+      sqft: 2050, // approx
+      beds: 3,
+      baths: 2,
+      summary:
+        "The Brecknock is a thoughtfully designed plan, generally around 2,000 sq ft. It offers a welcoming entry, open living and dining, and a kitchen that’s made for hosting with plenty of workspace and storage. Bedrooms are well-proportioned, and the overall flow is ideal for both everyday life and entertaining.",
       disclaimer:
         "Renderings and specifications for The Brecknock are for illustration only and may vary slightly from the final build.",
-      // Add up to 50+ photos here when ready:
-      // images: [
-      //   "/images/floorplans/timeless-homes/brecknock-01.jpg",
-      //   "/images/floorplans/timeless-homes/brecknock-02.jpg",
-      //   ...
-      // ],
-      images: [],
+      images: [
+        // Make sure these files exist under: /public/images/timeless-homes/
+        "/images/timeless-homes/brecknock-01.jpg",
+        "/images/timeless-homes/brecknock-02.jpg",
+        "/images/timeless-homes/brecknock-03.jpg",
+        "/images/timeless-homes/brecknock-04.jpg",
+        // Add more as needed:
+        // "/images/timeless-homes/brecknock-05.jpg",
+        // ...
+      ],
     },
   ],
 };

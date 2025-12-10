@@ -14,30 +14,25 @@ type PageProps = {
 export default function PlanDetailPage({ params }: PageProps) {
   const { builder, plan } = params;
 
-  // Look up the plan using the helper from lib/floorplans
   const data = getPlan(builder, plan);
 
   if (!data) {
-    // If the builder/plan combo isn't in our registry, show 404
     notFound();
   }
 
-  // Only use fields that actually exist on Plan
-  const { name, sqft, beds, baths, disclaimer, images } = data;
+  const { name, sqft, beds, baths, disclaimer, images = [], summary } = data;
 
-  // Convert string[] -> GalleryImage[] for PlanGallery
   const galleryImages =
     images?.map((src, index) => ({
       src,
       alt: `${name} – image ${index + 1}`,
     })) ?? [];
 
-  // Nice label for the builder based on the slug
   const builderLabel =
-    builder === "timeless"
+    builder === "timeless-homes"
       ? "Timeless Homes • Milagro Designs"
-      : builder === "swanson"
-      ? "Swanson Properties • Dreambuilt Custom Homes"
+      : builder === "swanson-properties"
+      ? "Swanson Properties • Dream Built Homes"
       : builder;
 
   return (
@@ -51,17 +46,28 @@ export default function PlanDetailPage({ params }: PageProps) {
           <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
             {name}
           </h1>
+
           <p className="mt-3 text-sm text-neutral-300 md:text-base">
-            {sqft && <span>{sqft.toLocaleString()} sq ft</span>}
+            {sqft && <span>{sqft.toLocaleString()} sq ft (approx.)</span>}
             {beds && <> • {beds} Bed</>}
             {baths && <> • {baths} Bath</>}
           </p>
+
+          {summary && (
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-neutral-200 md:text-base">
+              {summary}
+            </p>
+          )}
         </header>
 
         {/* Image gallery */}
-        {galleryImages.length > 0 && (
+        {galleryImages.length > 0 ? (
           <div className="mt-4">
             <PlanGallery images={galleryImages} />
+          </div>
+        ) : (
+          <div className="mt-4 rounded-lg border border-neutral-800 p-6 text-neutral-400">
+            Photos coming soon.
           </div>
         )}
 
