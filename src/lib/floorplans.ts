@@ -6,13 +6,18 @@ export type GalleryImage = {
 };
 
 export type Plan = {
-  slug: string;
-  builder: string;
-  name: string;
+  slug: string;       // URL slug, e.g. "havens"
+  builder: string;    // builder slug, e.g. "timeless-homes"
+  name: string;       // display name, e.g. "The Havens"
   sqft?: number;
   beds?: number;
   baths?: number;
   disclaimer?: string;
+  /**
+   * Array of image paths (relative to /public).
+   * You can safely put up to 50 photos here (or more).
+   * Example: "/images/floorplans/timeless-homes/havens-01.jpg"
+   */
   images?: string[];
 };
 
@@ -31,49 +36,64 @@ export type Builder = {
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  // IMPORTANT: must match /public/images/logos/timeless.svg exactly
-  logo: "/images/logos/timeless.svg",
+  // This is the logo used on the homepage + navbar dropdown
+  logo: "/images/logos/timeless.png",
   description:
     "Browse floorplans and available homes built by Timeless Homes.",
   plans: [
     {
-      slug: "plan-01",
+      slug: "havens",
       builder: "timeless-homes",
-      name: "Plan 01",
-      sqft: 1850,
-      beds: 3,
-      baths: 2,
-      images: [], // Add images in /public/timeless/plan-01
+      name: "The Havens",
+      // Fill these in once you know them:
+      // sqft: 0,
+      // beds: 0,
+      // baths: 0,
+      disclaimer:
+        "Renderings and specifications for The Havens are for illustration only and may vary slightly from the final build.",
+      // When you have photos, add up to ~50 paths like:
+      // images: [
+      //   "/images/floorplans/timeless-homes/havens-01.jpg",
+      //   "/images/floorplans/timeless-homes/havens-02.jpg",
+      //   ...
+      // ],
+      images: [],
     },
     {
-      slug: "plan-02",
+      slug: "brecknock",
       builder: "timeless-homes",
-      name: "Plan 02",
-      sqft: 2200,
-      beds: 4,
-      baths: 2.5,
+      name: "The Brecknock",
+      // sqft,
+      // beds,
+      // baths,
+      disclaimer:
+        "Renderings and specifications for The Brecknock are for illustration only and may vary slightly from the final build.",
+      // Add up to 50+ photos here when ready:
+      // images: [
+      //   "/images/floorplans/timeless-homes/brecknock-01.jpg",
+      //   "/images/floorplans/timeless-homes/brecknock-02.jpg",
+      //   ...
+      // ],
       images: [],
     },
   ],
 };
 
 /* -----------------------------------
-   SWANSON PROPERTIES / DREAM BUILT
+   SWANSON PROPERTIES (INFORMATION ONLY)
    ----------------------------------- */
 
 export const SWANSON_PROPERTIES: Builder = {
-  // This slug must match your page folder: src/app/builders/dream-built-homes
-  slug: "dream-built-homes",
+  slug: "swanson-properties",
   name: "Swanson Properties",
-  // IMPORTANT: /public/images/logos/dreambuilt.svg
-  logo: "/images/logos/dreambuilt.svg",
+  logo: "/images/logos/swanson.png",
   description:
     "Floorplans and builds for Swanson Properties are not available online. Please contact Joe directly for more information.",
   plans: [],
 };
 
 /* ----------------------------
-   BUILDERS MENU FOR NAVBAR
+   BUILDERS MENU FOR NAVBAR / HOMEPAGE
    ---------------------------- */
 
 export const BUILDERS = [TIMELESS_HOMES, SWANSON_PROPERTIES];
