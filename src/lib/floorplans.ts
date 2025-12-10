@@ -6,24 +6,13 @@ export type GalleryImage = {
 };
 
 export type Plan = {
-  slug: string;       // URL slug, e.g. "havens"
-  builder: string;    // builder slug, e.g. "timeless-homes"
-  name: string;       // display name, e.g. "The Havens"
+  slug: string;
+  builder: string;
+  name: string;
   sqft?: number;
   beds?: number;
   baths?: number;
-  /**
-   * Marketing copy that appears near the top of the plan page.
-   */
-  summary?: string;
-  /**
-   * Legal / fine-print text that appears at the bottom.
-   */
   disclaimer?: string;
-  /**
-   * Array of image paths (relative to /public).
-   * You can safely put 50+ photos here.
-   */
   images?: string[];
 };
 
@@ -35,6 +24,56 @@ export type Builder = {
   plans: Plan[];
 };
 
+/* ---------------------------------
+   IMAGE LISTS FOR TIMELESS HOMES
+   --------------------------------- */
+
+// The Havensworth images (havens-01.jpg … havens-09.jpg under /public/images/timeless-homes)
+const HAVENSWORTH_IMAGES: string[] = [
+  "/images/timeless-homes/havens-01.jpg",
+  "/images/timeless-homes/havens-02.jpg",
+  "/images/timeless-homes/havens-03.jpg",
+  "/images/timeless-homes/havens-04.jpg",
+  "/images/timeless-homes/havens-05.jpg",
+  "/images/timeless-homes/havens-06.jpg",
+  "/images/timeless-homes/havens-07.jpg",
+  "/images/timeless-homes/havens-08.jpg",
+  "/images/timeless-homes/havens-09.jpg",
+  // you can keep adding here up to 50 images if you want
+];
+
+// The Brecknock images (brecknock-01.jpg … brecknock-27.jpg under /public/images/timeless-homes)
+const BRECKNOCK_IMAGES: string[] = [
+  "/images/timeless-homes/brecknock-01.jpg",
+  "/images/timeless-homes/brecknock-02.jpg",
+  "/images/timeless-homes/brecknock-03.jpg",
+  "/images/timeless-homes/brecknock-04.jpg",
+  "/images/timeless-homes/brecknock-05.jpg",
+  "/images/timeless-homes/brecknock-06.jpg",
+  "/images/timeless-homes/brecknock-07.jpg",
+  "/images/timeless-homes/brecknock-08.jpg",
+  "/images/timeless-homes/brecknock-09.jpg",
+  "/images/timeless-homes/brecknock-10.jpg",
+  "/images/timeless-homes/brecknock-11.jpg",
+  "/images/timeless-homes/brecknock-12.jpg",
+  "/images/timeless-homes/brecknock-13.jpg",
+  "/images/timeless-homes/brecknock-14.jpg",
+  "/images/timeless-homes/brecknock-15.jpg",
+  "/images/timeless-homes/brecknock-16.jpg",
+  "/images/timeless-homes/brecknock-17.jpg",
+  "/images/timeless-homes/brecknock-18.jpg",
+  "/images/timeless-homes/brecknock-19.jpg",
+  "/images/timeless-homes/brecknock-20.jpg",
+  "/images/timeless-homes/brecknock-21.jpg",
+  "/images/timeless-homes/brecknock-22.jpg",
+  "/images/timeless-homes/brecknock-23.jpg",
+  "/images/timeless-homes/brecknock-24.jpg",
+  "/images/timeless-homes/brecknock-25.jpg",
+  "/images/timeless-homes/brecknock-26.jpg",
+  "/images/timeless-homes/brecknock-27.jpg",
+  // same here — feel free to keep adding if you upload more
+];
+
 /* -------------------------
    TIMELESS HOMES (ACTIVE)
    ------------------------- */
@@ -42,54 +81,32 @@ export type Builder = {
 export const TIMELESS_HOMES: Builder = {
   slug: "timeless-homes",
   name: "Timeless Homes",
-  // Logo used on homepage + navbar dropdown
+  // make sure this matches your logo location in /public/images/logos
   logo: "/images/logos/timeless.png",
   description:
-    "Browse floorplans and available homes built by Timeless Homes.",
+    "Quality new-construction homes with thoughtful layouts and attention to detail.",
   plans: [
     {
-      slug: "havens",
+      slug: "havensworth",
       builder: "timeless-homes",
-      name: "The Havens",
-      sqft: 1950, // approx
+      name: "The Havensworth",
+      sqft: 1950,
       beds: 3,
       baths: 2,
-      summary:
-        "The Havens is a comfortably sized plan, typically in the 1,950–2,050 sq ft range. It’s designed for everyday living with an open main living area, generous kitchen, and a layout that keeps bedrooms tucked away for privacy. A great fit for families or anyone wanting new-construction efficiency without feeling cramped.",
       disclaimer:
-        "Renderings and specifications for The Havens are for illustration only and may vary slightly from the final build.",
-      images: [
-        // Make sure these files exist under: /public/images/timeless-homes/
-        "/images/timeless-homes/haven-01.jpg",
-        "/images/timeless-homes/haven-02.jpg",
-        "/images/timeless-homes/haven-03.jpg",
-        "/images/timeless-homes/haven-04.jpg",
-        // Add more as needed:
-        // "/images/timeless-homes/haven-05.jpg",
-        // ...
-      ],
+        "Renderings, specifications, and selections for The Havensworth are for illustration only and may vary slightly from the final build.",
+      images: HAVENSWORTH_IMAGES,
     },
     {
       slug: "brecknock",
       builder: "timeless-homes",
       name: "The Brecknock",
-      sqft: 2050, // approx
+      sqft: 2050,
       beds: 3,
       baths: 2,
-      summary:
-        "The Brecknock is a thoughtfully designed plan, generally around 2,000 sq ft. It offers a welcoming entry, open living and dining, and a kitchen that’s made for hosting with plenty of workspace and storage. Bedrooms are well-proportioned, and the overall flow is ideal for both everyday life and entertaining.",
       disclaimer:
-        "Renderings and specifications for The Brecknock are for illustration only and may vary slightly from the final build.",
-      images: [
-        // Make sure these files exist under: /public/images/timeless-homes/
-        "/images/timeless-homes/brecknock-01.jpg",
-        "/images/timeless-homes/brecknock-02.jpg",
-        "/images/timeless-homes/brecknock-03.jpg",
-        "/images/timeless-homes/brecknock-04.jpg",
-        // Add more as needed:
-        // "/images/timeless-homes/brecknock-05.jpg",
-        // ...
-      ],
+        "Renderings, specifications, and selections for The Brecknock are for illustration only and may vary slightly from the final build.",
+      images: BRECKNOCK_IMAGES,
     },
   ],
 };
@@ -101,14 +118,15 @@ export const TIMELESS_HOMES: Builder = {
 export const SWANSON_PROPERTIES: Builder = {
   slug: "swanson-properties",
   name: "Swanson Properties",
-  logo: "/images/logos/swanson.png",
+  // if you’re using the Dream Built logo for this, keep this path:
+  logo: "/images/logos/dreambuilt.png",
   description:
-    "Floorplans and builds for Swanson Properties are not available online. Please contact Joe directly for more information.",
+    "Floorplans and builds for Swanson Properties are not available online. Please contact Good Neighbor Realty directly for current offerings.",
   plans: [],
 };
 
 /* ----------------------------
-   BUILDERS MENU FOR NAVBAR / HOMEPAGE
+   BUILDERS MENU FOR NAVBAR
    ---------------------------- */
 
 export const BUILDERS = [TIMELESS_HOMES, SWANSON_PROPERTIES];
