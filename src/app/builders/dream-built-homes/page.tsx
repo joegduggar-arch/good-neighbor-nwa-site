@@ -36,14 +36,8 @@ export default function DreamBuiltPage() {
         {/* FIXED DESCRIPTION TEXT */}
         <div className="mt-10 space-y-6 text-center text-neutral-200 leading-relaxed text-base">
           <p>
-            Dream Built Homes offers thoughtfully designed new-construction
-            homes in Bella Vista and Tontitown
-            Most floorplans typically range from 1,900–2,500 Sq. Ft. with
-            layouts crafted for comfortable living, practical storage, and
-            modern finishes.
-            Whether you're exploring available homes or looking for upcoming
-            lots, Good Neighbor Realty is here to walk you through every option
-            step by step.
+            Swanson Properties offers thoughtfully designed new-construction homes in Bella Vista and Tontitown
+            Most floorplans typically range from 1,900–2,500 Sq. Ft. with layouts crafted for comfortable living, practical storage, and modern finishes.  Whether you're exploring available homes or looking for upcoming lots, Good Neighbor Realty is here to walk you through every option step by step.
           </p>
         </div>
 
