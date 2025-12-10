@@ -29,7 +29,7 @@ export default function DreamBuiltPage() {
           </p>
 
           <h1 className="mt-3 text-3xl font-semibold md:text-4xl text-center">
-            Dream Built Homes
+            Swanson Properties
           </h1>
         </div>
 
@@ -44,7 +44,7 @@ export default function DreamBuiltPage() {
         {/* CONTACT BOX */}
         <div className="mt-12 rounded-2xl bg-neutral-900/90 px-6 py-8 ring-1 ring-white/10 shadow-xl max-w-2xl mx-auto text-center">
           <h2 className="text-lg font-semibold">
-            Interested in a Dream Built home?
+            Interested in a Swanson Properties home?
           </h2>
 
           <p className="mt-3 text-neutral-300">
