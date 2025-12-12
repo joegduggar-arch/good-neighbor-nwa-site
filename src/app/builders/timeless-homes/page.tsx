@@ -1,59 +1,121 @@
-// src/components/NavbarClient.tsx
-"use client";
+// src/app/builders/timeless-homes/page.tsx
 
-import Link from "next/link";
 import Image from "next/image";
-import { BUILDERS_MENU } from "@/lib/floorplans";
+import Link from "next/link";
+import { getBuilder, getPlansByBuilder } from "@/lib/floorplans";
 
-export default function NavbarClient() {
-  return (
-    <nav className="w-full bg-black/70 backdrop-blur text-white">
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="font-semibold tracking-wide">Good Neighbor Realty • NWA</span>
-        </Link>
+export const metadata = {
+  title: "Timeless Homes | Good Neighbor Realty",
+};
 
-        <div className="flex items-center gap-6 text-sm">
-          <Link href="/search" className="hover:opacity-80">
-            Property Search
-          </Link>
-          <Link href="/agents" className="hover:opacity-80">
-            Agents
-          </Link>
-          <Link href="/contact" className="hover:opacity-80">
-            Contact
-          </Link>
-          <a href="tel:+14797139565" className="hover:opacity-80">
-            (479) 713-9565
-          </a>
-        </div>
-      </div>
+export default function TimelessHomesPage() {
+  const builder = getBuilder("timeless-homes");
+  const plans = getPlansByBuilder("timeless-homes");
 
-      {/* Builders strip (optional, but matches your builder links use-case) */}
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-3 flex items-center gap-4 overflow-x-auto">
-          <span className="text-xs text-white/70 whitespace-nowrap">Builders We Represent</span>
+  if (!builder) {
+    return (
+      <main className="bg-black text-white px-6 py-16">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-3xl font-semibold">Builder not found</h1>
+          <p className="text-white/80 mt-3">
+            The Timeless Homes builder profile is missing.
+          </p>
+        </div>
+      </main>
+    );
+  }
 
-          {BUILDERS_MENU.map((b) => (
-            <Link
-              key={b.slug}
-              href={`/builders/${b.slug}`}
-              className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-white/10 whitespace-nowrap"
-            >
-              {b.logo ? (
-                <Image
-                  src={b.logo}
-                  alt={b.name}
-                  width={72}
-                  height={32}
-                  className="h-8 w-auto object-contain"
-                />
-              ) : null}
-              <span className="text-sm">{b.name}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
+  return (
+    <main className="bg-black text-white px-6 py-16">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-10">
+          <div className="flex items-center gap-4">
+            {builder.logo ? (
+              <div className="relative w-14 h-14 md:w-16 md:h-16 shrink-0">
+                <Image
+                  src={builder.logo}
+                  alt={`${builder.name} logo`}
+                  fill
+                  className="object-contain"
+                  sizes="64px"
+                  priority
+                />
+              </div>
+            ) : null}
+
+            <div>
+              <div className="text-xs tracking-[0.2em] text-white/60 uppercase">
+                Builder we represent
+              </div>
+              <h1 className="text-4xl md:text-5xl font-semibold mt-1">
+                {builder.name}
+              </h1>
+            </div>
+          </div>
+
+          <div className="text-sm text-white/80 md:text-right">
+            Have questions about a plan or a current build?{" "}
+            <Link href="/contact" className="text-yellow-300 hover:underline">
+              Contact us
+            </Link>{" "}
+            directly.
+          </div>
+        </header>
+
+        <p className="text-white/80 max-w-3xl leading-relaxed mb-12">
+          {builder.description}
+        </p>
+
+        <h2 className="text-xl font-semibold mb-6">Available floorplans</h2>
+
+        {/* Plan cards with first-photo thumbnails */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {plans.map((p) => {
+            const thumb = p.images?.[0]; // first image
+            return (
+              <Link
+                key={p.slug}
+                href={`/floorplans/timeless-homes/${p.slug}`}
+                className="group rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition overflow-hidden"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-[220px_1fr]">
+                  <div className="relative aspect-[4/3] sm:aspect-auto sm:h-full bg-black/40">
+                    {thumb ? (
+                      <Image
+                        src={thumb}
+                        alt={`${p.name} photo`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, 220px"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-white/50 text-sm">
+                        No photo yet
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5">
+                    <div className="text-lg font-semibold group-hover:text-yellow-300 transition">
+                      {p.name}
+                    </div>
+                    <div className="text-sm text-white/70 mt-1">
+                      {p.sqft} • {p.beds} Bed • {p.baths} Bath
+                    </div>
+                    <p className="text-sm text-white/70 mt-3 leading-relaxed">
+                      {p.summary}
+                    </p>
+                    <div className="text-sm text-yellow-300 mt-4">
+                      View photos & details →
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </main>
+  );
 }
