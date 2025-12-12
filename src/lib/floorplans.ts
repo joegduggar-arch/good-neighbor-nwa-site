@@ -1,113 +1,82 @@
 // src/lib/floorplans.ts
 
-export type Plan = {
+export type Floorplan = {
   slug: string;
   name: string;
-  sqft: string; // keep flexible: "1,950 sq ft (approx.)"
+  sqft: string;
   beds: number;
   baths: number;
   summary: string;
-  images: string[]; // must be valid /public paths, e.g. "/images/timeless-homes/havens-01.jpg"
   disclaimer?: string;
+  images: string[];
 };
 
 export type Builder = {
   slug: string;
   name: string;
-  logo?: string; // "/images/logos/timeless.png"
-  description: string;
-  plans: Record<string, Plan>;
+  logo: string;
+  href: string;
+  plans: Record<string, Floorplan>;
 };
 
-export type BuildersMenuItem = {
-  slug: string;
-  name: string;
-  logo?: string;
-};
+export const BUILDERS_MENU = [
+  {
+    slug: "timeless-homes",
+    name: "Timeless Homes",
+    logo: "/images/logos/timeless.svg",
+    href: "/builders/timeless-homes",
+  },
+];
 
-const DEFAULT_PLAN_DISCLAIMER =
-  "Renderings and specifications are for illustration only and may vary slightly from the final build.";
-
-// IMPORTANT:
-// - Everything in /public is referenced from the site root.
-// - If the file is at public/images/timeless-homes/havens-01.jpg
-//   then the src MUST be: "/images/timeless-homes/havens-01.jpg"
-
-const BUILDERS: Record<string, Builder> = {
+export const BUILDERS: Record<string, Builder> = {
   "timeless-homes": {
     slug: "timeless-homes",
     name: "Timeless Homes",
-    logo: "/images/logos/timeless.png", // or "/images/logos/timeless.svg"
-    description:
-      "Quality new-construction homes with thoughtful layouts and attention to detail. For current availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing, and timelines.",
+    logo: "/images/logos/timeless.svg",
+    href: "/builders/timeless-homes",
     plans: {
       havensworth: {
         slug: "havensworth",
         name: "The Havensworth",
-        sqft: "1,950 sq ft (approx.)",
+        sqft: "1,950–2,050",
         beds: 3,
         baths: 2,
         summary:
-          "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen—designed for everyday living without feeling cramped.",
-        disclaimer: DEFAULT_PLAN_DISCLAIMER,
-        images: [
-          // Update these to EXACT filenames you have in /public/images/timeless-homes
-          "/images/timeless-homes/havens-01.jpg",
-          "/images/timeless-homes/havens-02.jpg",
-          "/images/timeless-homes/havens-03.jpg",
-          "/images/timeless-homes/havens-04.jpg",
-          "/images/timeless-homes/havens-06.jpeg",
-          "/images/timeless-homes/havens-07.jpeg",
-          "/images/timeless-homes/havens-08.jpeg",
-          "/images/timeless-homes/havens-09.jpeg",
-        ],
+          "A comfortably sized 3-bed, 2-bath home with an open main living area and a generous kitchen—ideal for everyday living and entertaining.",
+        disclaimer:
+          "Renderings and floorplans are for illustration purposes only and may vary from the final build.",
+        images: Array.from({ length: 50 }, (_, i) =>
+          `/images/floorplans/havensworth/haven-${i + 1}.jpg`
+        ),
       },
-
       brecknock: {
         slug: "brecknock",
         name: "The Brecknock",
-        sqft: "2,050 sq ft (approx.)",
+        sqft: "2,050",
         beds: 3,
         baths: 2,
         summary:
-          "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft with a welcoming entry, open living and dining, and a kitchen built for hosting with generous workspace and storage.",
-        disclaimer: DEFAULT_PLAN_DISCLAIMER,
-        images: [
-          // Update these to EXACT filenames you have in /public/images/timeless-homes
-          "/images/timeless-homes/brecknock-19.jpg",
-          "/images/timeless-homes/brecknock-20.jpg",
-          "/images/timeless-homes/brecknock-21.jpg",
-          "/images/timeless-homes/brecknock-22.jpg",
-          "/images/timeless-homes/brecknock-23.jpg",
-          "/images/timeless-homes/brecknock-24.jpg",
-          "/images/timeless-homes/brecknock-25.jpg",
-          "/images/timeless-homes/brecknock-26.jpg",
-          "/images/timeless-homes/brecknock-27.jpeg",
-        ],
+          "A thoughtfully designed 3-bed, 2-bath plan featuring a welcoming entry and excellent flow throughout the home.",
+        disclaimer:
+          "Renderings and floorplans are for illustration purposes only and may vary from the final build.",
+        images: Array.from({ length: 50 }, (_, i) =>
+          `/images/floorplans/brecknock/brecknock-${i + 1}.jpg`
+        ),
       },
     },
   },
 };
 
-// Used by navbar / homepage builder tiles
-export const BUILDERS_MENU: BuildersMenuItem[] = Object.values(BUILDERS).map((b) => ({
-  slug: b.slug,
-  name: b.name,
-  logo: b.logo,
-}));
-
-export function getBuilder(slug: string): Builder | null {
-  return BUILDERS[slug] ?? null;
+export function getBuilder(slug: string) {
+  return BUILDERS[slug] || null;
 }
 
-export function getPlansByBuilder(builderSlug: string): Plan[] {
-  const b = BUILDERS[builderSlug];
-  if (!b) return [];
-  return Object.values(b.plans);
+export function getPlansByBuilder(slug: string): Floorplan[] {
+  const builder = getBuilder(slug);
+  return builder ? Object.values(builder.plans) : [];
 }
 
-export function getPlan(builderSlug: string, planSlug: string): Plan | null {
-  const b = BUILDERS[builderSlug];
-  if (!b) return null;
-  return b.plans[planSlug] ?? null;
+export function getPlan(builderSlug: string, planSlug: string) {
+  const builder = getBuilder(builderSlug);
+  return builder?.plans[planSlug] || null;
 }
