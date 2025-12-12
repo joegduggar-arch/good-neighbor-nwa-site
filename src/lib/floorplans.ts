@@ -1,102 +1,74 @@
-// src/lib/floorplans.ts
+// src/app/floorplans/[builder]/[plan]/page.tsx
 
-export type Plan = {
-  slug: string;
-  name: string;
-  sqft: string;
-  beds: number;
-  baths: number;
-  summary: string;
-  disclaimer?: string;
-  images: string[]; // URLs under /public
+import Link from "next/link";
+import { getPlan } from "@/lib/floorplans";
+
+type Props = {
+  params: { builder: string; plan: string };
 };
 
-export type Builder = {
-  slug: string;
-  name: string;
-  logo?: string; // URL under /public
-  blurb?: string;
-  plans: Plan[];
-};
+export default function FloorplanPage({ params }: Props) {
+  const data = getPlan(params.builder, params.plan);
 
-function range(n1: number, n2: number) {
-  const out: number[] = [];
-  for (let i = n1; i <= n2; i++) out.push(i);
-  return out;
-}
-
-/**
- * Because your folder contains both .jpg and .jpeg,
- * we generate BOTH for each index and the UI hides any that 404.
- */
-function makeImageCandidates(basePath: string, prefix: string, indices: number[]) {
-  const urls: string[] = [];
-  for (const i of indices) {
-    const nn = String(i).padStart(2, "0");
-    urls.push(`${basePath}/${prefix}-${nn}.jpg`);
-    urls.push(`${basePath}/${prefix}-${nn}.jpeg`);
+  if (!data) {
+    return (
+      <main className="bg-black text-white px-6 py-16">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-white/80">Floorplan not found.</p>
+          <Link className="text-yellow-300 hover:underline" href="/builders/timeless-homes">
+            Back to Timeless Homes
+          </Link>
+        </div>
+      </main>
+    );
   }
-  return urls;
-}
 
-const TIMELESS_BASE = "/floorplans/timeless-homes";
+  const { name, sqft, beds, baths, summary, disclaimer, images = [] } = data;
 
-export const BUILDERS: Builder[] = [
-  {
-    slug: "timeless-homes",
-    name: "Timeless Homes",
-    // Put the logo wherever you keep it in /public. Example:
-    // public/logos/timeless-homes.png  => "/logos/timeless-homes.png"
-    logo: "/logos/timeless-homes.png",
-    blurb:
-      "Quality new-construction homes with thoughtful layouts and attention to detail. For current availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing, and timelines.",
-    plans: [
-      {
-        slug: "havensworth", // IMPORTANT: renamed from “havens”
-        name: "The Havensworth",
-        sqft: "1,950 sq ft (approx.)",
-        beds: 3,
-        baths: 2,
-        summary:
-          "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen — designed for everyday living without feeling cramped.",
-        disclaimer:
-          "Renderings and specifications are for illustration only and may vary slightly from the final build.",
-        // If you expect up to 50, change 1..50 later — this supports it now.
-        images: makeImageCandidates(TIMELESS_BASE, "havens", range(1, 50)),
-      },
-      {
-        slug: "brecknock",
-        name: "The Brecknock",
-        sqft: "2,050 sq ft (approx.)",
-        beds: 3,
-        baths: 2,
-        summary:
-          "A thoughtfully designed plan around 2,000 sq ft with a welcoming entry, open living and dining, and a kitchen made for hosting with plenty of workspace and storage.",
-        disclaimer:
-          "Renderings and specifications are for illustration only and may vary slightly from the final build.",
-        images: makeImageCandidates(TIMELESS_BASE, "brecknock", range(1, 50)),
-      },
-    ],
-  },
-  // Add other builders here...
-];
+  return (
+    <main className="bg-black text-white px-6 py-16">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-xs tracking-[0.2em] text-white/60 uppercase">
+          {params.builder.replaceAll("-", " ")} • Milagro Designs
+        </div>
 
-export const BUILDERS_MENU = BUILDERS.map((b) => ({
-  slug: b.slug,
-  name: b.name,
-}));
+        <h1 className="text-4xl md:text-5xl font-semibold mt-2">{name}</h1>
 
-export function getBuilder(slug: string) {
-  return BUILDERS.find((b) => b.slug === slug) ?? null;
-}
+        <div className="mt-3 text-white/75">
+          {sqft} • {beds} Bed • {baths} Bath
+        </div>
 
-export function getPlansByBuilder(builderSlug: string) {
-  const b = getBuilder(builderSlug);
-  return b ? b.plans : [];
-}
+        <p className="mt-5 text-white/80 max-w-3xl leading-relaxed">{summary}</p>
 
-export function getPlan(builderSlug: string, planSlug: string) {
-  const b = getBuilder(builderSlug);
-  if (!b) return null;
-  return b.plans.find((p) => p.slug === planSlug) ?? null;
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {images.map((src, i) => (
+            <div
+              key={`${src}-${i}`}
+              className="rounded-lg border border-white/10 bg-white/5 overflow-hidden"
+            >
+              <img
+                src={src}
+                alt={`${name} image ${i + 1}`}
+                className="w-full h-64 object-cover"
+                onError={(e) => {
+                  // hide broken 404 images so you don't see the "?"
+                  (e.currentTarget.parentElement as HTMLElement).style.display = "none";
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {disclaimer ? (
+          <p className="mt-10 text-sm text-white/55">{disclaimer}</p>
+        ) : null}
+
+        <div className="mt-8">
+          <Link href="/builders/timeless-homes" className="text-yellow-300 hover:underline">
+            ← Back to Timeless Homes
+          </Link>
+        </div>
+      </div>
+    </main>
+  );
 }
