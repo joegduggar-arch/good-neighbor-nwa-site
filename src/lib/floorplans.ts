@@ -1,80 +1,132 @@
-import Image from "next/image";
-import Link from "next/link";
-import { FLOORPLANS } from "@/lib/floorplans";
+// src/lib/floorplans.ts
 
-export const metadata = {
-  title: "Timeless Homes | Good Neighbor Realty",
-  description:
-    "Explore available floorplans from Timeless Homes, featuring quality new construction with thoughtful layouts and attention to detail.",
+export type Plan = {
+  slug: string;                 // URL slug: /floorplans/timeless-homes/havensworth
+  name: string;                 // Display name: "The Havensworth"
+  sqftText: string;             // "1,950 sq ft (approx.)" etc
+  beds: number;
+  baths: number;
+  summary: string;              // Short paragraph
+  disclaimer?: string;
+  // Images are PUBLIC paths starting with "/"
+  // Example: "/floorplans/timeless-homes/havens-01.jpg"
+  images: string[];
 };
 
-export default function TimelessHomesPage() {
-  const builder = FLOORPLANS["timeless-homes"];
+export type Builder = {
+  slug: string;                 // "timeless-homes"
+  name: string;                 // "Timeless Homes"
+  logoSrc?: string;             // "/logos/timeless-homes.png" (or .webp)
+  intro: string;                // Builder intro paragraph
+  plans: Plan[];
+};
 
-  if (!builder) return null;
+function pad2(n: number) {
+  return n.toString().padStart(2, "0");
+}
 
-  const plans = Object.values(builder);
+/**
+ * Creates an array of public image paths:
+ *   /floorplans/{builder}/{prefix}-{01..count}.{ext}
+ *
+ * This does NOT check if files exist — the UI uses <img onError> to hide missing files.
+ */
+export function buildNumberedImages(opts: {
+  builderSlug: string;
+  prefix: string;     // "havens" or "brecknock"
+  count: number;      // up to 50
+  ext?: "jpg" | "jpeg" | "png" | "webp";
+}): string[] {
+  const ext = opts.ext ?? "jpg";
+  return Array.from({ length: opts.count }, (_, i) => {
+    const num = pad2(i + 1);
+    return `/floorplans/${opts.builderSlug}/${opts.prefix}-${num}.${ext}`;
+  });
+}
 
-  return (
-    <main className="bg-black text-white px-6 py-16 max-w-7xl mx-auto">
-      {/* HEADER */}
-      <header className="flex flex-col md:flex-row md:items-center md:gap-10 mb-16">
-        <Image
-          src="/logos/timeless-homes.png"
-          alt="Timeless Homes Logo"
-          width={160}
-          height={160}
-          className="mb-6 md:mb-0"
-        />
+/**
+ * Use this for mixed extensions / “holes” in numbering.
+ * Provide the exact filenames you have.
+ */
+export function exactImages(builderSlug: string, filenames: string[]): string[] {
+  return filenames.map((f) => `/floorplans/${builderSlug}/${f}`);
+}
 
-        <div>
-          <p className="text-xs tracking-widest text-gray-400 uppercase mb-2">
-            Builder We Represent
-          </p>
-          <h1 className="text-4xl font-semibold mb-4">Timeless Homes</h1>
-          <p className="max-w-2xl text-gray-300 leading-relaxed">
-            Quality new-construction homes with thoughtful layouts and attention
-            to detail. For current availability, reach out to Good Neighbor
-            Realty and we’ll walk you through options, pricing, and timelines.
-          </p>
-        </div>
-      </header>
+const builders: Builder[] = [
+  {
+    slug: "timeless-homes",
+    name: "Timeless Homes",
+    logoSrc: "/logos/timeless-homes.png", // <-- make sure this exists in /public/logos/
+    intro:
+      "Quality new-construction homes with thoughtful layouts and attention to detail. For current availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing, and timelines.",
+    plans: [
+      {
+        slug: "havensworth",
+        name: "The Havensworth",
+        sqftText: "1,950 sq ft (approx.)",
+        beds: 3,
+        baths: 2,
+        summary:
+          "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen. Bedrooms are positioned for privacy while keeping the home feeling bright and efficient.",
+        disclaimer:
+          "Renderings and specifications are for illustration only and may vary slightly from the final build.",
+        // You said your files are named havens-01.jpg, havens-02.jpg, etc.
+        // If you have mixed .jpg/.jpeg like your screenshot shows, use exactImages.
+        images: exactImages("timeless-homes", [
+          "havens-01.jpg",
+          "havens-02.jpg",
+          "havens-03.jpg",
+          "havens-04.jpg",
+          // if you do NOT have havens-05, skip it
+          "havens-06.jpeg",
+          "havens-07.jpeg",
+          "havens-08.jpeg",
+          "havens-09.jpeg",
+          // add up to 50 here if you want
+        ]),
+      },
+      {
+        slug: "brecknock",
+        name: "The Brecknock",
+        sqftText: "2,050 sq ft (approx.)",
+        beds: 3,
+        baths: 2,
+        summary:
+          "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft with a welcoming entry and a layout that flows well for everyday living and entertaining. Balanced room sizes and practical storage throughout.",
+        disclaimer:
+          "Renderings and specifications are for illustration only and may vary slightly from the final build.",
+        // If your Brecknock photos are brecknock-01.jpg ... and some are .jpeg,
+        // list them exactly (best), OR rename them all to .jpg.
+        images: exactImages("timeless-homes", [
+          // Put your REAL filenames here. Example based on your screenshot:
+          "brecknock-19.jpg",
+          "brecknock-20.jpg",
+          "brecknock-21.jpg",
+          "brecknock-22.jpg",
+          "brecknock-23.jpg",
+          "brecknock-24.jpg",
+          "brecknock-25.jpg",
+          "brecknock-26.jpg",
+          "brecknock-27.jpeg",
+          // add the earlier ones too (brecknock-01.jpg...) if they exist
+        ]),
+      },
+    ],
+  },
+];
 
-      {/* FLOORPLANS */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-8">
-          Available Floorplans
-        </h2>
+export function getBuilders(): Builder[] {
+  return builders;
+}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {plans.map((plan) => (
-            <Link
-              key={plan.slug}
-              href={`/floorplans/timeless-homes/${plan.slug}`}
-              className="group border border-zinc-800 rounded-lg overflow-hidden hover:border-zinc-600 transition"
-            >
-              <div className="relative aspect-[4/3] bg-zinc-900">
-                <Image
-                  src={plan.images[0]}
-                  alt={plan.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
+export function getBuilder(builderSlug: string): Builder | undefined {
+  return builders.find((b) => b.slug === builderSlug);
+}
 
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-1">
-                  {plan.name}
-                </h3>
-                <p className="text-gray-400 text-sm">
-                  {plan.sqft} sq ft · {plan.beds} Bed · {plan.baths} Bath
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
+export function getPlansByBuilder(builderSlug: string): Plan[] {
+  return getBuilder(builderSlug)?.plans ?? [];
+}
+
+export function getPlan(builderSlug: string, planSlug: string): Plan | undefined {
+  return getBuilder(builderSlug)?.plans.find((p) => p.slug === planSlug);
 }

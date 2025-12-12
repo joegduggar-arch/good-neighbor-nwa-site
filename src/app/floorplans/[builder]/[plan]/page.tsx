@@ -1,72 +1,66 @@
+// src/app/floorplans/[builder]/[plan]/page.tsx
+
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { FLOORPLANS } from "@/lib/floorplans";
+import { getBuilder, getPlan } from "@/lib/floorplans";
 
 type Props = {
-  params: {
-    builder: string;
-    plan: string;
-  };
+  params: { builder: string; plan: string };
 };
 
 export default function FloorplanPage({ params }: Props) {
-  const builderData = FLOORPLANS[params.builder as keyof typeof FLOORPLANS];
-  const planData = builderData?.[params.plan as keyof typeof builderData];
+  const builder = getBuilder(params.builder);
+  const plan = getPlan(params.builder, params.plan);
 
-  if (!planData) return notFound();
-
-  const {
-    name,
-    sqft,
-    beds,
-    baths,
-    description,
-    disclaimer,
-    images,
-  } = planData;
+  if (!builder || !plan) return notFound();
 
   return (
-    <main className="bg-black text-white px-6 py-16 max-w-7xl mx-auto">
-      <header className="mb-10">
-        <p className="text-xs tracking-widest text-gray-400 uppercase mb-2">
-          Timeless Homes · Milagro Designs
-        </p>
+    <main className="bg-black text-white px-6 py-16">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-xs tracking-[0.25em] text-white/60">
+          {builder.name.toUpperCase()} • MILAGRO DESIGNS
+        </div>
 
-        <h1 className="text-4xl font-semibold mb-2">{name}</h1>
+        <h1 className="text-4xl md:text-5xl font-semibold mt-2">{plan.name}</h1>
 
-        <p className="text-gray-300 mb-4">
-          {sqft} sq ft (approx.) · {beds} Bed · {baths} Bath
-        </p>
+        <div className="text-white/70 mt-3">
+          {plan.sqftText} • {plan.beds} Bed • {plan.baths} Bath
+        </div>
 
-        <p className="max-w-3xl text-gray-200 leading-relaxed">
-          {description}
-        </p>
-      </header>
+        <p className="text-white/80 mt-6 max-w-3xl">{plan.summary}</p>
 
-      {/* IMAGE GALLERY */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((src, index) => (
-          <div
-            key={src}
-            className="relative aspect-[4/3] bg-zinc-900 rounded-lg overflow-hidden"
-          >
-            <Image
-              src={src}
-              alt={`${name} – image ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 33vw"
-              priority={index === 0}
-            />
-          </div>
-        ))}
-      </section>
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {plan.images.map((src, idx) => (
+            <div
+              key={`${src}-${idx}`}
+              className="rounded-xl border border-white/10 bg-white/5 overflow-hidden"
+            >
+              <div className="w-full aspect-[4/3] bg-black/40">
+                <img
+                  src={src}
+                  alt={`${plan.name} image ${idx + 1}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    // Hide missing images so you don’t see broken “?” tiles
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
 
-      {disclaimer && (
-        <p className="mt-10 text-xs text-gray-500 max-w-3xl">
-          {disclaimer}
-        </p>
-      )}
+        {plan.disclaimer ? (
+          <p className="text-white/50 text-xs mt-10">{plan.disclaimer}</p>
+        ) : null}
+
+        <div className="mt-10">
+          <Link href={`/builders/${builder.slug}`} className="text-yellow-400 hover:underline">
+            ← Back to {builder.name}
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }

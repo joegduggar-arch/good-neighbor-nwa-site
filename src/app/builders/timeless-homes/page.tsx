@@ -1,86 +1,108 @@
 // src/app/builders/timeless-homes/page.tsx
 
+import Link from "next/link";
 import Image from "next/image";
-import PlanCard from "@/components/PlanCard";
-import { getPlansByBuilder, getBuilder } from "@/lib/floorplans";
+import { getBuilder } from "@/lib/floorplans";
 
 export const metadata = {
   title: "Timeless Homes | Good Neighbor Realty",
-  description:
-    "View Timeless Homes floorplans and current new-construction offerings represented by Good Neighbor Realty.",
 };
 
-const BUILDER_SLUG = "timeless-homes";
-
 export default function TimelessHomesPage() {
-  const plans = getPlansByBuilder(BUILDER_SLUG);
-  const builder = getBuilder(BUILDER_SLUG);
+  const builder = getBuilder("timeless-homes");
+
+  if (!builder) {
+    return (
+      <main className="bg-black text-white px-6 py-16">
+        <div className="max-w-5xl mx-auto">Builder not found.</div>
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16">
-        {/* Header */}
-        <header className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-          <div className="flex items-center gap-4">
-            {builder?.logo && (
-              <div className="relative h-16 w-16 md:h-20 md:w-20 overflow-hidden rounded-full bg-black/80 ring-1 ring-neutral-700">
+    <main className="bg-black text-white px-6 py-16">
+      <div className="max-w-5xl mx-auto">
+        {/* Header row w/ logo */}
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div className="flex items-start gap-4">
+            {builder.logoSrc ? (
+              <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0">
                 <Image
-                  src={builder.logo}
-                  alt={builder.name}
+                  src={builder.logoSrc}
+                  alt={`${builder.name} logo`}
                   fill
-                  className="object-contain p-1"
                   sizes="80px"
+                  className="object-contain"
+                  priority
                 />
               </div>
-            )}
+            ) : null}
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-                Builder we represent
-              </p>
-              <h1 className="mt-1 text-3xl font-semibold md:text-4xl">
-                Timeless Homes
+              <div className="text-xs tracking-[0.25em] text-white/60">
+                BUILDER WE REPRESENT
+              </div>
+              <h1 className="text-4xl md:text-5xl font-semibold mt-2">
+                {builder.name}
               </h1>
-              <p className="mt-3 max-w-2xl text-sm text-neutral-300 md:text-base">
-                Quality new-construction homes with thoughtful layouts and
-                attention to detail. For current availability, reach out to
-                Good Neighbor Realty and we&apos;ll walk you through options,
-                pricing, and timelines.
-              </p>
+              <p className="text-white/80 mt-4 max-w-2xl">{builder.intro}</p>
             </div>
           </div>
 
-          <div className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-300 max-w-sm">
+          <div className="text-white/70 text-sm">
             Have questions about a plan or a current build?{" "}
-            <a
-              href="/contact"
-              className="font-medium text-yellow-400 hover:text-yellow-300"
-            >
-              Contact us directly
-            </a>
-            .
+            <Link href="/contact" className="text-yellow-400 hover:underline">
+              Contact us directly.
+            </Link>
           </div>
         </header>
 
-        {/* Plans grid */}
-        <div className="mt-10 border-t border-neutral-800 pt-8">
-          <h2 className="mb-4 text-lg font-semibold">Available floorplans</h2>
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold">Available floorplans</h2>
 
-          {plans.length === 0 ? (
-            <p className="text-sm text-neutral-400">
-              We&apos;re currently curating Timeless Homes floorplans for this
-              page. In the meantime, please reach out and we&apos;ll send you
-              the latest options.
-            </p>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2">
-              {plans.map((plan) => (
-                <PlanCard key={plan.slug} plan={plan} builder={BUILDER_SLUG} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {builder.plans.map((plan) => {
+              const firstImg = plan.images?.[0];
+
+              return (
+                <Link
+                  key={plan.slug}
+                  href={`/floorplans/${builder.slug}/${plan.slug}`}
+                  className="group rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition overflow-hidden"
+                >
+                  {/* Preview image */}
+                  <div className="relative w-full h-56 bg-black/40">
+                    {firstImg ? (
+                      // Using plain <img> so missing files don’t show the broken Next/Image UI
+                      <img
+                        src={firstImg}
+                        alt={`${plan.name} preview`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                      />
+                    ) : null}
+                  </div>
+
+                  <div className="p-5">
+                    <div className="text-lg font-semibold group-hover:text-yellow-200 transition">
+                      {plan.name}
+                    </div>
+                    <div className="text-white/70 text-sm mt-1">
+                      {plan.sqftText} • {plan.beds} Bed • {plan.baths} Bath
+                    </div>
+                    <p className="text-white/75 text-sm mt-3 line-clamp-3">
+                      {plan.summary}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
