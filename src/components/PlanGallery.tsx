@@ -1,40 +1,56 @@
 "use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import type { GalleryImage } from "@/lib/floorplans";
 
-export default function PlanGallery({ images }: { images: GalleryImage[] }) {
+type Props = {
+  images: GalleryImage[];
+};
+
+export default function PlanGallery({ images }: Props) {
   const [open, setOpen] = useState(false);
-  const [idx, setIdx] = useState(0);
-  if (!images || images.length === 0) {
-    return (
-      <div className="rounded-lg border border-neutral-800 p-6 text-neutral-400">
-        Photos coming soon.
-      </div>
-    );
-  }
-  function openAt(i:number){ setIdx(i); setOpen(true); }
+  const [active, setActive] = useState<GalleryImage | null>(null);
+
+  if (!images?.length) return null;
+
   return (
-    <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {images.map((img, i) => (
-          <button key={i} onClick={() => openAt(i)} className="relative aspect-[4/3] rounded-lg overflow-hidden ring-1 ring-neutral-800">
-            <Image src={img.src} alt={img.alt ?? `Image ${i+1}`} fill className="object-cover" />
+          <button
+            key={i}
+            onClick={() => {
+              setActive(img);
+              setOpen(true);
+            }}
+            className="relative aspect-[4/3] overflow-hidden border border-white/10 bg-black"
+          >
+            <Image
+              src={img.src}
+              alt={img.alt ?? ""}
+              fill
+              className="object-cover hover:scale-105 transition"
+            />
           </button>
         ))}
       </div>
-      {open && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={()=>setOpen(false)}>
-          <div className="relative w-full max-w-5xl" onClick={(e)=>e.stopPropagation()}>
-            <Image src={images[idx].src} alt={images[idx].alt ?? 'image'} width={1600} height={900} className="w-full h-auto rounded-lg" />
-            <div className="mt-3 flex items-center justify-between text-neutral-300">
-              <button onClick={()=>setIdx((idx-1+images.length)%images.length)} className="px-3 py-2 bg-neutral-800 rounded">Prev</button>
-              <span>{idx+1} / {images.length}</span>
-              <button onClick={()=>setIdx((idx+1)%images.length)} className="px-3 py-2 bg-neutral-800 rounded">Next</button>
-            </div>
+
+      {open && active && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6"
+          onClick={() => setOpen(false)}
+        >
+          <div className="relative max-w-6xl w-full aspect-[16/9]">
+            <Image
+              src={active.src}
+              alt={active.alt ?? ""}
+              fill
+              className="object-contain"
+            />
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
