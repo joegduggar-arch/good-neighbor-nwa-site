@@ -1,21 +1,19 @@
-import NavbarClient from "./NavbarClient";
-import { IDX_LINKS } from "@/lib/idx";
+import NavbarClient, { Brand, IdxLink } from "@/components/NavbarClient";
 
-// Centralized configuration for the navbar
 const PHONE = "(479) 713-9565";
 
-const BRAND = {
-  name: "Good Neighbor Realty • NWA",
-  logo: "/logo.png",      // Make sure logo lives in /public/logo.png
+const BRAND: Brand = {
+  name: "Good Neighbor Realty · NWA",
+  logo: "/images/logo.svg", // adjust if yours is different
   href: "/",
 };
 
+const IDX_LINKS: IdxLink[] = [
+  { label: "Property Search", href: "/property-search" },
+  { label: "Agents", href: "/agents" },
+  { label: "Contact", href: "/contact" },
+];
+
 export default function Navbar() {
-  return (
-    <NavbarClient
-      phone={PHONE}
-      brand={BRAND}
-      idxLinks={IDX_LINKS}
-    />
-  );
+  return <NavbarClient phone={PHONE} brand={BRAND} idxLinks={IDX_LINKS} />;
 }
