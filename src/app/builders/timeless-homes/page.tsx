@@ -1,9 +1,7 @@
 // src/app/builders/timeless-homes/page.tsx
-
 import Image from "next/image";
-import { notFound } from "next/navigation";
 import PlanCard from "@/components/PlanCard";
-import { getBuilder } from "@/lib/floorplans";
+import { getBuilder, getPlansByBuilder } from "@/lib/floorplans";
 
 export const metadata = {
   title: "Timeless Homes | Good Neighbor Realty",
@@ -11,43 +9,48 @@ export const metadata = {
 
 export default function TimelessHomesPage() {
   const builder = getBuilder("timeless-homes");
-  if (!builder) return notFound();
+  const plans = getPlansByBuilder("timeless-homes");
+
+  if (!builder) {
+    return (
+      <main className="bg-black text-white px-6 py-16 max-w-7xl mx-auto">
+        <p className="text-white/80">Builder not found.</p>
+      </main>
+    );
+  }
 
   return (
     <main className="bg-black text-white px-6 py-16 max-w-7xl mx-auto">
-      <header className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
-        <div className="shrink-0">
+      <header className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-10">
+        <div className="relative w-[220px] h-[80px]">
           <Image
             src={builder.logo}
             alt={`${builder.name} logo`}
-            width={260}
-            height={96}
-            className="h-auto w-[220px] md:w-[260px]"
+            fill
+            className="object-contain"
+            sizes="220px"
             priority
           />
         </div>
 
         <div>
-          <div className="text-xs tracking-widest text-white/60 uppercase">
-            Builder we represent
-          </div>
-          <h1 className="mt-2 text-4xl md:text-5xl font-bold">{builder.name}</h1>
-
-          {builder.description ? (
-            <p className="mt-4 text-white/80 max-w-2xl">{builder.description}</p>
-          ) : null}
+          <div className="text-xs tracking-widest text-white/60 uppercase">Builder we represent</div>
+          <h1 className="text-4xl font-bold mt-1">{builder.name}</h1>
+          <p className="mt-3 text-white/75 max-w-2xl">
+            Quality new-construction homes with thoughtful layouts and attention to detail. For current
+            availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing,
+            and timelines.
+          </p>
         </div>
       </header>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-6">Available floorplans</h2>
+      <h2 className="text-lg font-semibold mb-4">Available floorplans</h2>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {builder.plans.map((plan) => (
-            <PlanCard key={plan.slug} builderSlug={builder.slug} plan={plan} />
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {plans.map((p) => (
+          <PlanCard key={`${p.builderSlug}-${p.planSlug}`} plan={p} />
+        ))}
+      </div>
     </main>
   );
 }

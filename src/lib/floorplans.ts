@@ -1,135 +1,106 @@
 // src/lib/floorplans.ts
 
-export type Plan = {
+export type Builder = {
   slug: string;
+  name: string;
+  /** Path under /public (must start with "/") */
+  logo: string;
+  href: string;
+};
+
+export type Plan = {
+  builderSlug: string;
+  planSlug: string;
   name: string;
   sqft: number;
   beds: number;
   baths: number;
   summary?: string;
   disclaimer?: string;
-  images: string[]; // MUST be absolute-from-public, e.g. "/floorplans/timeless-homes/brecknock/brecknock-11.jpg"
+  /** Paths under /public (must start with "/") */
+  images: string[];
 };
 
-export type Builder = {
-  slug: string;
-  name: string;
-  href: string; // builders landing page
-  logo: string; // absolute-from-public path
-  description?: string;
-  plans: Plan[];
-};
-
-export type BuilderMenuItem = Pick<Builder, "slug" | "name" | "href" | "logo">;
-
-export type GalleryImage = {
-  src: string;
-  alt: string;
-};
-
-const timelessHomes: Builder = {
-  slug: "timeless-homes",
-  name: "Timeless Homes",
-  href: "/builders/timeless-homes",
-  logo: "/images/logos/timeless.png",
-  description:
-    "Quality new-construction homes with thoughtful layouts and attention to detail. For current availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing, and timelines.",
-  plans: [
-    {
-      slug: "havensworth",
-      name: "The Havensworth",
-      sqft: 1950,
-      beds: 3,
-      baths: 2,
-      summary:
-        "A comfortably sized 3-bed, 2-bath plan with an open main living area and a generous kitchen.",
-      images: [
-        // ✅ These MUST match the real filenames under /public/floorplans/...
-        // You said you have 30 Havensworth photos named like "havens-01.jpg", "havens-02.jpg", etc.
-        "/floorplans/timeless-homes/havensworth/havens-01.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-02.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-03.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-04.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-05.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-06.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-07.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-08.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-09.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-10.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-11.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-12.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-13.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-14.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-15.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-16.jpg",
-        "/floorplans/timeless-homes/havensworth/havens-17.jpg",
-        // If you actually have 30 and want them all, keep adding:
-        // "/floorplans/timeless-homes/havensworth/havens-18.jpg",
-        // ...
-        // "/floorplans/timeless-homes/havensworth/havens-30.jpg",
-      ],
-    },
-    {
-      slug: "brecknock",
-      name: "The Brecknock",
-      sqft: 2050,
-      beds: 3,
-      baths: 2,
-      summary:
-        "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft, with a welcoming entry and great flow for everyday life and entertaining.",
-      images: [
-        // You said you have 27 Brecknock photos named like "brecknock-11.jpg" ... "brecknock-27.jpg".
-        // ✅ Make sure these filenames exist exactly in /public/floorplans/timeless-homes/brecknock/
-        "/floorplans/timeless-homes/brecknock/brecknock-11.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-12.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-13.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-14.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-15.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-16.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-17.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-18.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-19.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-20.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-21.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-22.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-23.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-24.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-25.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-26.jpg",
-        "/floorplans/timeless-homes/brecknock/brecknock-27.jpg",
-      ],
-    },
-  ],
-};
-
-const BUILDERS: Record<string, Builder> = {
-  "timeless-homes": timelessHomes,
-};
-
-export const BUILDERS_MENU: BuilderMenuItem[] = Object.values(BUILDERS).map((b) => ({
-  slug: b.slug,
-  name: b.name,
-  href: b.href,
-  logo: b.logo,
-}));
-
-export function getBuilder(slug: string): Builder | null {
-  return BUILDERS[slug] ?? null;
+/** Helper to generate local public image paths like "/images/floorplans/timeless-homes/brecknock/brecknock-11.jpg" */
+function makeImageRange(opts: {
+  baseDir: string; // e.g. "/images/floorplans/timeless-homes/brecknock"
+  prefix: string;  // e.g. "brecknock-"
+  from: number;
+  to: number;
+  ext?: string;    // default "jpg"
+  pad?: number;    // e.g. 2 -> 01,02
+}) {
+  const { baseDir, prefix, from, to, ext = "jpg", pad } = opts;
+  const out: string[] = [];
+  for (let i = from; i <= to; i++) {
+    const n = pad ? String(i).padStart(pad, "0") : String(i);
+    out.push(`${baseDir}/${prefix}${n}.${ext}`);
+  }
+  return out;
 }
 
-export function getPlansByBuilder(slug: string): Plan[] {
-  return BUILDERS[slug]?.plans ?? [];
+/** Builders shown in your navbar + homepage section */
+export const BUILDERS_MENU: Builder[] = [
+  {
+    slug: "timeless-homes",
+    name: "Timeless Homes",
+    logo: "/images/logos/timeless.png", // you said: public/images/logos/timeless.png
+    href: "/builders/timeless-homes",
+  },
+];
+
+/** Floorplans data */
+export const PLANS: Plan[] = [
+  {
+    builderSlug: "timeless-homes",
+    planSlug: "havensworth",
+    name: "The Havensworth",
+    sqft: 1950,
+    beds: 3,
+    baths: 2,
+    summary:
+      "A comfortably sized 3-bed, 2-bath plan with an open main living area and generous kitchen.",
+    images: [
+      // Update ranges if your actual filenames differ.
+      // Screenshot shows havens-01.jpg ... havens-17.jpg (you said 30 total; adjust if you have more).
+      ...makeImageRange({
+        baseDir: "/images/floorplans/timeless-homes/havensworth",
+        prefix: "havens-",
+        from: 1,
+        to: 17,
+        pad: 2,
+      }),
+    ],
+  },
+  {
+    builderSlug: "timeless-homes",
+    planSlug: "brecknock",
+    name: "The Brecknock",
+    sqft: 2050,
+    beds: 3,
+    baths: 2,
+    summary:
+      "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft, with a welcoming entry and great flow.",
+    images: [
+      // Screenshot shows brecknock-11.jpg ... brecknock-27.jpg
+      ...makeImageRange({
+        baseDir: "/images/floorplans/timeless-homes/brecknock",
+        prefix: "brecknock-",
+        from: 11,
+        to: 27,
+      }),
+    ],
+  },
+];
+
+export function getBuilder(slug: string): Builder | undefined {
+  return BUILDERS_MENU.find((b) => b.slug === slug);
 }
 
-export function getPlan(builderSlug: string, planSlug: string): Plan | null {
-  const b = BUILDERS[builderSlug];
-  if (!b) return null;
-  return b.plans.find((p) => p.slug === planSlug) ?? null;
+export function getPlansByBuilder(builderSlug: string): Plan[] {
+  return PLANS.filter((p) => p.builderSlug === builderSlug);
 }
 
-export function toGalleryImages(planName: string, images: string[]): GalleryImage[] {
-  return images.map((src, i) => ({
-    src,
-    alt: `${planName} - image ${i + 1}`,
-  }));
+export function getPlan(builderSlug: string, planSlug: string): Plan | undefined {
+  return PLANS.find((p) => p.builderSlug === builderSlug && p.planSlug === planSlug);
 }
