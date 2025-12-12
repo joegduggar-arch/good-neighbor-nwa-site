@@ -1,83 +1,72 @@
-// src/app/floorplans/[builder]/[plan]/page.tsx
-
 import { notFound } from "next/navigation";
-import PlanGallery from "@/components/PlanGallery";
-import { getPlan } from "@/lib/floorplans";
+import Image from "next/image";
+import { FLOORPLANS } from "@/lib/floorplans";
 
-type PageProps = {
+type Props = {
   params: {
     builder: string;
     plan: string;
   };
 };
 
-export default function PlanDetailPage({ params }: PageProps) {
-  const { builder, plan } = params;
+export default function FloorplanPage({ params }: Props) {
+  const builderData = FLOORPLANS[params.builder as keyof typeof FLOORPLANS];
+  const planData = builderData?.[params.plan as keyof typeof builderData];
 
-  const data = getPlan(builder, plan);
+  if (!planData) return notFound();
 
-  if (!data) {
-    notFound();
-  }
-
-  const { name, sqft, beds, baths, disclaimer, images = [], summary } = data;
-
-  const galleryImages =
-    images?.map((src, index) => ({
-      src,
-      alt: `${name} – image ${index + 1}`,
-    })) ?? [];
-
-  const builderLabel =
-    builder === "timeless-homes"
-      ? "Timeless Homes • Milagro Designs"
-      : builder === "swanson-properties"
-      ? "Swanson Properties • Dream Built Homes"
-      : builder;
+  const {
+    name,
+    sqft,
+    beds,
+    baths,
+    description,
+    disclaimer,
+    images,
+  } = planData;
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16">
-        {/* Header */}
-        <header className="mb-8">
-          <p className="text-sm uppercase tracking-wide text-neutral-400">
-            {builderLabel}
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
-            {name}
-          </h1>
+    <main className="bg-black text-white px-6 py-16 max-w-7xl mx-auto">
+      <header className="mb-10">
+        <p className="text-xs tracking-widest text-gray-400 uppercase mb-2">
+          Timeless Homes · Milagro Designs
+        </p>
 
-          <p className="mt-3 text-sm text-neutral-300 md:text-base">
-            {sqft && <span>{sqft.toLocaleString()} sq ft (approx.)</span>}
-            {beds && <> • {beds} Bed</>}
-            {baths && <> • {baths} Bath</>}
-          </p>
+        <h1 className="text-4xl font-semibold mb-2">{name}</h1>
 
-          {summary && (
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-neutral-200 md:text-base">
-              {summary}
-            </p>
-          )}
-        </header>
+        <p className="text-gray-300 mb-4">
+          {sqft} sq ft (approx.) · {beds} Bed · {baths} Bath
+        </p>
 
-        {/* Image gallery */}
-        {galleryImages.length > 0 ? (
-          <div className="mt-4">
-            <PlanGallery images={galleryImages} />
+        <p className="max-w-3xl text-gray-200 leading-relaxed">
+          {description}
+        </p>
+      </header>
+
+      {/* IMAGE GALLERY */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {images.map((src, index) => (
+          <div
+            key={src}
+            className="relative aspect-[4/3] bg-zinc-900 rounded-lg overflow-hidden"
+          >
+            <Image
+              src={src}
+              alt={`${name} – image ${index + 1}`}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              priority={index === 0}
+            />
           </div>
-        ) : (
-          <div className="mt-4 rounded-lg border border-neutral-800 p-6 text-neutral-400">
-            Photos coming soon.
-          </div>
-        )}
-
-        {/* Disclaimer / fine print */}
-        {disclaimer && (
-          <p className="mt-8 text-xs leading-relaxed text-neutral-500">
-            {disclaimer}
-          </p>
-        )}
+        ))}
       </section>
+
+      {disclaimer && (
+        <p className="mt-10 text-xs text-gray-500 max-w-3xl">
+          {disclaimer}
+        </p>
+      )}
     </main>
   );
 }
