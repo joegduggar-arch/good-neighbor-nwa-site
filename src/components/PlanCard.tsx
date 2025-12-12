@@ -1,56 +1,55 @@
 // src/components/PlanCard.tsx
+"use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { type Plan } from "@/lib/floorplans";
+import { useMemo, useState } from "react";
 
 type Props = {
-  plan: Plan;
-  builder: string; // needed to build the URL
+  builderSlug: string;
+  planSlug: string;
+  title: string;
+  subtitle: string;
+  imageCandidates?: string[]; // pass plan.images
 };
 
-export default function PlanCard({ plan, builder }: Props) {
-  const { name, sqft, beds, baths, images } = plan;
+export default function PlanCard({
+  builderSlug,
+  planSlug,
+  title,
+  subtitle,
+  imageCandidates = [],
+}: Props) {
+  const candidates = useMemo(() => imageCandidates.filter(Boolean), [imageCandidates]);
+  const [idx, setIdx] = useState(0);
 
-  const specs = [
-    sqft ? `${sqft.toLocaleString()} sq ft` : null,
-    beds ? `${beds} Bed` : null,
-    baths ? `${baths} Bath` : null,
-  ]
-    .filter(Boolean)
-    .join(" • ");
-
-  const thumbnail = images?.[0];
+  const href = `/floorplans/${builderSlug}/${planSlug}`;
+  const current = candidates[idx];
 
   return (
     <Link
-      href={`/floorplans/${builder}/${plan.slug}`}
-      className="card block overflow-hidden rounded-lg bg-neutral-900 ring-1 ring-neutral-800 hover:ring-2 hover:ring-yellow-500 transition"
+      href={href}
+      className="group block rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition overflow-hidden"
     >
-      {/* Thumbnail */}
-      {thumbnail && (
-        <div className="relative aspect-[4/3] w-full">
-          <Image
-            src={thumbnail}
-            alt={name}
-            fill
-            className="object-cover"
-            sizes="(min-width: 768px) 50vw, 100vw"
+      {current ? (
+        <div className="relative w-full aspect-[16/10] bg-black/40">
+          <img
+            src={current}
+            alt={`${title} preview`}
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={() => {
+              // try next candidate if this one 404s
+              if (idx < candidates.length - 1) setIdx(idx + 1);
+            }}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
         </div>
+      ) : (
+        <div className="w-full aspect-[16/10] bg-black/40" />
       )}
 
-      {/* Text */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold">{name}</h3>
-        {specs && (
-          <p className="mt-1 text-sm text-neutral-400">
-            {specs}
-          </p>
-        )}
-        <p className="mt-3 text-xs text-neutral-500">
-          View floorplan details & photos
-        </p>
+      <div className="p-5">
+        <div className="text-lg font-semibold text-white">{title}</div>
+        <div className="mt-1 text-sm text-white/70">{subtitle}</div>
       </div>
     </Link>
   );

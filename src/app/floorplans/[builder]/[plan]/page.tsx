@@ -1,63 +1,71 @@
 // src/app/floorplans/[builder]/[plan]/page.tsx
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getBuilder, getPlan } from "@/lib/floorplans";
+import { getPlan } from "@/lib/floorplans";
 
 type Props = {
   params: { builder: string; plan: string };
 };
 
 export default function FloorplanPage({ params }: Props) {
-  const builder = getBuilder(params.builder);
-  const plan = getPlan(params.builder, params.plan);
+  const data = getPlan(params.builder, params.plan);
 
-  if (!builder || !plan) return notFound();
+  if (!data) {
+    return (
+      <main className="bg-black text-white px-6 py-16">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-white/80">Floorplan not found.</p>
+          <Link className="text-yellow-300 hover:underline" href="/builders/timeless-homes">
+            Back to Timeless Homes
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const { name, sqft, beds, baths, summary, disclaimer, images = [] } = data;
 
   return (
     <main className="bg-black text-white px-6 py-16">
       <div className="max-w-6xl mx-auto">
-        <div className="text-xs tracking-[0.25em] text-white/60">
-          {builder.name.toUpperCase()} • MILAGRO DESIGNS
+        <div className="text-xs tracking-[0.2em] text-white/60 uppercase">
+          {params.builder.replaceAll("-", " ")} • Milagro Designs
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-semibold mt-2">{plan.name}</h1>
+        <h1 className="text-4xl md:text-5xl font-semibold mt-2">{name}</h1>
 
-        <div className="text-white/70 mt-3">
-          {plan.sqftText} • {plan.beds} Bed • {plan.baths} Bath
+        <div className="mt-3 text-white/75">
+          {sqft} • {beds} Bed • {baths} Bath
         </div>
 
-        <p className="text-white/80 mt-6 max-w-3xl">{plan.summary}</p>
+        <p className="mt-5 text-white/80 max-w-3xl leading-relaxed">{summary}</p>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {plan.images.map((src, idx) => (
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {images.map((src, i) => (
             <div
-              key={`${src}-${idx}`}
-              className="rounded-xl border border-white/10 bg-white/5 overflow-hidden"
+              key={`${src}-${i}`}
+              className="rounded-lg border border-white/10 bg-white/5 overflow-hidden"
             >
-              <div className="w-full aspect-[4/3] bg-black/40">
-                <img
-                  src={src}
-                  alt={`${plan.name} image ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    // Hide missing images so you don’t see broken “?” tiles
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              </div>
+              <img
+                src={src}
+                alt={`${name} image ${i + 1}`}
+                className="w-full h-64 object-cover"
+                onError={(e) => {
+                  // hide broken 404 images so you don't see the "?"
+                  (e.currentTarget.parentElement as HTMLElement).style.display = "none";
+                }}
+              />
             </div>
           ))}
         </div>
 
-        {plan.disclaimer ? (
-          <p className="text-white/50 text-xs mt-10">{plan.disclaimer}</p>
+        {disclaimer ? (
+          <p className="mt-10 text-sm text-white/55">{disclaimer}</p>
         ) : null}
 
-        <div className="mt-10">
-          <Link href={`/builders/${builder.slug}`} className="text-yellow-400 hover:underline">
-            ← Back to {builder.name}
+        <div className="mt-8">
+          <Link href="/builders/timeless-homes" className="text-yellow-300 hover:underline">
+            ← Back to Timeless Homes
           </Link>
         </div>
       </div>

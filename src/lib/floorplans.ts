@@ -1,132 +1,102 @@
 // src/lib/floorplans.ts
 
 export type Plan = {
-  slug: string;                 // URL slug: /floorplans/timeless-homes/havensworth
-  name: string;                 // Display name: "The Havensworth"
-  sqftText: string;             // "1,950 sq ft (approx.)" etc
+  slug: string;
+  name: string;
+  sqft: string;
   beds: number;
   baths: number;
-  summary: string;              // Short paragraph
+  summary: string;
   disclaimer?: string;
-  // Images are PUBLIC paths starting with "/"
-  // Example: "/floorplans/timeless-homes/havens-01.jpg"
-  images: string[];
+  images: string[]; // URLs under /public
 };
 
 export type Builder = {
-  slug: string;                 // "timeless-homes"
-  name: string;                 // "Timeless Homes"
-  logoSrc?: string;             // "/logos/timeless-homes.png" (or .webp)
-  intro: string;                // Builder intro paragraph
+  slug: string;
+  name: string;
+  logo?: string; // URL under /public
+  blurb?: string;
   plans: Plan[];
 };
 
-function pad2(n: number) {
-  return n.toString().padStart(2, "0");
+function range(n1: number, n2: number) {
+  const out: number[] = [];
+  for (let i = n1; i <= n2; i++) out.push(i);
+  return out;
 }
 
 /**
- * Creates an array of public image paths:
- *   /floorplans/{builder}/{prefix}-{01..count}.{ext}
- *
- * This does NOT check if files exist — the UI uses <img onError> to hide missing files.
+ * Because your folder contains both .jpg and .jpeg,
+ * we generate BOTH for each index and the UI hides any that 404.
  */
-export function buildNumberedImages(opts: {
-  builderSlug: string;
-  prefix: string;     // "havens" or "brecknock"
-  count: number;      // up to 50
-  ext?: "jpg" | "jpeg" | "png" | "webp";
-}): string[] {
-  const ext = opts.ext ?? "jpg";
-  return Array.from({ length: opts.count }, (_, i) => {
-    const num = pad2(i + 1);
-    return `/floorplans/${opts.builderSlug}/${opts.prefix}-${num}.${ext}`;
-  });
+function makeImageCandidates(basePath: string, prefix: string, indices: number[]) {
+  const urls: string[] = [];
+  for (const i of indices) {
+    const nn = String(i).padStart(2, "0");
+    urls.push(`${basePath}/${prefix}-${nn}.jpg`);
+    urls.push(`${basePath}/${prefix}-${nn}.jpeg`);
+  }
+  return urls;
 }
 
-/**
- * Use this for mixed extensions / “holes” in numbering.
- * Provide the exact filenames you have.
- */
-export function exactImages(builderSlug: string, filenames: string[]): string[] {
-  return filenames.map((f) => `/floorplans/${builderSlug}/${f}`);
-}
+const TIMELESS_BASE = "/floorplans/timeless-homes";
 
-const builders: Builder[] = [
+export const BUILDERS: Builder[] = [
   {
     slug: "timeless-homes",
     name: "Timeless Homes",
-    logoSrc: "/logos/timeless-homes.png", // <-- make sure this exists in /public/logos/
-    intro:
+    // Put the logo wherever you keep it in /public. Example:
+    // public/logos/timeless-homes.png  => "/logos/timeless-homes.png"
+    logo: "/logos/timeless-homes.png",
+    blurb:
       "Quality new-construction homes with thoughtful layouts and attention to detail. For current availability, reach out to Good Neighbor Realty and we’ll walk you through options, pricing, and timelines.",
     plans: [
       {
-        slug: "havensworth",
+        slug: "havensworth", // IMPORTANT: renamed from “havens”
         name: "The Havensworth",
-        sqftText: "1,950 sq ft (approx.)",
+        sqft: "1,950 sq ft (approx.)",
         beds: 3,
         baths: 2,
         summary:
-          "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen. Bedrooms are positioned for privacy while keeping the home feeling bright and efficient.",
+          "A comfortably sized 3-bed, 2-bath plan in the 1,950–2,050 sq ft range with an open main living area and generous kitchen — designed for everyday living without feeling cramped.",
         disclaimer:
           "Renderings and specifications are for illustration only and may vary slightly from the final build.",
-        // You said your files are named havens-01.jpg, havens-02.jpg, etc.
-        // If you have mixed .jpg/.jpeg like your screenshot shows, use exactImages.
-        images: exactImages("timeless-homes", [
-          "havens-01.jpg",
-          "havens-02.jpg",
-          "havens-03.jpg",
-          "havens-04.jpg",
-          // if you do NOT have havens-05, skip it
-          "havens-06.jpeg",
-          "havens-07.jpeg",
-          "havens-08.jpeg",
-          "havens-09.jpeg",
-          // add up to 50 here if you want
-        ]),
+        // If you expect up to 50, change 1..50 later — this supports it now.
+        images: makeImageCandidates(TIMELESS_BASE, "havens", range(1, 50)),
       },
       {
         slug: "brecknock",
         name: "The Brecknock",
-        sqftText: "2,050 sq ft (approx.)",
+        sqft: "2,050 sq ft (approx.)",
         beds: 3,
         baths: 2,
         summary:
-          "A thoughtfully designed 3-bed, 2-bath plan around 2,050 sq ft with a welcoming entry and a layout that flows well for everyday living and entertaining. Balanced room sizes and practical storage throughout.",
+          "A thoughtfully designed plan around 2,000 sq ft with a welcoming entry, open living and dining, and a kitchen made for hosting with plenty of workspace and storage.",
         disclaimer:
           "Renderings and specifications are for illustration only and may vary slightly from the final build.",
-        // If your Brecknock photos are brecknock-01.jpg ... and some are .jpeg,
-        // list them exactly (best), OR rename them all to .jpg.
-        images: exactImages("timeless-homes", [
-          // Put your REAL filenames here. Example based on your screenshot:
-          "brecknock-19.jpg",
-          "brecknock-20.jpg",
-          "brecknock-21.jpg",
-          "brecknock-22.jpg",
-          "brecknock-23.jpg",
-          "brecknock-24.jpg",
-          "brecknock-25.jpg",
-          "brecknock-26.jpg",
-          "brecknock-27.jpeg",
-          // add the earlier ones too (brecknock-01.jpg...) if they exist
-        ]),
+        images: makeImageCandidates(TIMELESS_BASE, "brecknock", range(1, 50)),
       },
     ],
   },
+  // Add other builders here...
 ];
 
-export function getBuilders(): Builder[] {
-  return builders;
+export const BUILDERS_MENU = BUILDERS.map((b) => ({
+  slug: b.slug,
+  name: b.name,
+}));
+
+export function getBuilder(slug: string) {
+  return BUILDERS.find((b) => b.slug === slug) ?? null;
 }
 
-export function getBuilder(builderSlug: string): Builder | undefined {
-  return builders.find((b) => b.slug === builderSlug);
+export function getPlansByBuilder(builderSlug: string) {
+  const b = getBuilder(builderSlug);
+  return b ? b.plans : [];
 }
 
-export function getPlansByBuilder(builderSlug: string): Plan[] {
-  return getBuilder(builderSlug)?.plans ?? [];
-}
-
-export function getPlan(builderSlug: string, planSlug: string): Plan | undefined {
-  return getBuilder(builderSlug)?.plans.find((p) => p.slug === planSlug);
+export function getPlan(builderSlug: string, planSlug: string) {
+  const b = getBuilder(builderSlug);
+  if (!b) return null;
+  return b.plans.find((p) => p.slug === planSlug) ?? null;
 }
