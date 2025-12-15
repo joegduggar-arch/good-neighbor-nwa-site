@@ -1,49 +1,74 @@
 // src/lib/agents.ts
 
 export type Agent = {
-  slug: string;
-  name: string;
-  title: string;
-  photo: string;
-  phone?: string;
-  email?: string;
-  bio: string;
+  slug: string;
+  name: string;
+  title: string;
+  photo: string;
+  phone?: string;
+  email?: string;
+
+  // short summary for cards
+  bio: string;
+
+  // long bio for detail page
+  fullBio?: string;
 };
 
 export const AGENTS: Agent[] = [
-  {
-    slug: "joe-duggar",
-    name: "Joe Duggar",
-    title: "Principal Broker / Owner",
-    photo: "/images/agents/joe.jpg",
-    phone: "(479) 713-9565",
-    email: "joe@goodneighbornwa.com",
-    bio: "Joe is a lifelong Northwest Arkansas local and the principal broker of Good Neighbor Realty, helping clients with new construction and forever homes across Bella Vista, Bentonville, and beyond."
-  },
-  {
-    slug: "marcus-agent",
-    name: "Marcus Example",
-    title: "Realtor®",
-    photo: "/images/agents/marcus.jpg",
-    phone: "(479) 555-1234",
-    email: "marcus@goodneighbornwa.com",
-    bio: "Marcus focuses on helping buyers and sellers navigate the fast-moving NWA market with clear communication and a calm, steady approach."
-  },
-  {
-    slug: "christy-agent",
-    name: "Christy Example",
-    title: "Realtor®",
-    photo: "/images/agents/christy.jpg",
-    phone: "(479) 555-5678",
-    email: "christy@goodneighbornwa.com",
-    bio: "Christy loves matching clients with homes that fit their lifestyle, from first-time buyers to families looking for more space."
-  }
+  {
+    slug: "joe-duggar",
+    name: "Joe Duggar",
+    title: "Principal Broker / Owner",
+    photo: "/images/agents/joe.jpg",
+    phone: "(479) 713-9565",
+    email: "joe@goodneighbornwa.com",
+    bio:
+      "Lifelong Northwest Arkansas local and principal broker of Good Neighbor Realty, helping clients with new construction and forever homes across Bella Vista, Bentonville, and beyond.",
+    fullBio: `Real estate has been part of my life for as long as I can remember. I grew up surrounded by it—watching my family serve neighbors across Northwest Arkansas and learning early on what it means to guide people through one of the biggest decisions of their lives.
+
+I always had the ambition to follow in my family’s footsteps, and I had the privilege of learning the trade firsthand while working closely with my dad. Over the years, that passion only grew stronger.
+
+Today, I’m honored to continue the legacy my family began generations ago—especially the example set by my grandma, Mary Duggar, who led Good Neighbor Realty with honesty, compassion, and excellence. I love working with both buyers and sellers, helping them find not just a house, but a place to call home.
+
+Every client I work with becomes part of that same story—one built on faith, family, and a genuine care for people.`,
+  },
+  {
+    slug: "christy-rainier",
+    name: "Christy Rainier",
+    title: "Realtor®",
+    photo: "/images/agents/christy.jpg",
+    phone: "(321) 961-8263",
+    email: "christyrainier@gmail.com",
+    bio:
+      "Warm, detail-oriented guidance for buyers and sellers—especially new construction—backed by real building-industry roots.",
+    fullBio: `Christy is a devoted wife and mother whose heart for people shines through everything she does. Her care for others and attention to detail have naturally carried over into her real estate career, where she’s passionate about guiding families through every step of the buying or selling process.
+
+Coming from a family with a strong background in the building industry, Christy understands the craftsmanship and planning that go into creating a home. That experience gives her a unique perspective when guiding clients—helping them see both the potential and the details that truly matter.
+
+With particular expertise in selling new construction, Christy combines her building knowledge with her genuine warmth, professionalism, and dedication to deliver an exceptional experience for every client she serves—whether first-time buyers or seasoned sellers.`,
+  },
+  {
+    slug: "marcus-day",
+    name: "Marcus Day",
+    title: "Realtor®",
+    photo: "/images/agents/marcus.jpg",
+    phone: "(479) 877-5327",
+    email: "marcusdfe@gmail.com",
+    bio:
+      "A genuine, steady guide with hands-on construction and design experience—helping clients confidently evaluate quality and fit.",
+    fullBio: `Marcus Day brings a genuine heart for people and a hands-on understanding of what makes a home truly special. Having personally been involved in the construction and design of several homes, he has developed a keen eye for detail, craftsmanship, and quality.
+
+Marcus believes that real estate is about more than closing deals—it’s about helping individuals and families find the space that fits their lifestyle and dreams. His thoughtful approach, combined with his practical knowledge of how homes are built, allows him to guide clients confidently through every step of the process.
+
+Dedicated, approachable, and grounded in integrity, Marcus takes pride in helping his clients feel cared for, informed, and supported as they find their place to call home.`,
+  },
 ];
 
 export function getAgents(): Agent[] {
-  return AGENTS;
+  return AGENTS;
 }
 
 export function getAgent(slug: string): Agent | undefined {
-  return AGENTS.find((a) => a.slug === slug);
+  return AGENTS.find((a) => a.slug === slug);
 }

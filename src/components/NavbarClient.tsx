@@ -1,65 +1,160 @@
+// src/components/NavbarClient.tsx
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { BUILDERS_MENU } from "@/lib/floorplans";
 
-export type IdxLink = {
+type Brand = {
+  name: string;
+  logo: string;
+  href: string;
+};
+
+type IdxLink = {
   label: string;
   href: string;
 };
 
-export type Brand = {
+type BuilderMenuItem = {
   name: string;
-  logo: string; // e.g. "/images/logo.svg"
-  href: string; // e.g. "/"
+  slug: string;
+  logo: string;
 };
 
-type NavbarClientProps = {
+type Props = {
   phone: string;
   brand: Brand;
   idxLinks: IdxLink[];
 };
 
-export default function NavbarClient({ phone, brand, idxLinks }: NavbarClientProps) {
+export default function NavbarClient({ phone, brand, idxLinks }: Props) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
+
+  const builders: BuilderMenuItem[] = BUILDERS_MENU;
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function onDocMouseDown(e: MouseEvent) {
+      if (!wrapRef.current) return;
+      if (wrapRef.current.contains(e.target as Node)) return;
+      setOpen(false);
+    }
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-black/70 backdrop-blur border-b border-white/10">
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         {/* Brand */}
         <Link href={brand.href} className="flex items-center gap-3">
           <Image
             src={brand.logo}
             alt={brand.name}
-            width={44}
-            height={44}
+            width={40}
+            height={40}
+            className="rounded-full"
             priority
-            className="h-10 w-auto"
           />
-          <span className="text-white font-semibold tracking-wide">
+          <span className="text-sm font-semibold text-neutral-50">
             {brand.name}
           </span>
         </Link>
 
-        {/* Links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          {idxLinks.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-white/80 hover:text-white transition"
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-6 md:flex" ref={wrapRef}>
+          {/* Dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpen((p) => !p)}
+              className="text-sm font-medium text-neutral-100 hover:text-yellow-300"
+              aria-expanded={open}
+              aria-haspopup="menu"
             >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+              Property Search
+            </button>
 
-        {/* Phone */}
-        <a
-          href={`tel:${phone.replace(/[^\d+]/g, "")}`}
-          className="text-white/90 hover:text-white text-sm font-medium whitespace-nowrap"
-        >
-          {phone}
-        </a>
-      </div>
+            {open && (
+              <div
+                className="absolute right-0 top-full mt-2 w-[480px] rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl"
+                role="menu"
+              >
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                  Get Started
+                </div>
+
+                <div className="grid gap-3">
+                  {idxLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block rounded-xl bg-neutral-800 px-4 py-3 text-sm text-neutral-100 hover:bg-neutral-700"
+                      role="menuitem"
+                    >
+                      <div className="font-medium">{link.label}</div>
+                      <div className="text-xs text-neutral-400">
+                        City, address, MLS # — start your search.
+                      </div>
+                    </Link>
+                  ))}
+
+                  <div className="mt-1 border-t border-neutral-800 pt-3">
+                    <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                      Builders We Represent
+                    </div>
+
+                    <div className="grid gap-2">
+                      {builders.map((b) => (
+                        <Link
+                          key={b.slug}
+                          href={`/builders/${b.slug}`}
+                          className="flex items-center gap-3 rounded-xl bg-neutral-800 px-3 py-2 text-sm text-neutral-100 hover:bg-neutral-700"
+                          role="menuitem"
+                        >
+                          <Image
+                            src={b.logo}
+                            alt={b.name}
+                            width={28}
+                            height={28}
+                            className="rounded bg-white/5 object-contain"
+                          />
+                          <span>{b.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Link href="/agents" className="text-sm font-medium text-neutral-100 hover:text-yellow-300">
+            Agents
+          </Link>
+
+          <Link href="/contact" className="text-sm font-medium text-neutral-100 hover:text-yellow-300">
+            Contact
+          </Link>
+
+          <a
+            href={`tel:${phone.replace(/[^\d]/g, "")}`}
+            className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-100 hover:border-yellow-400 hover:text-yellow-300"
+          >
+            {phone}
+          </a>
+        </div>
+      </nav>
     </header>
   );
 }
