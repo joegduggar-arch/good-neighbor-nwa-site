@@ -5,10 +5,9 @@ export type IdxLink = {
   href: string;
 };
 
-// Links used by the Property Search dropdown in the navbar
 export const IDX_LINKS: IdxLink[] = [
   {
     label: "Search Properties",
-    href: "/search", // our internal search page
+    href: "/search",
   },
 ];
